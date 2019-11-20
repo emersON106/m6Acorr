@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print Layout - class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for PrintLayout {limma}"><tr><td>PrintLayout {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print Layout - class</h2>
+
+<h3>Description</h3>
+
+<p>A list-based class for storing information about the process used to print spots on a microarray.
+</p>
+<p><code>PrintLayout</code> objects can be created using <code><a href="getlayout.html">getLayout</a></code>.
+The <code>printer</code> component of an <code>RGList</code> or <code>MAList</code> object is of this class.
+</p>
+
+
+<h3>Slots/List Components</h3>
+
+<p>Objects of this class contains no slots but should contain the following list components:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  <code>ngrid.r</code>:</td><td style="text-align: left;"> number of grid rows on the arrays</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>ngrid.c</code>:</td><td style="text-align: left;"> number of grid columns on the arrays</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>nspot.r</code>:</td><td style="text-align: left;"> number of rows of spots in each grid</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>nspot.c</code>:</td><td style="text-align: left;"> number of columns of spots in each grid</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>ndups</code>:</td><td style="text-align: left;"> number of duplicates of each DNA clone, i.e., number of times print-head dips into each well of DNA</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>spacing</code>:</td><td style="text-align: left;"> number of spots between duplicate spots.  Only applicable if <code>ndups&gt;1</code>.
+  <code>spacing=1</code> for side-by-side spots by rows, <code>spacing=nspot.c</code> for side-by-side spots by columns, <code>spacing=ngrid.r*ngrid.c*nspot.r*nspot.c/2</code> for duplicate spots in top and bottom halves of each array.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>npins</code>:</td><td style="text-align: left;"> actual number of pins or tips on the print-head</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  <code>start</code>:</td><td style="text-align: left;"> character string giving position of the spot printed first in each grid.
+  Choices are <code>"topleft"</code> or <code>"topright"</code> and partial matches are accepted.
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="02classes.html">02.Classes</a> gives an overview of all the classes defined by this package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Settings for Swirl and ApoAI example data sets in User's Guide
+
+printer &lt;- list(ngrid.r=4, ngrid.c=4, nspot.r=22, nspot.c=24,
+                ndups=1, spacing=1, npins=16, start="topleft")
+
+#  Typical settings at the Australian Genome Research Facility
+
+#  Full pin set, duplicates side-by-side on same row
+printer &lt;- list(ngrid.r=12, ngrid.c=4, nspot.r=20, nspot.c=20,
+                ndups=2, spacing=1, npins=48, start="topright")
+
+#  Half pin set, duplicates in top and lower half of slide
+printer &lt;- list(ngrid.r=12, ngrid.c=4, nspot.r=20, nspot.c=20,
+                ndups=2, spacing=9600, npins=24, start="topright")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Individual Channel Design Matrix to M-A Format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for designI2M {limma}"><tr><td>designI2M {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Individual Channel Design Matrix to M-A Format</h2>
+
+<h3>Description</h3>
+
+<p>Convert a design matrix in terms of individual channels to ones in terms of M-values or A-values for two-color microarray data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+designI2M(design)
+designI2A(design)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric model matrix with one row for each channel observation, i.e., twice as many rows as arrays</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>design</code> is a model matrix suitable for modelling individual log-intensities for two color microarray data, then <code>designI2M</code> computes the corresponding model matrix for modelling M-values (log-ratios) and <code>designI2A</code> computes the model matrix for modelling A-values (average log-intensities).
+</p>
+<p>Note that the matrices <code>designI2M(design)</code> or <code>designI2A(design)</code> may be singular if not all of the coefficients are estimable from the M or A-values.
+In that case there will be columns containing entirely zeros.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric model matrix with half as many rows as <code>design</code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/model.matrix.html">model.matrix</a></code> in the stats package.
+</p>
+<p>An overview of individual channel linear model functions in limma is given by <a href="07SingleChannel.html">07.SingleChannel</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+X &lt;- cbind(1,c(1,1,1,1,0,0,0,0),c(0,0,0,0,1,1,1,1))
+designI2M(X)
+designI2A(X)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

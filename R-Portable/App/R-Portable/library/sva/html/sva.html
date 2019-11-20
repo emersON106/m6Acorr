@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: sva: a package for removing artifacts from microarray and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sva {sva}"><tr><td>sva {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>sva: a package for removing artifacts from microarray and sequencing data</h2>
+
+<h3>Description</h3>
+
+<p>sva has functionality to estimate and remove artifacts from high dimensional data
+the <code><a href="sva.html">sva</a></code> function can be used to estimate artifacts from microarray data
+the <code><a href="svaseq.html">svaseq</a></code> function can be used to estimate artifacts from count-based
+RNA-sequencing (and other sequencing) data. The <code><a href="ComBat.html">ComBat</a></code> function can be
+used to remove known batch effecs from microarray data. The <code><a href="fsva.html">fsva</a></code> function
+can be used to remove batch effects for prediction problems.
+</p>
+<p>This function is the implementation of the iteratively re-weighted least squares
+approach for estimating surrogate variables. As a by product, this function
+produces estimates of the probability of being an empirical control. See the function
+<code><a href="empirical.controls.html">empirical.controls</a></code> for a direct estimate of the empirical controls.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sva(dat, mod, mod0 = NULL, n.sv = NULL, controls = NULL,
+  method = c("irw", "two-step", "supervised"), vfilter = NULL, B = 5,
+  numSVmethod = "be")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dat</code></td>
+<td>
+<p>The transformed data matrix with the variables in rows and samples in columns</p>
+</td></tr>
+<tr valign="top"><td><code>mod</code></td>
+<td>
+<p>The model matrix being used to fit the data</p>
+</td></tr>
+<tr valign="top"><td><code>mod0</code></td>
+<td>
+<p>The null model being compared when fitting the data</p>
+</td></tr>
+<tr valign="top"><td><code>n.sv</code></td>
+<td>
+<p>The number of surogate variables to estimate</p>
+</td></tr>
+<tr valign="top"><td><code>controls</code></td>
+<td>
+<p>A vector of probabilities (between 0 and 1, inclusive) that each gene is a control. A value of 1 means the gene is certainly a control and a value of 0 means the gene is certainly not a control.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>For empirical estimation of control probes use &quot;irw&quot;. If control probes are known use &quot;supervised&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>vfilter</code></td>
+<td>
+<p>You may choose to filter to the vfilter most variable rows before performing the analysis. vfilter must be NULL if method is &quot;supervised&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>B</code></td>
+<td>
+<p>The number of iterations of the irwsva algorithm to perform</p>
+</td></tr>
+<tr valign="top"><td><code>numSVmethod</code></td>
+<td>
+<p>If n.sv is NULL, sva will attempt to estimate the number of needed surrogate variables. This should not be adapted by the user unless they are an expert.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A vignette is available by typing <code>browseVignettes("sva")</code> in the R prompt.
+</p>
+
+
+<h3>Value</h3>
+
+<p>sv The estimated surrogate variables, one in each column
+</p>
+<p>pprob.gam: A vector of the posterior probabilities each gene is affected by heterogeneity
+</p>
+<p>pprob.b A vector of the posterior probabilities each gene is affected by mod
+</p>
+<p>n.sv The number of significant surrogate variables
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Jeffrey T. Leek, W. Evan Johnson, Hilary S. Parker, Andrew E. Jaffe, John D. Storey, Yuqing Zhang
+</p>
+
+
+<h3>References</h3>
+
+<p>For the package: Leek JT, Johnson WE, Parker HS, Jaffe AE, and Storey JD. (2012) The sva package for removing batch effects and other unwanted variation in high-throughput experiments. Bioinformatics DOI:10.1093/bioinformatics/bts034
+</p>
+<p>For sva: Leek JT and Storey JD. (2008) A general framework for multiple testing dependence. Proceedings of the National Academy of Sciences , 105: 18718-18723.
+</p>
+<p>For sva: Leek JT and Storey JD. (2007) Capturing heterogeneity in gene expression studies by &lsquo;Surrogate Variable Analysis&rsquo;. PLoS Genetics, 3: e161.
+</p>
+<p>For Combat: Johnson WE, Li C, Rabinovic A (2007) Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics,  8 (1), 118-127
+</p>
+<p>For svaseq: Leek JT (2014) svaseq: removing batch and other artifacts from count-based sequencing data. bioRxiv doi: TBD
+</p>
+<p>For fsva: Parker HS, Bravo HC, Leek JT (2013) Removing batch effects for prediction problems with frozen surrogate variable analysis arXiv:1301.3947
+</p>
+<p>For psva: Parker HS, Leek JT, Favorov AV, Considine M, Xia X, Chavan S, Chung CH, Fertig EJ (2014) Preserving biological heterogeneity with a permuted surrogate variable analysis for genomics batch correction Bioinformatics doi: 10.1093/bioinformatics/btu375
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(bladderbatch)
+data(bladderdata)
+dat &lt;- bladderEset[1:5000,]
+
+pheno = pData(dat)
+edata = exprs(dat)
+mod = model.matrix(~as.factor(cancer), data=pheno)
+mod0 = model.matrix(~1,data=pheno)
+
+n.sv = num.sv(edata,mod,method="leek")
+svobj = sva(edata,mod,mod0,n.sv=n.sv)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

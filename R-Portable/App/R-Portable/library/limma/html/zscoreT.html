@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transform t-statistics to standard normal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zscoreT {limma}"><tr><td>zscoreT {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transform t-statistics to standard normal</h2>
+
+<h3>Description</h3>
+
+<p>Compute z-score equivalents of t-distributed random deviates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zscoreT(x, df, approx=FALSE, method = "hill")
+tZscore(x, df)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector or matrix of values from a t-distribution or (for <code>tZscore</code> the standard normal distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom (&gt;0) of the t-distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>approx</code></td>
+<td>
+<p>logical. If <code>TRUE</code> then a fast approximation is used otherwise exact z-scores are computed.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>character string specifying transformation to be used when <code>approx=TRUE</code>,
+options being <code>"bailey"</code>, <code>"hill"</code> or <code>"wallace"</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>zscoreT</code> transforms t-distributed values to standard normal.
+Each value is converted to the equivalent quantile of the normal distribution so that
+if <code>z &lt;- zscoreT(x, df=df)</code> then <code>pnorm(z)</code> equals <code>pt(x, df=df)</code>.
+</p>
+<p><code>tZscore</code> is the inverse of <code>zscoreT</code> and computes t-distribution equivalents of standard normal deviates.
+</p>
+<p>If <code>approx=FALSE</code>, the transformation is done by converting to log tail probabilities using <code>pt</code> or <code>pnorm</code> and then converting back to quantiles using <code>qnorm</code> or <code>qt</code>.
+For numerical accuracy, the smaller of the two tail probabilities is used for each deviate.
+</p>
+<p>If <code>approx=TRUE</code>, then an approximate closed-form transformation is used to convert t-statistics to z-scores directly without computing tail probabilities.
+The <code>method</code> argument provides a choice of three transformations.
+<code>method="bailey"</code> is equation (5) of Bailey (1980) or equation (7) of Brophy (1987).
+<code>method="hill"</code> is from Hill (1970) as given by equation (5) of Brophy (1987).
+<code>method="wallace"</code> is from Wallace (1959) as given by equation equation (2) of Brophy (1987).
+Bailey's transformation is a modification of Wallace's approximation.
+The Hill approximation is generally the most accurate for df &gt; 2 but is poor for df &lt; 1.
+Bailey's approximation is faster than Hill's and gives acceptable two-figure accuracy throughout.
+Bailey's approximation also works for some extreme values, with very large <code>x</code> or <code>df</code>, for which Hill's approximation fails due to overflow.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector or matrix of z-scores or t-distribution deviates.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The default approximation used when <code>approx=TRUE</code> was changed from Hill to Bailey in limma version 3.41.13.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Bailey, B. J. R. (1980).
+Accurate normalizing transformations of a Student's t variate.
+<em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 29(3), 304&ndash;306.
+</p>
+<p>Hill, GW (1970). Algorithm 395: Student's t-distribution.
+<em>Communications of the ACM</em> 13, 617&ndash;620.
+</p>
+<p>Brophy, AL (1987).
+Efficient estimation of probabilities in the t distribution.
+<em>Behavior Research Methods</em> 19, 462&ndash;466.
+</p>
+<p>Wallace, D. L. (1959).
+Bounds on normal approximations to Student's and the chi-square distributions.
+<em>The Annals of Mathematical Statistics</em>, 30(4), 1121&ndash;1130.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zscore.html">zscore</a></code>.
+</p>
+<p><code>zscoreNBinom</code> in the edgeR package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+zscoreT(4, df=3)
+zscoreT(4, df=3, approx=TRUE)
+zscoreT(4, df=Inf)
+tZscore(2.2, df=3)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read Header Information from Microarray Raw Data File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readHeader {limma}"><tr><td>readHeader {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read Header Information from Microarray Raw Data File</h2>
+
+<h3>Description</h3>
+
+<p>Read the header information from a microarray raw data file, as output from an image analysis software program such as GenePix.
+These functions are used internally by <code>read.maimages</code> and are not usually called directly by users.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readGenericHeader(file, columns, sep="\t")
+readGPRHeader(file)
+readSMDHeader(file)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>character string giving file name. If it does not contain an absolute path, the file name is relative to the current working directory.</p>
+</td></tr>
+<tr valign="top"><td><code>columns</code></td>
+<td>
+<p>character vector specifying data column headings expected to be in file</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the character string separating column names</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Raw data files exported by image analysis programs include a number of header lines which contain information about the scanning process.
+This function extracts that information and locates the line where the intensity data begins.
+<code>readGPRHeader</code> is for GenePix output and <code>readSMDHeader</code> is for files from the Stanford Microarray Database (SMD).
+<code>readGenericHeader</code> finds the line in the file on which the data begins by searching for specified column headings. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components corresponds to lines of header information.
+A key component is <code>NHeaderRecords</code> which gives the number of lines in the file before the intensity data begins.
+All other components are character vectors.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>See <a href="http://www.cryer.co.uk/file-types/a/atf/genepix_file_formats.htm">http://www.cryer.co.uk/file-types/a/atf/genepix_file_formats.htm</a> for GenePix formats.
+</p>
+<p>See <a href="http://smd.princeton.edu">http://smd.princeton.edu</a> for the SMD.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="read.maimages.html">read.maimages</a></code>
+</p>
+<p>An overview of LIMMA functions to read data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

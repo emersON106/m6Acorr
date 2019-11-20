@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Gene Aliases to Official Gene Symbols</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for alias2Symbol {limma}"><tr><td>alias2Symbol {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Gene Aliases to Official Gene Symbols</h2>
+
+<h3>Description</h3>
+
+<p>Maps gene alias names to official gene symbols.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+alias2Symbol(alias, species = "Hs", expand.symbols = FALSE)
+alias2SymbolTable(alias, species = "Hs")
+alias2SymbolUsingNCBI(alias, gene.info.file,
+                      required.columns = c("GeneID","Symbol","description"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>alias</code></td>
+<td>
+<p>character vector of gene aliases</p>
+</td></tr>
+<tr valign="top"><td><code>species</code></td>
+<td>
+<p>character string specifying the species.
+Possible values include <code>"Hs"</code> (human), <code>"Mm"</code> (mouse), <code>"Rn"</code> (rat), <code>"Dm"</code> (fly) or <code>"Pt"</code> (chimpanzee), but other values are possible if the corresponding organism package is available.</p>
+</td></tr>
+<tr valign="top"><td><code>expand.symbols</code></td>
+<td>
+<p>logical.
+This affects those elements of <code>alias</code> that are the official gene symbol for one gene and also an alias for another gene.
+If <code>FALSE</code>, then these elements will just return themselves.
+If <code>TRUE</code>, then all the genes for which they are aliases will also be returned.</p>
+</td></tr>
+<tr valign="top"><td><code>gene.info.file</code></td>
+<td>
+<p>either the name of a gene information file downloaded from the NCBI or a data.frame resulting from reading such a file.</p>
+</td></tr>
+<tr valign="top"><td><code>required.columns</code></td>
+<td>
+<p>character vector of columns from the gene information file that are required in the output.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Aliases are mapped via NCBI Entrez Gene identity numbers using Bioconductor organism packages.
+</p>
+<p><code>alias2Symbol</code> maps a set of aliases to a set of symbols, without necessarily preserving order.
+The output vector may be longer or shorter than the original vector, because some aliases might not be found and some aliases may map to more than one symbol.
+</p>
+<p><code>alias2SymbolTable</code> returns of vector of the same length as the vector of aliases.
+If an alias maps to more than one symbol, then the one with the lowest Entrez ID number is returned.
+If an alias can't be mapped, then <code>NA</code> is returned.
+</p>
+<p><code>species</code> can be any character string XX for which an organism package org.XX.eg.db exists and is installed.
+The only requirement of the organism package is that it contains objects <code>org.XX.egALIAS2EG</code> and <code>org.XX.egSYMBOL</code> linking the aliases and symbols to Entrez Gene Ids.
+At the time of writing, the following organism packages are available from Bioconductor 3.6:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> Package </td><td style="text-align: left;"> Species</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Ag.eg.db </td><td style="text-align: left;">  Anopheles</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Bt.eg.db </td><td style="text-align: left;">  Bovine</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Ce.eg.db </td><td style="text-align: left;">  Worm</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Cf.eg.db </td><td style="text-align: left;">  Canine</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Dm.eg.db </td><td style="text-align: left;">  Fly</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Dr.eg.db </td><td style="text-align: left;">  Zebrafish</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.EcK12.eg.db </td><td style="text-align: left;">  E coli strain K12</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.EcSakai.eg.db </td><td style="text-align: left;">  E coli strain Sakai</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Gg.eg.db </td><td style="text-align: left;">  Chicken</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Hs.eg.db </td><td style="text-align: left;">  Human</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Mm.eg.db </td><td style="text-align: left;">  Mouse</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Mmu.eg.db </td><td style="text-align: left;">  Rhesus</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Pt.eg.db </td><td style="text-align: left;">  Chimp</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Rn.eg.db </td><td style="text-align: left;">  Rat</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Ss.eg.db </td><td style="text-align: left;">  Pig</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> org.Xl.eg.db </td><td style="text-align: left;">  Xenopus
+</td>
+</tr>
+
+</table>
+
+<p><code>alias2SymbolUsingNCBI</code> is analogous to <code>alias2SymbolTable</code> but uses a gene-info file from NCBI instead of a Bioconductor organism package.
+It also gives the option of returning multiple columns from the gene-info file.
+NCBI gene-info files can be downloaded from <a href="ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO">ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO</a>.
+For example, the human file is <a href="ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz">ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz</a> and the mouse file is <a href="ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz">ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz</a>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>alias2Symbol</code> and <code>alias2SymbolTable</code> produce a character vector of gene symbols.
+<code>alias2SymbolTable</code> returns a vector of the same length and order as <code>alias</code>, including <code>NA</code> values where no gene symbol was found.
+<code>alias2Symbol</code> returns an unordered vector that may be longer or shorter than <code>alias</code>.
+</p>
+<p><code>alias2SymbolUsingNCBI</code> returns a data.frame with rows corresponding to the entries of <code>alias</code> and columns as specified by <code>required.columns</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>See Also</h3>
+
+<p>This function is often used to assist gene set testing, see
+<a href="10GeneSetTests.html">10.GeneSetTests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+alias2Symbol(c("PUMA","NOXA","BIM"), species="Hs")
+alias2Symbol("RS1", expand=TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Test for Differential Splicing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for diffSplice {limma}"><tr><td>diffSplice {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Test for Differential Splicing</h2>
+
+<h3>Description</h3>
+
+<p>Given a linear model fit at the exon level, test for differences in exon retention between experimental conditions.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+diffSplice(fit, geneid, exonid=NULL, robust=FALSE, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> fitted model object produced by <code>lmFit</code> or <code>contrasts.fit</code>. Rows should correspond to exons.</p>
+</td></tr>
+<tr valign="top"><td><code>geneid</code></td>
+<td>
+<p>gene identifiers. Either a vector of length <code>nrow(fit)</code> or the name of the column of <code>fit$genes</code> containing the gene identifiers. Rows with the same ID are assumed to belong to the same gene.</p>
+</td></tr>
+<tr valign="top"><td><code>exonid</code></td>
+<td>
+<p>exon identifiers. Either a vector of length <code>nrow(fit)</code> or the name of the column of <code>fit$genes</code> containing the exon identifiers.</p>
+</td></tr>
+<tr valign="top"><td><code>robust</code></td>
+<td>
+<p>logical, should the estimation of the empirical Bayes prior parameters be robustified against outlier sample variances?</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical, if <code>TRUE</code> some diagnostic information about the number of genes and exons is output.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function tests for differential exon usage for each gene and for each column of <code>fit</code>.
+</p>
+<p>Testing for differential exon usage is equivalent to testing whether the log-fold-changes in the <code>fit</code> differ between exons for the same gene.
+Two different tests are provided.
+The first is an F-test for differences between the log-fold-changes.
+The other is a series of t-tests in which each exon is compared to the average of all other exons for the same gene.
+The exon-level t-tests are converted into a genewise test by adjusting the p-values for the same gene by Simes method.
+The minimum adjusted p-value is then used for each gene.
+</p>
+<p>This function can be used on data from an exon microarray or can be used in conjunction with voom for exon-level RNA-seq counts.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>MArrayLM</code> containing both exon level and gene level tests.
+Results are sorted by geneid and by exonid within gene.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>numeric matrix of coefficients of same dimensions as <code>fit</code>. Each coefficient is the difference between the log-fold-change for that exon versus the average log-fold-change for all other exons for the same gene.</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>numeric matrix of moderated t-statistics, of same dimensions as <code>fit</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>numeric vector of p-values corresponding to the t-statistics</p>
+</td></tr>
+<tr valign="top"><td><code>genes</code></td>
+<td>
+<p>data.frame of exon annotation</p>
+</td></tr>
+<tr valign="top"><td><code>genecolname</code></td>
+<td>
+<p>character string giving the name of the column of <code>genes</code> containing gene IDs</p>
+</td></tr>
+<tr valign="top"><td><code>gene.F</code></td>
+<td>
+<p>numeric matrix of moderated F-statistics, one row for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>gene.F.p.value</code></td>
+<td>
+<p>numeric matrix of p-values corresponding to <code>gene.F</code></p>
+</td></tr>
+<tr valign="top"><td><code>gene.simes.p.value</code></td>
+<td>
+<p>numeric matrix of Simes adjusted p-values, one row for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>gene.genes</code></td>
+<td>
+<p>data.frame of gene annotation.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Charity Law</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="topSplice.html">topSplice</a></code>, <code><a href="plotSplice.html">plotSplice</a></code>
+</p>
+<p>A summary of functions available in LIMMA for RNA-seq analysis is given in <a href="11RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+v &lt;- voom(dge,design)
+fit &lt;- lmFit(v,design)
+ex &lt;- diffSplice(fit,geneid="EntrezID")
+topSplice(ex)
+plotSplice(ex)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

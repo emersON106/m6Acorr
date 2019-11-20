@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: MA Plots by Print-Tip Group</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotPrintTipLoess {limma}"><tr><td>plotPrintTipLoess {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>MA Plots by Print-Tip Group</h2>
+
+<h3>Description</h3>
+
+<p>Creates a coplot giving MA-plots with loess curves by print-tip groups.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotPrintTipLoess(object,layout,array=1,span=0.4,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p><code>MAList</code> or <code>RGList</code> object or list with components <code>M</code> containing log-ratios and <code>A</code> containing average intensities</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>a list specifying the number of tip rows and columns and the number of spot rows and columns printed by each tip.
+Defaults to <code>MA$printer</code> if that is non-null.</p>
+</td></tr>
+<tr valign="top"><td><code>array</code></td>
+<td>
+<p>integer giving the array to be plotted. Corresponds to columns of <code>M</code> and <code>A</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>span of window for <code>lowess</code> curve</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments passed to <code>panel.smooth</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that spot quality weights in <code>object</code> are not used for computing the loess curves for this plot even though such weights would be used for loess normalization using <code>normalizeWithinArrays</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.
+If there are missing values in the data, then the vector of row numbers for spots with missing values is invisibly returned, as for <code>coplot</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

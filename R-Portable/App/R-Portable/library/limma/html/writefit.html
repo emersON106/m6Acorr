@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write MArrayLM Object to a File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for write.fit {limma}"><tr><td>write.fit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write MArrayLM Object to a File</h2>
+
+<h3>Description</h3>
+
+<p>Write a microarray linear model fit to a file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+write.fit(fit, results = NULL, file, digits = NULL,
+          adjust = "none", method = "separate", F.adjust = "none",
+          quote = FALSE, sep = "\t", row.names = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>object of class <code>MArrayLM</code> containing the results of a linear model fit</p>
+</td></tr>
+<tr valign="top"><td><code>results</code></td>
+<td>
+<p>object of class <code>TestResults</code></p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>character string giving name of file</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>integer indicating rounding precision for output values. If <code>NULL</code>, then no rounding is done.</p>
+</td></tr>
+<tr valign="top"><td><code>adjust</code></td>
+<td>
+<p>character string specifying multiple-testing adjustment method for the t-statistic P-values, e.g., <code>"BH"</code>. See <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> for the available options. If <code>NULL</code> or <code>"none"</code> then the P-values are not adjusted.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string, should the P-value adjustment be <code>"global"</code> or <code>"separate"</code> for each contrast.</p>
+</td></tr>
+<tr valign="top"><td><code>F.adjust</code></td>
+<td>
+<p>character string specifying adjustment method for the F-statistic P-values.</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, any character or factor columns will be surrounded by double quotes.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the field separator string. Values in the output file will be separated by this string.</p>
+</td></tr>
+<tr valign="top"><td><code>row.names</code></td>
+<td>
+<p>logical, whether to include row names in output file.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>write.table</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function writes a tab-delimited text file containing for each gene (1) the average log2-intensity, (2) the coefficients or contrasts (log2-fold-changes), (3) moderated t-statistics, (4) t-statistic P-values, (5) F-statistic if available, (6) F-statistic P-values if available, (7) classification if available and (8) gene names and annotation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>No value is produced but a file is written to the current working directory.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/write.table.html">write.table</a></code> in the base library.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

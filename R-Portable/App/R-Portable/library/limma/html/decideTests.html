@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Multiple Testing Across Genes and Contrasts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for decideTests {limma}"><tr><td>decideTests {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Multiple Testing Across Genes and Contrasts</h2>
+
+<h3>Description</h3>
+
+<p>Identify which genes are significantly differentially expressed for each contrast from a fit object containing p-values and test statistics.
+A number of different multiple testing strategies are offered that adjust for multiple testing down the genes as well as across contrasts for each gene.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'MArrayLM'
+decideTests(object, method = "separate", adjust.method = "BH", p.value = 0.05,
+            lfc = 0, ...)
+## Default S3 method:
+decideTests(object, method = "separate", adjust.method = "BH", p.value = 0.05,
+            lfc = 0, coefficients = NULL, cor.matrix = NULL, tstat = NULL, df = Inf,
+            genewise.p.value = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a numeric matrix of p-values or an <code>MArrayLM</code> object from which p-values and t-statistics can be extracted.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying how genes and contrasts are to be combined in the multiple testing scheme.  Choices are <code>"separate"</code>, <code>"global"</code>, <code>"hierarchical"</code> or <code>"nestedF"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>adjust.method</code></td>
+<td>
+<p>character string specifying p-value adjustment method.  Possible values are <code>"none"</code>, <code>"BH"</code>, <code>"fdr"</code> (equivalent to <code>"BH"</code>), <code>"BY"</code> and <code>"holm"</code>. See <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>numeric value between 0 and 1 giving the required family-wise error rate or false discovery rate.</p>
+</td></tr>
+<tr valign="top"><td><code>lfc</code></td>
+<td>
+<p>numeric, minimum absolute log2-fold-change required.</p>
+</td></tr>
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>numeric matrix of coefficients or log2-fold-changes. Of same dimensions as <code>object</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cor.matrix</code></td>
+<td>
+<p>correlation matrix of coefficients. Square matrix of dimension <code>ncol(object)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>tstat</code></td>
+<td>
+<p>numeric matrix of t-statistics. Of same dimensions as <code>object</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>numeric vector of length <code>nrow(object)</code> giving degrees of freedom for the t-statistics.</p>
+</td></tr>
+<tr valign="top"><td><code>genewise.p.value</code></td>
+<td>
+<p>numeric vector of length <code>nrow(object)</code> containing summary gene-level p-values for use with <code>method="hierarchical"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are not used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function can be applied to a matrix of p-values but is more often applied to an <code>MArrayLM</code> fit object produced by <code>eBayes</code> or <code>treat</code>.
+In either case, rows of <code>object</code> correspond to genes and columns to coefficients or contrasts.
+</p>
+<p>This function applies a multiple testing procedure and a significance level cutoff to the statistics contained in <code>object</code>.
+It implements a number of multiple testing procedures for determining whether each statistic should be considered significantly different from zero.
+</p>
+<p><code>method="separate"</code> will apply multiple testing adjustments to each column of p-values separately.
+Setting <code>method="separate"</code> is equivalent to using <code>topTable</code> separately for each coefficient in the linear model fit and will identify the same probes as significantly differentially expressed if <code>adjust.method</code> is the same.
+<code>method="global"</code> will treat the entire matrix of t-statistics as a single vector of unrelated tests.
+<code>method="hierarchical"</code> adjusts down genes and then across contrasts.
+<code>method="nestedF"</code> adjusts down genes and then uses <code>classifyTestsF</code> to classify contrasts as significant or not for the selected genes.
+</p>
+<p>The default <code>method="separate"</code> and <code>adjust.method="BH"</code> settings are appropriate for most analyses.
+<code>method="global"</code> is useful when it is important that the same t-statistic cutoff should correspond to statistical significance for all the contrasts.
+The <code>"nestedF"</code> method was proposed by Michaud et al (2008) and achieves better consistency between contrasts than the other methods.
+It provides formal error rate control at the gene level but not for individual contrasts.
+Please see the limma User's Guide for a discussion of the statistical properties of the various methods.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code><a href="TestResults.html">TestResults</a></code>.
+This is essentially a numeric matrix with elements <code>-1</code>, <code>0</code> or <code>1</code> depending on whether each t-statistic is classified as significantly negative, not significant or significantly positive.
+</p>
+<p>If <code>lfc&gt;0</code> then contrasts are judged significant only when the log2-fold change is at least this large in absolute value.
+For example, one might choose <code>lfc=log2(1.5)</code> to restrict to 50% changes or <code>lfc=1</code> for 2-fold changes.
+In this case, contrasts must satisfy both the p-value and the fold-change cutoff to be judged significant.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Although this function enables users to set p-value and lfc cutoffs simultaneously, this combination criterion is not generally recommended.
+Unless the fold changes and p-values are very highly correlated, the addition of a fold change cutoff can increase the family-wise error rate or false discovery rate above the nominal level.
+Users wanting to use fold change thresholding are recommended to use <code>treat</code> instead of <code>eBayes</code> and to leave <code>lfc</code> at the default value when using <code>decideTests</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Michaud, J, Simpson, KM, Escher, R, Buchet-Poyau, K, Beissbarth, T, Carmichael, C, Ritchie, ME, Schutz, F, Cannon, P, Liu, M, Shen, X, Ito, Y, Raskind, WH, Horwitz, MS, Osato, M, Turner, DR, Speed, TP, Kavallaris, M, Smyth, GK, and Scott, HS (2008).
+Integrative analysis of RUNX1 downstream pathways and target genes.
+<em>BMC Genomics</em> 9, 363. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of multiple testing functions is given in <a href="08Tests.html">08.Tests</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

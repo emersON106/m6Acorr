@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Microarray Linear Model Fit - class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for MArrayLM-class {limma}"><tr><td>MArrayLM-class {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Microarray Linear Model Fit - class</h2>
+
+<h3>Description</h3>
+
+<p>A list-based S4 class for storing the results of fitting gene-wise linear models to a set of microarrays.
+Objects are normally created by <code><a href="lmFit.html">lmFit</a></code>, and additional components are added by <code><a href="ebayes.html">eBayes</a></code>.
+</p>
+
+
+<h3>Components</h3>
+
+<p><code>MArrayLM</code> objects do not contain any slots (apart from <code>.Data</code>) but they should contain the following list components:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code>coefficients</code> </td><td style="text-align: left;"> matrix containing fitted coefficients or contrasts</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>stdev.unscaled</code> </td><td style="text-align: left;"> matrix containing unscaled standard deviations of the coefficients or contrasts</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>sigma</code> </td><td style="text-align: left;"> numeric vector containing residual standard deviations for each gene</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>df.residual</code> </td><td style="text-align: left;"> numeric vector containing residual degrees of freedom for each gene
+  </td>
+</tr>
+
+</table>
+
+<p>The following additional components may be created by <code>lmFit</code>:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code>Amean</code> </td><td style="text-align: left;"> numeric vector containing the average log-intensity for each probe over all the arrays in the original linear model fit. Note this vector does not change when a contrast is applied to the fit using <code>contrasts.fit</code>.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>genes</code> </td><td style="text-align: left;"> data.frame containing probe annotation.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>design</code> </td><td style="text-align: left;"> design matrix.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>cov.coefficients</code> </td><td style="text-align: left;"> numeric matrix giving the unscaled covariance matrix of the estimable coefficients</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>pivot</code> </td><td style="text-align: left;"> integer vector giving the order of coefficients in <code>cov.coefficients</code>. Is computed by the QR-decomposition of the design matrix.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>qr</code> </td><td style="text-align: left;"> QR-decomposition of the design matrix (if the fit involved no weights or missing values).</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    ... </td><td style="text-align: left;"> other components returned by <code>lm.fit</code> (if the fit involved no weights or missing values).
+  </td>
+</tr>
+
+</table>
+
+<p>The following component may be added by <code>contrasts.fit</code>:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code>contrasts</code> </td><td style="text-align: left;"> numeric matrix defining contrasts of coefficients for which results are desired.
+  </td>
+</tr>
+
+</table>
+
+<p>The following components may be added by <code>eBayes</code>:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code>s2.prior</code> </td><td style="text-align: left;"> numeric value giving empirical Bayes estimated prior value for residual variances</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>df.prior</code> </td><td style="text-align: left;"> numeric vector giving empirical Bayes estimated degrees of freedom associated with <code>s2.prior</code> for each gene</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>df.total</code> </td><td style="text-align: left;"> numeric vector giving total degrees of freedom used for each gene, usually equal to <code>df.prior + df.residual</code>.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>s2.post</code> </td><td style="text-align: left;"> numeric vector giving posterior residual variances</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>var.prior</code> </td><td style="text-align: left;"> numeric vector giving empirical Bayes estimated prior variance for each true coefficient</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>F</code> </td><td style="text-align: left;"> numeric vector giving moderated F-statistics for testing all contrasts equal to zero</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>F.p.value</code> </td><td style="text-align: left;"> numeric vector giving p-value corresponding to <code>F.stat</code></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>t</code> </td><td style="text-align: left;"> numeric matrix containing empirical Bayes t-statistics</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Methods</h3>
+
+<p><code>MArrayLM</code> objects will return dimensions and hence functions such as <code><a href="dim.html">dim</a></code>, <code><a href="../../base/html/nrow.html">nrow</a></code> and <code><a href="../../base/html/nrow.html">ncol</a></code> are defined. 
+<code>MArrayLM</code> objects inherit a <code>show</code> method from the virtual class <code>LargeDataObject</code>.
+</p>
+<p>The functions <code><a href="ebayes.html">eBayes</a></code>, <code><a href="decideTests.html">decideTests</a></code> and <code><a href="classifytestsF.html">classifyTestsF</a></code> accept <code>MArrayLM</code> objects as arguments.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="02classes.html">02.Classes</a> gives an overview of all the classes defined by this package.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

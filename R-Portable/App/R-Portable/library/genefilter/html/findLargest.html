@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find the Entrez Gene ID corresponding to the largest...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for findLargest {genefilter}"><tr><td>findLargest {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find the Entrez Gene ID corresponding to the largest statistic</h2>
+
+<h3>Description</h3>
+
+<p>Most microarrays have multiple probes per gene (Entrez). This function
+finds all replicates, and then selects the one with the largest value
+of the test statistic.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+findLargest(gN, testStat, data = "hgu133plus2")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gN</code></td>
+<td>
+<p>A vector of probe identifiers for the chip.</p>
+</td></tr>
+<tr valign="top"><td><code>testStat</code></td>
+<td>
+<p>A vector of test statistics, of the same length as
+<code>gN</code> with the per probe test statistics.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>The character string identifying the chip.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All the probe identifiers, <code>gN</code>, are mapped to Entrez Gene IDs
+and the duplicates determined.  For any set of probes that map to the
+same Gene ID, the one with the largest test statistic is found. The
+return vector is the named vector of selected probe identifiers. The
+names are the Entrez Gene IDs.
+</p>
+<p>This could be extended in different ways, such as allowing the user to
+use a different selection criterion.  Also, matching on different
+identifiers seems like another alternative.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A named vector of probe IDs. The names are Entrez Gene IDs.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/lapply.html">sapply</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  library("hgu95av2.db")
+  set.seed(124)
+  gN &lt;- sample(ls(hgu95av2ENTREZID), 200)
+  stats &lt;- rnorm(200)
+  findLargest(gN, stats, "hgu95av2")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

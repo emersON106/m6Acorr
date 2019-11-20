@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Two Sample Wilcoxon-Mann-Whitney Rank Sum Test Allowing For...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rankSumTestWithCorrelation {limma}"><tr><td>rankSumTestWithCorrelation {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Two Sample Wilcoxon-Mann-Whitney Rank Sum Test Allowing For Correlation</h2>
+
+<h3>Description</h3>
+
+<p>A extension of the well-known rank-based test, but allowing for correlations between cases.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rankSumTestWithCorrelation(index, statistics, correlation=0, df=Inf)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>any index vector such that <code>statistics[index]</code> contains the values of the statistic for the test group.</p>
+</td></tr>
+<tr valign="top"><td><code>statistics</code></td>
+<td>
+<p>numeric vector giving values of the test statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>numeric scalar, average correlation between cases in the test group.  Cases in the second group are assumed independent of each other and other the first group.</p>
+</td></tr> 
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom which the correlation has been estimated.</p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements a correlation-adjusted version of the Wilcoxon-Mann-Whitney test proposed by Wu and Smyth (2012).
+It tests whether the mean rank of statistics in the test group is greater or less than the mean rank of the remaining statistic values.
+</p>
+<p>When the correlation (or variance inflation factor) is zero, the function performs the usual two-sample Wilcoxon-Mann-Whitney rank sum test.
+The Wilcoxon-Mann-Whitney test is implemented following the formulas given in Zar (1999) Section 8.10, including corrections for ties and for continuity.
+</p>
+<p>The test allows for the possibility that cases in the test group may be more highly correlated on average than cases not in the group.
+When the correlation is non-zero, the variance of the rank-sum statistic is computing using a formula derived from equation (4.5) of Barry et al (2008).
+When the correlation is positive, the variance is increased and test will become more conservative.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector of length 2 containing the <code>left.tail</code> and <code>right.tail</code> p-values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Di Wu</p>
+
+
+<h3>References</h3>
+
+<p>Barry, W.T., Nobel, A.B., and Wright, F.A. (2008).
+A statistical framework for testing functional categories in microarray data.
+<em>Annals of Applied Statistics</em> 2, 286-315.
+</p>
+<p>Wu, D, and Smyth, GK (2012). Camera: a competitive gene set test accounting for inter-gene correlation.
+<em>Nucleic Acids Research</em> 40, e133.
+<a href="http://nar.oxfordjournals.org/content/40/17/e133">http://nar.oxfordjournals.org/content/40/17/e133</a>
+</p>
+<p>Zar, JH (1999). <em>Biostatistical Analysis 4th Edition</em>.
+Prentice-Hall International, Upper Saddle River, New Jersey.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/wilcox.test.html">wilcox.test</a></code> performs the usual Wilcoxon-Mann-Whitney test assuming independence.
+</p>
+<p>An overview of tests in limma is given in <a href="08Tests.html">08.Tests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+stat &lt;- rnorm(100)
+index &lt;- 1:10
+stat[index] &lt;- stat[1:10]+1
+
+rankSumTestWithCorrelation(index, stat)
+rankSumTestWithCorrelation(index, stat, correlation=0.1)
+
+group &lt;- rep(1,100)
+group[index] &lt;- 2
+group &lt;- factor(group)
+wilcox.test(stat ~ group)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

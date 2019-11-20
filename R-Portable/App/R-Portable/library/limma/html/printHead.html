@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print Leading Rows of Large Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for printHead {limma}"><tr><td>printHead {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print Leading Rows of Large Objects</h2>
+
+<h3>Description</h3>
+
+<p>Print the leading rows of a large vector, matrix or data.frame.
+This function is used by <code>show</code> methods for data classes defined in LIMMA.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+printHead(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>any object</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>x</code> is a vector with more than 20 elements, then <code>printHead(x)</code> prints only the first 5 elements.
+If <code>x</code> is a matrix or data.frame with more than 10 rows, then <code>printHead(x)</code> prints only the first 5 rows.
+Any other type of object is printed normally.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of classes defined in LIMMA is given in <a href="02classes.html">02.Classes</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

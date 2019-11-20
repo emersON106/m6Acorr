@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Enable serial evaluation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for SerialParam-class {BiocParallel}"><tr><td>SerialParam-class {BiocParallel}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Enable serial evaluation</h2>
+
+<h3>Description</h3>
+
+<p>This class is used to parameterize serial evaluation, primarily to
+facilitate easy transition from parallel to serial code.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+SerialParam(stop.on.error = TRUE, log = FALSE,
+    threshold = "INFO", logdir = NA_character_, progressbar = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>stop.on.error</code></td>
+<td>
+<p>A <code>logical</code> determining behavior on error;
+see <code><a href="SnowParam-class.html">SnowParam</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+
+<p><code>logical(1)</code> Enable logging; see <code><a href="SnowParam-class.html">SnowParam</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>threshold</code></td>
+<td>
+
+<p><code>character(1)</code> Logging threshold; see <code><a href="SnowParam-class.html">SnowParam</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>logdir</code></td>
+<td>
+
+<p><code>character(1)</code> Log files directory. When not provided, log
+messages are returned to stdout.
+</p>
+</td></tr>
+<tr valign="top"><td><code>progressbar</code></td>
+<td>
+
+<p><code>logical(1)</code> Enable progress bar (based on plyr:::progress_text).
+</p>
+</td></tr>
+</table>
+
+
+<h3>Constructor</h3>
+
+
+<dl>
+<dt></dt><dd>
+<p><code>SerialParam()</code>:
+</p>
+<p>Return an object to be used for serial evaluation of otherwise
+parallel functions such as <code><a href="bplapply.html">bplapply</a></code>,
+<code><a href="bpvec.html">bpvec</a></code>.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Methods</h3>
+
+<p>The following generics are implemented and perform as documented on
+the corresponding help page (e.g., <code>?bpworkers</code>):
+<code><a href="BiocParallelParam-class.html">bpworkers</a></code>. <code><a href="BiocParallelParam-class.html">bpisup</a></code>, <code><a href="BiocParallelParam-class.html">bpstart</a></code>,
+<code><a href="BiocParallelParam-class.html">bpstop</a></code>, are implemented, but do not have any
+side-effects.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Martin Morgan <a href="mailto:mtmorgan@fhcrc.org">mailto:mtmorgan@fhcrc.org</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code>getClass("BiocParallelParam")</code> for additional parameter classes.
+</p>
+<p><code>register</code> for registering parameter classes for use in parallel
+evaluation.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p &lt;- SerialParam()
+simplify2array(bplapply(1:10, sqrt, BPPARAM=p))
+bpvec(1:10, sqrt, BPPARAM=p)
+
+## Not run: 
+register(SerialParam(), default=TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BiocParallel</em> version 1.18.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Student's t or Fisher's F Quantile-Quantile Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for qqt {limma}"><tr><td>qqt {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Student's t or Fisher's F Quantile-Quantile Plot</h2>
+
+<h3>Description</h3>
+
+<p>Plots the quantiles of a data sample against the theoretical quantiles of a Student's t distribution.</p>
+
+
+<h3>Usage</h3>
+
+<pre>qqt(y, df = Inf, ylim = range(y), main = "Student's t Q-Q Plot", 
+    xlab = "Theoretical Quantiles", ylab = "Sample Quantiles", plot.it = TRUE, ...) 
+qqf(y, df1, df2, ylim=range(y), main= "F Distribution Q-Q Plot",
+    xlab = "Theoretical Quantiles", ylab = "Sample Quantiles", plot.it = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a numeric vector or array containing the data sample</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom for the t-distribution.  The default <code>df=Inf</code> represents the normal distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>df1</code></td>
+<td>
+<p>numerator degrees of freedom for the F-distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>df2</code></td>
+<td>
+<p>denominator degrees of freedom for the F-distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>plotting range for <code>y</code></p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main title for the plot</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-axis title for the plot</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>y-axis title for the plot</p>
+</td></tr>
+<tr valign="top"><td><code>plot.it</code></td>
+<td>
+<p>whether or not to produce a plot</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments to be passed to <code>plot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is analogous to <code>qqnorm</code> for normal probability plots.
+In fact <code>qqt(y,df=Inf)</code> is identical to <code>qqnorm(y)</code> in all respects except the default title on the plot.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list is invisibly returned containing the values plotted in the QQ-plot:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>theoretical quantiles of the t-distribution or F-distribution</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>the data sample, same as input <code>y</code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/qqnorm.html">qqnorm</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  See also the lmFit examples
+
+y &lt;- rt(50,df=4)
+qqt(y,df=4)
+abline(0,1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

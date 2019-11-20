@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function for computing quality surrogate variables (qSVs)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for qsva {sva}"><tr><td>qsva {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function for computing quality surrogate variables (qSVs)</h2>
+
+<h3>Description</h3>
+
+<p>This function computes quality surrogate variables (qSVs)
+from the library-size- and read-length-normalized 
+degradation matrix for subsequent RNA quality correction
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+qsva(degradationMatrix, mod = matrix(1, ncol = 1, nrow =
+  ncol(degradationMatrix)))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>degradationMatrix</code></td>
+<td>
+<p>the normalized degradation matrix, region by sample</p>
+</td></tr>
+<tr valign="top"><td><code>mod</code></td>
+<td>
+<p>(Optional) statistical model used in DE analysis</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>the qSV adjustment variables
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Find files
+bwPath &lt;- system.file('extdata', 'bwtool', package = 'sva')
+
+## Read the data
+degCovAdj = read.degradation.matrix(
+ covFiles = list.files(bwPath,full.names=TRUE),
+ sampleNames = list.files(bwPath), readLength = 76, 
+ totalMapped = rep(100e6,5),type="bwtool")
+
+## Input data
+ head(degCovAdj)
+
+## Results
+qsva(degCovAdj)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

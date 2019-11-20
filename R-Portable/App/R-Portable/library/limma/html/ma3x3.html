@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Two dimensional Moving Averages with 3x3 Window</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ma3x3 {limma}"><tr><td>ma3x3 {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Two dimensional Moving Averages with 3x3 Window</h2>
+
+<h3>Description</h3>
+
+<p>Apply a specified function to each to each value of a matrix and its immediate neighbors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ma3x3.matrix(x,FUN=mean,na.rm=TRUE,...)
+ma3x3.spottedarray(x,printer,FUN=mean,na.rm=TRUE,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric matrix</p>
+</td></tr>
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>function to apply to each window of values</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>logical value, should missing values be removed when applying <code>FUN</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>FUN</code></p>
+</td></tr>
+<tr valign="top"><td><code>printer</code></td>
+<td>
+<p>list giving the printer layout, see <code><a href="PrintLayout.html">PrintLayout-class</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <code>ma3x3.matrix</code>, <code>x</code> is an arbitrary function.
+for <code>ma3x3.spotted</code>, each column of <code>x</code> is assumed to contain the expression values of a spotted array in standard order.
+The printer layout information is used to re-arrange the values of each column as a spatial matrix before applying <code>ma3x3.matrix</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric matrix of same dimension as <code>x</code> containing smoothed values
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of functions for background correction are given in <code><a href="04Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- matrix(c(2,5,3,1,6,3,10,12,4,6,4,8,2,1,9,0),4,4)
+ma3x3.matrix(x,FUN="mean")
+ma3x3.matrix(x,FUN="min")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

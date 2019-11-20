@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Table of Top GO Terms or Top KEGG Pathways</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for topGO {limma}"><tr><td>topGO {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Table of Top GO Terms or Top KEGG Pathways</h2>
+
+<h3>Description</h3>
+
+<p>Extract top GO terms from goana output or top KEGG pathways from kegga output.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+topGO(results, ontology = c("BP", "CC", "MF"), sort = NULL, number = 20L, 
+      truncate.term = NULL)
+topKEGG(results, sort = NULL, number = 20L, truncate.path = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>results</code></td>
+<td>
+<p>data frame produced by <code><a href="goana.html">goana</a></code> or <code><a href="goana.html">kegga</a></code>.</p>
+</td></tr> 
+<tr valign="top"><td><code>ontology</code></td>
+<td>
+<p>character vector of ontologies to be included in output.  Elements should be one or more of <code>"BP"</code>, <code>"CC"</code> or <code>"MF"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>character vector of names of gene lists for which results are required.  Should be one or more of the column names of <code>results</code>.  Defaults to all gene lists.</p>
+</td></tr>
+<tr valign="top"><td><code>number</code></td>
+<td>
+<p>maximum number of top GO terms or top KEGG pathways to list. For all terms or all pathways, set <code>number=Inf</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>truncate.term</code></td>
+<td>
+<p>truncate the name of the GO term at this number of characters.</p>
+</td></tr>
+<tr valign="top"><td><code>truncate.path</code></td>
+<td>
+<p>truncate the name of the KEGG pathway at this number of characters.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>topGO</code> organizes the output from <code><a href="goana.html">goana</a></code> into top-tables of the most significant GO terms.
+<code>topKEGG</code> similarly extracts the most significant KEGG pathways from <code><a href="goana.html">kegga</a></code> output. 
+In either case, rows are sorted by the minimum p-value of any of the result columns specified by <code>sort</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Same as <code>results</code> but with rows subsetted by Ontology and sorted by p-value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="goana.html">goana</a></code>, <code><a href="goana.html">kegga</a></code>
+</p>
+<p>See <a href="10GeneSetTests.html">10.GeneSetTests</a> for a description of other functions used for gene set testing.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See goana examples
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

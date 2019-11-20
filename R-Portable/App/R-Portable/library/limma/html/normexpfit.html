@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fit Normal+Exp Convolution Model to Observed Intensities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normexp.fit {limma}"><tr><td>normexp.fit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fit Normal+Exp Convolution Model to Observed Intensities</h2>
+
+<h3>Description</h3>
+
+<p>Fit the normal+exponential convolution model to a vector of observed intensities.
+The normal part represents the background and the exponential part represents the signal intensities.
+This function is called by <code>backgroundCorrect</code> and is not normally called directly by users.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normexp.fit(x, method="saddle", n.pts=NULL, trace=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector of (background corrected) intensities</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>method used to estimate the three parameters. Choices for <code>normexp.fit</code> are <code>"mle"</code>, <code>"saddle"</code>, <code>"rma"</code> and <code>"rma75"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>n.pts</code></td>
+<td>
+<p>number of quantiles of <code>x</code> to use for the fit. If <code>NULL</code> then all values of <code>x</code> will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical, if <code>TRUE</code>, tracing information on the progress of the optimization is given.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Normal+Exp (normexp) convolution model is a mathematical model representing microarray intensity data for the purposes of background correction.
+It was proposed originally as part of the RMA algorithm for Affymetrix microarray data.
+For two-color microarry data, the normexp background correction method was introduced and compared with other methods by Ritchie et al (2007).
+</p>
+<p>This function uses maximum likelihood estimation to fit the normexp model to background-corrected intensities.
+The model assumes that the observed intensities are the sum of background and signal components,
+the background being normal and the signal being exponential distributed.
+</p>
+<p>The likelihood may be computed exactly (<code>method="mle"</code>) or approximated using a saddle-point approximation (<code>method="saddle"</code>).
+The saddle-point approximation was proposed by Ritchie et al (2007).
+Silver et al (2008) added some computational refinements to the saddle-point approximation, making it more reliable in practice, and developed the exact likelihood maximization algorithm.
+The <code>"mle"</code> method uses the best performing algorithm from Silver et al (2008), which
+calls the optimization function <code><a href="../../stats/html/nlminb.html">nlminb</a></code> with analytic first and second derivatives.
+Derivatives are computed with respect to the normal-mean, the log-normal-variance and the log-exponential-mean.
+</p>
+<p>Two ad-hoc estimators are also available which do not require iterative estimation.
+<code>"rma"</code> results in a call to the <code>bg.parameters</code> function of the affy package.
+This provides the kernel estimation method that is part of the RMA algorithm for Affymetrix data.
+<code>"rma75"</code> uses the similar but less biased RMA-75 method from McGee and Chen (2006).
+</p>
+<p>If the length <code>x</code> is very large, it may be worth saving computation time by setting <code>n.pts</code> to a value less than the total number of probes, for example <code>n.pts=2^14</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list containing the components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>par</code></td>
+<td>
+<p>numeric vector giving estimated values of the mean and log-standard-deviation of the background-normal part and the log-mean of the signal-exponential part.</p>
+</td></tr>
+<tr valign="top"><td><code>m2loglik</code></td>
+<td>
+<p>numeric scalar giving minus twice the maximized log-likelihood</p>
+</td></tr>
+<tr valign="top"><td><code>convergence</code></td>
+<td>
+<p>integer code indicating successful convergence or otherwise of the optimization.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Jeremy Silver</p>
+
+
+<h3>References</h3>
+
+<p>McGee, M., and Chen, Z. (2006).
+Parameter estimation for the exponential-normal convolution model for background correction of Affymetrix GeneChip data.
+<em>Stat Appl Genet Mol Biol</em>, 5(1), Article 24.
+</p>
+<p>Ritchie, M. E., Silver, J., Oshlack, A., Silver, J., Holmes, M., Diyagama, D., Holloway, A., and Smyth, G. K. (2007).
+A comparison of background correction methods for two-colour microarrays.
+<em>Bioinformatics</em> 23, 2700-2707.
+<a href="http://bioinformatics.oxfordjournals.org/content/23/20/2700">http://bioinformatics.oxfordjournals.org/content/23/20/2700</a>
+</p>
+<p>Silver, JD, Ritchie, ME, and Smyth, GK (2009).
+Microarray background correction: maximum likelihood estimation for the normal-exponential convolution.
+<em>Biostatistics</em> 10, 352-363.
+<a href="http://biostatistics.oxfordjournals.org/content/10/2/352">http://biostatistics.oxfordjournals.org/content/10/2/352</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="normexpsignal.html">normexp.signal</a></code>, <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code>.
+Also <code><a href="../../affy/html/bg.adjust.html">bg.parameters</a> in the affy package.
+</code>
+</p>
+<p>An overview of background correction functions is given in <code><a href="04Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(2,3,1,10,3,20,5,6)
+out &lt;- normexp.fit(x)
+normexp.signal(out$par, x=x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

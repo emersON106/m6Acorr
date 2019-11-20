@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transform non-normal random deviates to standard normal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for zscore {limma}"><tr><td>zscore {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transform non-normal random deviates to standard normal</h2>
+
+<h3>Description</h3>
+
+<p>Compute z-score equivalents of non-normal random deviates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+zscore(q, distribution, ...)
+zscoreGamma(q, shape, rate = 1, scale = 1/rate) 
+zscoreHyper(q, m, n, k) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>q</code></td>
+<td>
+<p>numeric vector or matrix giving deviates of a random variable</p>
+</td></tr>
+<tr valign="top"><td><code>distribution</code></td>
+<td>
+<p>character name of probabability distribution for which a cumulative distribution function exists</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments specify distributional parameters and are passed to the cumulative distribution function</p>
+</td></tr>
+<tr valign="top"><td><code>shape</code></td>
+<td>
+<p>gamma shape parameter (&gt;0)</p>
+</td></tr>
+<tr valign="top"><td><code>rate</code></td>
+<td>
+<p>gamma rate parameter (&gt;0)</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>gamma scale parameter (&gt;0)</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>as for <code><a href="../../stats/html/Hypergeometric.html">qhyper</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>as for <code><a href="../../stats/html/Hypergeometric.html">qhyper</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>k</code></td>
+<td>
+<p>as for <code><a href="../../stats/html/Hypergeometric.html">qhyper</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions compute the standard normal deviates which have the same quantiles as the given values in the specified distribution.
+For example, if <code>z &lt;- zscoreGamma(x, shape, rate)</code> then <code>pnorm(z)</code> equals <code>pgamma(x, shape, rate)</code>.
+</p>
+<p><code>zscore</code> works for any distribution for which a cumulative distribution function (like <code>pnorm</code>) exists in R.
+The argument <code>distribution</code> is the name of the cumulative distribution function with the <code>"p"</code> removed.
+</p>
+<p><code>zscoreGamma</code> and <code>zscoreHyper</code> are specific functions for the gamma and hypergeometric distributions respectively.
+</p>
+<p>The transformation to z-scores is done by converting to log tail probabilities, and then using <code>qnorm</code>.
+For numerical accuracy, the left or right tail is used, depending on which is likely to be smaller.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector or matrix of equivalent deviates from the standard normal distribution.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="zscoreT.html">zscoreT</a></code>.
+</p>
+<p><code>zscoreNBinom</code> in the edgeR package.
+</p>
+<p><code><a href="../../stats/html/Normal.html">qnorm</a></code> in the stats package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# These are all equivalent
+zscore(c(1,2.5), dist="gamma", shape=0.5, scale=2)
+zscore(c(1,2.5), dist="chisq", df=1)
+zscoreGamma(c(1,2.5), shape=0.5, scale=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

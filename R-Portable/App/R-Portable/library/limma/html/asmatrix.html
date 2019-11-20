@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Turn a Microarray Data Object into a Matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.matrix {limma}"><tr><td>as.matrix {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Turn a Microarray Data Object into a Matrix</h2>
+
+<h3>Description</h3>
+
+<p>Turn a microarray data object into a numeric matrix by extracting the expression values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'MAList'
+as.matrix(x,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>RGList</code>, <code>MAList</code>, <code>EList</code>, <code>MArrayLM</code>, <code>marrayNorm</code>, <code>PLMset</code>, <code>ExpressionSet</code>, <code>LumiBatch</code> or <code>vsn</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments, not used for these methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These methods extract the matrix of log-ratios, for <code>MAList</code> or <code>marrayNorm</code> objects, or the matrix of expression values for other expression objects such as <code>EList</code> or <code>ExressionSet</code>.
+For <code>MArrayLM</code> objects, the matrix of fitted coefficients is extracted.
+</p>
+<p>These methods involve loss of information, so the original data object is not recoverable.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/matrix.html">as.matrix</a></code> in the base package or <code><a href="../../Biobase/html/exprs.html">exprs</a></code> in the Biobase package.
+</p>
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

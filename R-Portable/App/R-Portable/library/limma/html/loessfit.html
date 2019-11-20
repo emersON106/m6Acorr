@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Univariate Lowess With Prior Weights</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for loessFit {limma}"><tr><td>loessFit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Univariate Lowess With Prior Weights</h2>
+
+<h3>Description</h3>
+
+<p>Univariate locally weighted linear regression allowing for prior weights.
+Returns fitted values and residuals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+loessFit(y, x, weights=NULL, span=0.3, iterations=4L, min.weight=1e-5, max.weight=1e5,
+         equal.weights.as.null=TRUE, method="weightedLowess")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric vector of response values.  Missing values are allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector of predictor values  Missing values are allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric vector of non-negative prior weights.  Missing values are treated as zero.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>positive numeric value between 0 and 1 specifying proportion of data to be used in the local regression moving window.
+Larger numbers give smoother fits.</p>
+</td></tr>
+<tr valign="top"><td><code>iterations</code></td>
+<td>
+<p>number of local regression fits. Values greater than 1 produce robust fits.</p>
+</td></tr>
+<tr valign="top"><td><code>min.weight</code></td>
+<td>
+<p>minimum weight. Any lower weights will be reset.</p>
+</td></tr>
+<tr valign="top"><td><code>max.weight</code></td>
+<td>
+<p>maximum weight. Any higher weights will be reset.</p>
+</td></tr>
+<tr valign="top"><td><code>equal.weights.as.null</code></td>
+<td>
+<p>should equal weights be treated as if weights were <code>NULL</code>, so that <code>lowess</code> is called? Applies even if all weights are all zero.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>method used for weighted lowess.  Possibilities are <code>"weightedLowess"</code>, <code>"loess"</code> or <code>"locfit"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is essentially a wrapper function for <code>lowess</code> and <code>weightedLowess</code> with added error checking.
+The idea is to provide the classic univariate lowess algorithm of Cleveland (1979) but allowing for prior weights and missing values.
+</p>
+<p>The venerable <code>lowess</code> code is fast, uses little memory and has an accurate interpolation scheme, so it is an advantage to use it when prior weights are not needed.
+This functions calls <code>lowess</code> when <code>weights=NULL</code>, but returns values in original rather than sorted order and allows missing values.
+The treatment of missing values is analogous to <code>na.exclude</code>.
+</p>
+<p>By default, <code>weights</code> that are all equal (even all zero) are treated as if they were <code>NULL</code>, so <code>lowess</code> is called in this case also.
+</p>
+<p>When unequal <code>weights</code> are provided, this function calls <code>weightedLowess</code> by default, although two other possibilities are also provided.
+<code>weightedLowess</code> implements a similar algorithm to <code>lowess</code> except that it uses the prior weights both in the local regressions and in determining which other observations to include in the local neighbourhood of each observation.
+</p>
+<p>Two alternative algorithms for weighted lowess curve fitting are provided as options.
+If <code>method="loess"</code>, then a call is made to <code>loess(y~x,weights=weights,span=span,degree=1,family="symmetric",...)</code>.
+This method differs from <code>weightedLowess</code> in that the prior weights are ignored when determining the neighbourhood of each observation.
+</p>
+<p>If <code>method="locfit"</code>, then repeated calls are made to <code>locfit:::locfit.raw</code> with <code>deg=1</code>.
+In principle, this is similar to <code>"loess"</code>, but <code>"locfit"</code> makes some approximations and is very much faster and uses much less memory than <code>"loess"</code> for long data vectors.
+</p>
+<p>The arguments <code>span</code> and <code>iterations</code> here have the same meaning as for <code>weightedLowess</code> and <code>loess</code>.
+<code>span</code> is equivalent to the argument <code>f</code> of <code>lowess</code> while <code>iterations</code> is equivalent to <code>iter+1</code> for <code>lowess</code>.
+It gives the total number of fits rather than the number of robustifying fits.
+</p>
+<p>When there are insufficient observations to estimate the loess curve, <code>loessFit</code> returns a linear regression fit.
+This mimics the behavior of <code>lowess</code> but not that of <code>loess</code> or <code>locfit.raw</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>fitted</code></td>
+<td>
+<p>numeric vector of same length as <code>y</code> giving the loess fit</p>
+</td></tr>
+<tr valign="top"><td><code>residuals</code></td>
+<td>
+<p>numeric vector of same length as <code>x</code> giving residuals from the fit</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>With unequal weights, <code>"loess"</code> was the default method prior to limma version 3.17.25.
+The default was changed to <code>"locfit"</code> in limma 3.17.25, and then to <code>"weightedLowess"</code> in limma 3.19.16.
+<code>"weightedLowess"</code> will potentially give somewhat different results to the older algorithms because the local neighbourhood of each observation is determined differently (more carefully).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Cleveland, W. S. (1979).
+Robust locally weighted regression and smoothing scatterplots.
+<em>Journal of the American Statistical Association</em> 74, 829-836.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>If <code>weights=NULL</code>, this function calls <code><a href="../../stats/html/lowess.html">lowess</a></code>.
+Otherwise it calls <code><a href="weightedLowess.html">weightedLowess</a></code>, <code><a href="../../locfit/html/locfit.raw.html">locfit.raw</a></code> or <code><a href="../../stats/html/loess.html">loess</a></code>.
+See the help pages of those functions for references and credits.
+</p>
+<p>Compare with <code><a href="../../stats/html/loess.html">loess</a></code> in the stats package.
+</p>
+<p>See <a href="05Normalization.html">05.Normalization</a> for an outline of the limma package normalization functions.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- (1:100)/101
+y &lt;- sin(2*pi*x)+rnorm(100,sd=0.4)
+out &lt;- loessFit(y,x)
+plot(x,y)
+lines(x,out$fitted,col="red")
+
+# Example using weights
+
+y &lt;- x-0.5
+w &lt;- rep(c(0,1),50)
+y[w==0] &lt;- rnorm(50,sd=0.1)
+pch &lt;- ifelse(w&gt;0,16,1)
+plot(x,y,pch=pch)
+out &lt;- loessFit(y,x,weights=w)
+lines(x,out$fitted,col="red")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

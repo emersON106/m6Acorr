@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sigma vs A plot for microarray linear model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotSA {limma}"><tr><td>plotSA {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sigma vs A plot for microarray linear model</h2>
+
+<h3>Description</h3>
+
+<p>Plot residual standard deviation versus average log expression for a fitted microarray linear model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotSA(fit, xlab = "Average log-expression", ylab = "sqrt(sigma)", zero.weights = FALSE,
+       pch = 16, cex = 0.3, col = c("black","red"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>label for x-axis</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>label for y-axis</p>
+</td></tr>
+<tr valign="top"><td><code>zero.weights</code></td>
+<td>
+<p>logical, should genes with all zero weights be plotted?</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>vector of codes for plotting characters.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>numeric, vector of expansion factors for plotting characters.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>plotting colors for regular and outlier variances respectively.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>plot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This plot is used to check the mean-variance relationship of the expression data, after fitting a linear model.
+A scatterplot of residual-variances vs average log-expression is created.
+The plot is especially useful for examining the mean-variance trend estimated by <code><a href="ebayes.html">eBayes</a></code> or <code><a href="ebayes.html">treat</a></code> with <code>trend=TRUE</code>.
+It can be considered as a routine diagnostic plot in the limma-trend pipeline.
+</p>
+<p>If robust empirical Bayes was used to create <code>fit</code>, then outlier variances are highlighted in the color given by <code>col[2]</code>.
+</p>
+<p>The y-axis is square-root <code>fit$sigma</code>, where <code>sigma</code> is the estimated residual standard deviation.
+The y-axis therefore corresponds to quarter-root variances.
+The y-axis was changed from log2-variance to quarter-root variance in limma version 3.31.21.
+The quarter-root scale matches the similar plot produced by the <code>voom</code> function and gives a better plot when some of the variances are close to zero.
+</p>
+<p>See <code><a href="../../graphics/html/points.html">points</a></code> for possible values for <code>pch</code> and <code>cex</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ebayes.html">eBayes</a></code>
+</p>
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

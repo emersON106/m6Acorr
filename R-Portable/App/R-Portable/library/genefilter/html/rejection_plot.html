@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot rejections vs. p-value cutoff</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rejection_plot {genefilter}"><tr><td>rejection_plot {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Plot rejections vs. p-value cutoff
+</h2>
+
+<h3>Description</h3>
+
+<p>Plot the number, or fraction, of null hypotheses rejected as a
+function of the p-value cutoff. Multiple sets of p-values are
+accepted, in a list or in the columns of a matrix, in order to permit
+comparisons. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rejection_plot(p,
+               col, lty = 1, lwd = 1,   
+               xlab = "p cutoff", ylab = "number of rejections",
+               xlim = c(0, 1), ylim,
+               legend = names(p),
+               at = c("all", "sample"),
+               n_at = 100,
+               probability = FALSE,
+               ...
+               )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>p</code></td>
+<td>
+
+<p>The p-values to be used for plotting. These may be in the columns of
+a matrix, or in the elements of a list. One curve will be generated
+for each column/element, and all <code>NA</code> entries will be
+dropped. If column or element names are supplied, they are used by
+default for a plot legend.
+</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+
+<p>Colors to be used for each curve plotted. Recycled if necessary. If
+<code>col</code> is omitted, <code><a href="../../grDevices/html/palettes.html">rainbow</a></code> is used to generate a
+set of colors.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lty</code></td>
+<td>
+
+<p>Line styles to be used for each curve plotted. Recycled if necessary.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lwd</code></td>
+<td>
+
+<p>Line widths to be used for each curve plotted. Recycled if necessary.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+
+<p>X-axis text label.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+
+<p>Y-axis text label.
+</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+
+<p>X-axis limits.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+
+<p>Y-axis limits.
+</p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+
+<p>Text for legend. Matrix column names or list element names (see
+<code>p</code> above) are used by default. If <code>NULL</code>, no legend is
+plotted.
+</p>
+</td></tr>
+<tr valign="top"><td><code>at</code></td>
+<td>
+
+<p>Should step functions be plotted with a step at every value in
+<code>p</code>, or should linear interpolation be used at a sample of
+points spanning <code>xlim</code>? The latter looks when there are many
+p-values.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n_at</code></td>
+<td>
+
+<p>When <code>at = "sample"</code> is given, how many sample points should be
+used for interpolation and plotting?
+</p>
+</td></tr>
+<tr valign="top"><td><code>probability</code></td>
+<td>
+
+<p>Should the fraction of null hypotheses rejected be reported instead
+of the count? See the <code>probability</code> argument to
+<code><a href="../../graphics/html/hist.html">hist</a></code>. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Other arguments to pass to the <code><a href="../../graphics/html/plot.html">plot</a></code> call which sets up
+the axes. Note that the <code>...</code> argument will not be passed to
+the <code><a href="../../graphics/html/lines.html">lines</a></code> calls which actually generate the curves.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of the step functions used for plotting is returned invisibly.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Richard Bourgon &lt;bourgon@ebi.ac.uk&gt;</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See the vignette: Diagnostic plots for independent filtering
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

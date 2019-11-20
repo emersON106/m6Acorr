@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Heatmap of gene expression values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for coolmap {limma}"><tr><td>coolmap {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Heatmap of gene expression values</h2>
+
+<h3>Description</h3>
+
+<p>Create a heatmap of a matrix of log-expression values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+coolmap(x, cluster.by="de pattern", col=NULL,
+        linkage.row="complete", linkage.col="complete", show.dendrogram="both", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>any data object that can be coerced to a matrix of log-expression values, for example an <code>ExpressionSet</code> or <code>EList</code>. Rows represent genes and columns represent RNA samples.</p>
+</td></tr>
+<tr valign="top"><td><code>cluster.by</code></td>
+<td>
+<p>choices are <code>"de pattern"</code> or <code>"expression level"</code>.
+In the former case, the intention is to cluster by relative changes in expression, so genes are clustered by Pearson correlation and log-expression values are mean-corrected by rows for the plot.
+In the latter case, the intention is to cluster by absolute expression, so genes are clustered by Euclidean and log-expression values are not mean-corrected.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>character vector specifying the color panel.
+Can be either the name of the panel or a vector of R colors that can be passed directly to the <code>heatmap.2</code> function.
+Possible panel names are <code>"redblue"</code>, <code>"redgreen"</code>, <code>"yellowblue"</code> or <code>"whitered"</code>.
+Defaults to <code>"redblue"</code> if <code>cluster.by="de pattern"</code> or <code>"yellowblue"</code> if <code>cluster.by="expression level"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>linkage.row</code></td>
+<td>
+<p>linkage criterion used to cluster the rows.
+Choices are <code>"none"</code>, <code>"ward"</code>, <code>"ward.D"</code>, <code>"ward.D2"</code>, <code>"single"</code>, <code>"complete"</code>, <code>"average"</code>, <code>"mcquitty"</code>, <code>"median"</code> or <code>"centroid"</code>, with <code>"ward"</code> treated as <code>"ward.D2"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>linkage.col</code></td>
+<td>
+<p>linkage criterion used to cluster the columns.
+Choices are the same as for <code>linkage.row</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>show.dendrogram</code></td>
+<td>
+<p>choices are <code>"row"</code>, <code>"column"</code>, <code>"both"</code> or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>heatmap.2</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function calls the <code>heatmap.2</code> function in the ggplots package with sensible argument settings for genomic log-expression data.
+The default settings for <code>heatmap.2</code> are often not ideal for expression data, and overriding the defaults requires explicit calls to <code>hclust</code> and <code>as.dendrogram</code> as well as prior standardization of the data values.
+The <code>coolmap</code> function implements our preferred defaults for the two most common types of heatmaps.
+When clustering by relative expression (<code>cluster.by="de pattern"</code>), it implements a row standardization that takes account of <code>NA</code> values and standard deviations that might be zero.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.
+A list is also invisibly returned, see <code><a href="../../gplots/html/heatmap.2.html">heatmap.2</a></code> for details.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gplots/html/heatmap.2.html">heatmap.2</a></code>, <code><a href="../../stats/html/hclust.html">hclust</a></code>, <code><a href="../../stats/html/dist.html">dist</a></code>.
+</p>
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Simulate gene expression data for 50 genes and 6 microarrays.
+# Samples are in two groups
+# First 50 probes are differentially expressed in second group
+ngenes &lt;- 50
+sd &lt;- 0.3*sqrt(4/rchisq(ngenes,df=4))
+x &lt;- matrix(rnorm(ngenes*6,sd=sd),ngenes,6)
+rownames(x) &lt;- paste("Gene",1:ngenes)
+x &lt;- x + seq(from=0, to=16, length=ngenes)
+x[,4:6] &lt;- x[,4:6] + 2
+coolmap(x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

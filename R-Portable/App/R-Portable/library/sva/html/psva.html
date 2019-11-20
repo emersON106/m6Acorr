@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function for estimating surrogate variables with the two...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for psva {sva}"><tr><td>psva {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function for estimating surrogate variables with the two step approach of Leek and Storey 2007</h2>
+
+<h3>Description</h3>
+
+<p>This function is the implementation of the two step approach for estimating surrogate
+variables proposed by Leek and Storey 2007 PLoS Genetics. This function is primarily
+included for backwards compatibility. Newer versions of the sva algorithm are available
+through <code><a href="sva.html">sva</a></code>, <code><a href="svaseq.html">svaseq</a></code>, with low level functionality available
+through <code><a href="irwsva.build.html">irwsva.build</a></code> and <code><a href="ssva.html">ssva</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+psva(dat, batch, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dat</code></td>
+<td>
+<p>The transformed data matrix with the variables in rows and samples in columns</p>
+</td></tr>
+<tr valign="top"><td><code>batch</code></td>
+<td>
+<p>A factor variable giving the known batch levels</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments to the <code><a href="sva.html">sva</a></code> function.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>psva.D Data with batch effect removed but biological heterogeneity preserved
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Elana J. Fertig
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+
+
+library(bladderbatch)
+library(limma)
+data(bladderdata)
+dat &lt;- bladderEset[1:50,]
+
+pheno = pData(dat)
+edata = exprs(dat)
+batch = pheno$batch
+batch.fac = as.factor(batch)
+
+psva_data &lt;- psva(edata,batch.fac)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

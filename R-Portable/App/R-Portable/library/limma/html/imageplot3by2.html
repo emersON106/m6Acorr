@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write Imageplots to Files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for imageplot3by2 {limma}"><tr><td>imageplot3by2 {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write Imageplots to Files</h2>
+
+<h3>Description</h3>
+
+<p>Write imageplots to files in PNG format, six plots to a file in a 3 by 2 grid arrangement.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+imageplot3by2(RG, z="Gb", prefix=paste("image",z,sep="-"), path=NULL,
+              zlim=NULL, common.lim=TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>RG</code></td>
+<td>
+<p>an <code>RGList</code> or <code>MAList</code> object, or any list with component named by <code>z</code></p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>character string giving name of component of <code>RG</code> to plot</p>
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+<p>character string giving prefix to attach to file names</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character string specifying directory for output files</p>
+</td></tr>
+<tr valign="top"><td><code>zlim</code></td>
+<td>
+<p>numeric vector of length 2, giving limits of response vector to be associated with saturated colors</p>
+</td></tr>
+<tr valign="top"><td><code>common.lim</code></td>
+<td>
+<p>logical, should all plots on a page use the same axis limits</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>imageplot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>At the time of writing, this function writes plots in PNG format in an arrangement optimized for A4-sized paper.
+</p>
+
+
+<h3>Value</h3>
+
+<p>No value is returned, but one or more files are written to the working directory.
+The number of files is determined by the number of columns of <code>RG</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

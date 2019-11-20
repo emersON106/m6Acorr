@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Differential splicing plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotSplice {limma}"><tr><td>plotSplice {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Differential splicing plot</h2>
+
+<h3>Description</h3>
+
+<p>Plot relative log-fold changes by exons for the specified gene and highlight the significantly spliced exons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotSplice(fit, coef=ncol(fit), geneid=NULL, genecolname=NULL, rank=1L, FDR = 0.05)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p><code>MArrayLM</code> fit object produced by <code>diffSplice</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>the coefficient (column) of fit for which differentially splicing is assessed.</p>
+</td></tr>
+<tr valign="top"><td><code>geneid</code></td>
+<td>
+<p>character string, ID of the gene to plot.</p>
+</td></tr>
+<tr valign="top"><td><code>genecolname</code></td>
+<td>
+<p>column name of <code>fit$genes</code> containing gene IDs. Defaults to <code>fit$genecolname</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rank</code></td>
+<td>
+<p>integer, if <code>geneid=NULL</code> then this ranked gene will be plotted.</p>
+</td></tr>
+<tr valign="top"><td><code>FDR</code></td>
+<td>
+<p>numeric, highlight exons as red dots with false discovery rate less than this cutoff. The FDR of the individual exon is calculated based on the exon-level t-statistics test for differences between each exon and all other exons for the same gene.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Plot relative log2-fold-changes by exon for the specified gene.
+The relative logFC is the difference between the exon's logFC and the overall logFC for the gene, as computed by <code>diffSplice</code>.
+The significantly spliced individual exons are highlighted as red dots. The size of the red dots are weighted by its significance.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="diffSplice.html">diffSplice</a></code>, <code><a href="topSplice.html">topSplice</a></code>
+</p>
+<p>A summary of functions available in LIMMA for RNA-seq analysis is given in <a href="11RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre># See diffSplice</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

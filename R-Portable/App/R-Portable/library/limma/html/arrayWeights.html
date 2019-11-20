@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Array Quality Weights</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for arrayWeights {limma}"><tr><td>arrayWeights {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Array Quality Weights</h2>
+
+<h3>Description</h3>
+
+<p>Estimate relative quality weights for each array or group in a multi-array
+experiment.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+arrayWeights(object, design = NULL, weights = NULL,
+     var.design = NULL, var.group = NULL, prior.n = 10,
+     method = "auto", maxiter = 50, tol = 1e-5, trace = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>any matrix-like object containing log-expression values or log-ratio expression values, for example an <code>EList</code> or <code>ExpressionSet</code> object.
+See <code>help("getEAWP")</code> for a list of possible classes.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>the design matrix of the microarray experiment, with rows
+corresponding to arrays and columns to coefficients to be
+estimated.  Defaults to the unit vector meaning that the
+arrays are treated as replicates.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix containing prior weights for each expresson value.</p>
+</td></tr>
+<tr valign="top"><td><code>var.design</code></td>
+<td>
+<p>design matrix for the variance model. Defaults to the sample-specific model 
+whereby each sample has a distinct variance.</p>
+</td></tr>
+<tr valign="top"><td><code>var.group</code></td>
+<td>
+<p>vector or factor indicating groups to have different array weights. This is another way to specify <code>var.design</code> for groupwise variance models.</p>
+</td></tr>
+<tr valign="top"><td><code>prior.n</code></td>
+<td>
+<p>prior number of genes. Larger values squeeze the array weights more strongly towards equality.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying the estimating algorithm to be used. Choices
+are <code>"genebygene"</code>, <code>"reml"</code> or <code>"auto"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>maxiter</code></td>
+<td>
+<p>maximum number of iterations allowed when <code>method="reml"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>convergence tolerance when <code>method="reml"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical. If <code>TRUE</code> then progress information is printed
+at each iteration of the <code>"reml"</code> algorithm or at every 1000th gene for the 
+<code>"genebygene"</code> algorithm.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The relative reliability of each array is estimated by measuring how
+well the expression values for that array follow the linear model.
+Arrays that tend to have larger residuals are assigned lower weights.
+</p>
+<p>The basic method is described by Ritchie et al (2006) and the extension to custom variance models by Liu et al (2015).
+A weighted linear model is fitted to the expression values for 
+each gene.
+The variance model is fitted to the squared residuals from the linear model fit and is updated either by full REML 
+scoring iterations (<code>method="reml"</code>) or using an efficient gene-by-gene update algorithm (<code>method="genebygene"</code>).
+The final estimates of these array variances are converted to weights.
+The gene-by-gene algorithm is described by Ritchie et al (2006) while the REML algorithm is an adaption of the algorithm of Smyth (2002).
+</p>
+<p>For stability, the array weights are squeezed slightly towards equality.
+This is done by adding a prior likelihood corresponding to unit array weights equivalent to <code>prior.n</code> genes.
+The gene-by-gene algorithm is started from the prior genes while the REML algorithm adds the prior to the log-likelihood derivatives.
+</p>
+<p>By default, <code>arrayWeights</code> chooses between the REML and gene-by-gene algorithms automatically (<code>method="auto"</code>).
+REML is chosen if there are no prior weights or missing values and otherwise the gene-by-gene algorithm is used.
+</p>
+<p>The input <code>object</code> is interpreted as for <code>lmFit</code> and <code>getEAWP</code>.
+In particular, the arguments <code>design</code> and <code>weights</code> will be extracted from the data 
+<code>object</code> if available and do not normally need to be set explicitly in 
+the call; if any of these are set in the call then they will over-ride 
+the slots or components in the data <code>object</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric vector of array weights, which multiply to 1.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthew Ritchie and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Liu, R., Holik, A. Z., Su, S., Jansz, N., Chen, K., Leong, H. S., Blewitt, M. E., Asselin-Labat, M.-L., Smyth, G. K., Ritchie, M. E. (2015).
+Why weight? Combining voom with estimates of sample quality improves power in RNA-seq analyses.
+<em>Nucleic Acids Research</em> 43, e97.
+<a href="http://nar.oxfordjournals.org/content/43/15/e97">http://nar.oxfordjournals.org/content/43/15/e97</a>
+</p>
+<p>Ritchie, M. E., Diyagama, D., Neilson, van Laar, R., J., Dobrovic, A., Holloway, A., and Smyth, G. K. (2006).
+Empirical array quality weights in the analysis of microarray data.
+<em>BMC Bioinformatics</em> <b>7</b>, 261.
+<a href="http://www.biomedcentral.com/1471-2105/7/261">http://www.biomedcentral.com/1471-2105/7/261</a>
+</p>
+<p>Smyth, G. K. (2002).
+An efficient algorithm for REML in heteroscedastic regression.
+<em>Journal of Computational and Graphical Statistics</em> <b>11</b>, 836-847.
+<a href="http://www.statsci.org/smyth/pubs/remlalgo.pdf">http://www.statsci.org/smyth/pubs/remlalgo.pdf</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="arrayWeightsQuick.html">arrayWeightsQuick</a></code>, <code><a href="voomWithQualityWeights.html">voomWithQualityWeights</a></code>
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ngenes &lt;- 1000
+narrays &lt;- 6
+y &lt;- matrix(rnorm(ngenes*narrays), ngenes, narrays)
+var.group &lt;- c(1,1,1,2,2,2)
+y[,var.group==1] &lt;- 2*y[,var.group==1]
+arrayWeights(y, var.group=var.group)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

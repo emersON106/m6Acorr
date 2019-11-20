@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normalize Between Arrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeBetweenArrays {limma}"><tr><td>normalizeBetweenArrays {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Normalize Between Arrays</h2>
+
+<h3>Description</h3>
+
+<p>Normalizes expression intensities so that the intensities or log-ratios have similar distributions across a set of arrays.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeBetweenArrays(object, method=NULL, targets=NULL, cyclic.method="fast", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a numeric <code>matrix</code>, <code><a href="EList.html">EListRaw</a></code>, <code><a href="rglist.html">RGList</a></code> or <code><a href="malist.html">MAList</a></code> object containing un-normalized expression data.
+If a matrix, then it is assumed to contain log-transformed single-channel data.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying the normalization method to be used.
+Choices for single-channel data are <code>"none"</code>, <code>"scale"</code>, <code>"quantile"</code> or <code>"cyclicloess"</code>.
+Choices for two-color data are those previously mentioned plus <code>"Aquantile"</code>, <code>"Gquantile"</code>, <code>"Rquantile"</code> or <code>"Tquantile"</code>.
+A partial string sufficient to uniquely identify the choice is permitted.
+The default is <code>"Aquantile"</code> for two-color data objects or <code>"quantile"</code> for single-channel objects.</p>
+</td></tr>
+<tr valign="top"><td><code>targets</code></td>
+<td>
+<p>vector, factor or matrix of length twice the number of arrays, used to indicate target groups if <code>method="Tquantile"</code></p>
+</td></tr>
+<tr valign="top"><td><code>cyclic.method</code></td>
+<td>
+<p>character string indicating the variant of <code>normalizeCyclicLoess</code> to be used if <code>method=="cyclicloess"</code>, see <code><a href="normalizeCyclicLoess.html">normalizeCyclicLoess</a></code> for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>normalizeQuantiles</code> or <code>normalizeCyclicLoess</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>normalizeBetweenArrays</code> normalizes expression values to achieve consistency between arrays.
+For two-color arrays, normalization between arrays is usually a follow-up step after normalization within arrays using <code>normalizeWithinArrays</code>.
+For single-channel arrays, within array normalization is not usually relevant and so <code>normalizeBetweenArrays</code> is the sole normalization step.
+</p>
+<p>For single-channel data, the scale, quantile or cyclic loess normalization methods can be applied to the columns of data.
+Trying to apply other normalization methods when <code>object</code> is a <code>matrix</code> or <code>EListRaw</code> object will produce an error.
+If <code>object</code> is an <code>EListRaw</code> object, then normalization will be applied to the matrix <code>object$E</code> of expression values, which will then be log2-transformed.
+Scale (<code>method="scale"</code>) scales the columns to have the same median.
+Quantile and cyclic loess normalization was originally proposed by Bolstad et al (2003) for Affymetrix-style single-channel arrays.
+Quantile normalization forces the entire empirical distribution of each column to be identical.
+Cyclic loess normalization applies loess normalization to all possible pairs of arrays, usually cycling through all pairs several times.
+Cyclic loess is slower than quantile, but allows probe-wise weights and is more robust to unbalanced differential expression.
+</p>
+<p>The other normalization methods are for two-color arrays.
+Scale normalization was proposed by Yang et al (2001, 2002) and is further explained by Smyth and Speed (2003).
+The idea is simply to scale the log-ratios to have the same median-absolute-deviation (MAD) across arrays.
+This idea has also been implemented by the <code>maNormScale</code> function in the marray package.
+The implementation here is slightly different in that the MAD scale estimator is replaced with the median-absolute-value and the A-values are normalized as well as the M-values.
+</p>
+<p>Quantile normalization was explored by Yang and Thorne (2003) for two-color cDNA arrays.
+<code>method="quantile"</code> ensures that the intensities have the same empirical distribution across arrays and across channels.
+<code>method="Aquantile"</code> ensures that the A-values (average intensities) have the same empirical distribution across arrays leaving the M-values (log-ratios) unchanged.
+These two methods are called &quot;q&quot; and &quot;Aq&quot; respectively in Yang and Thorne (2003).
+</p>
+<p><code>method="Tquantile"</code> performs quantile normalization separately for the groups indicated by <code>targets</code>.
+<code>targets</code> may be a target frame such as read by <code>readTargets</code> or can be a vector indicating green channel groups followed by red channel groups.
+</p>
+<p><code>method="Gquantile"</code> ensures that the green (first) channel has the same empirical distribution across arrays, leaving the M-values (log-ratios) unchanged.
+This method might be used when the green channel is a common reference throughout the experiment.
+In such a case the green channel represents the same target throughout, so it makes compelling sense to force the distribution of intensities to be same for the green channel on all the arrays, and to adjust to the red channel accordingly.
+<code>method="Rquantile"</code> ensures that the red (second) channel has the same empirical distribution across arrays, leaving the M-values (log-ratios) unchanged.
+Both <code>Gquantile</code> and <code>Rquantile</code> normalization have the implicit effect of changing the red and green log-intensities by equal amounts.
+</p>
+<p>See the limma User's Guide for more examples of use of this function.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>object</code> is a matrix then <code>normalizeBetweenArrays</code> produces a matrix of the same size.
+If <code>object</code> is an <code>EListRaw</code> object, then an <code>EList</code> object with expression values on the log2 scale is produced.
+For two-color data, <code>normalizeBetweenArrays</code> produces an <code><a href="malist.html">MAList</a></code> object with M and A-values on the log2 scale.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Bolstad, B. M., Irizarry R. A., Astrand, M., and Speed, T. P. (2003), A comparison of normalization methods for high density oligonucleotide array data based on bias and variance. <em>Bioinformatics</em> <b>19</b>, 185-193.
+</p>
+<p>Smyth, G. K., and Speed, T. P. (2003). Normalization of cDNA microarray data. <em>Methods</em> <b>31</b>, 265-273. 
+</p>
+<p>Yang, Y. H., Dudoit, S., Luu, P., and Speed, T. P. (2001). Normalization for cDNA microarray data. In <em>Microarrays: Optical Technologies and Informatics</em>, M. L. Bittner, Y. Chen, A. N. Dorsel, and E. R. Dougherty (eds), Proceedings of SPIE, Volume 4266, pp. 141-152. 
+</p>
+<p>Yang, Y. H., Dudoit, S., Luu, P., Lin, D. M., Peng, V., Ngai, J., and Speed, T. P. (2002). Normalization for cDNA microarray data: a robust composite method addressing single and multiple slide systematic variation. <em>Nucleic Acids Research</em> <b>30</b>(4):e15.
+</p>
+<p>Yang, Y. H., and Thorne, N. P. (2003). Normalization for two-color cDNA microarray data.
+In: D. R. Goldstein (ed.), <em>Science and Statistics: A Festschrift for Terry Speed</em>, IMS Lecture Notes - Monograph Series, Volume 40, pp. 403-418.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+<p>The <code><a href="nec.html">neqc</a></code> function provides a variation of quantile normalization that is customized for Illumina BeadChips.
+This method uses control probes to refine the background correction and normalization steps.
+</p>
+<p>Note that vsn normalization, previously offered as a method of this function, is now performed by the <code><a href="normalizeVSN.html">normalizeVSN</a></code> function.
+</p>
+<p>See also <code>maNormScale</code> in the marray package and
+<code><a href="../../affy/html/normalize-methods.html">normalize-methods</a></code> in the affy package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ngenes &lt;- 100
+narrays &lt;- 4
+x &lt;- matrix(rnorm(ngenes*narrays),100,4)
+y &lt;- normalizeBetweenArrays(x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

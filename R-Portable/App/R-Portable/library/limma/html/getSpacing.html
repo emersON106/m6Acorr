@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Numerical Spacing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getSpacing {limma}"><tr><td>getSpacing {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get Numerical Spacing</h2>
+
+<h3>Description</h3>
+
+<p>Convert character to numerical spacing measure for within-array replicate spots.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getSpacing(spacing, layout)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>character string or integer.
+Acceptable character strings are <code>"columns"</code>, <code>"rows"</code>, <code>"subarrays"</code> or <code>"topbottom"</code>.
+Integer values are simply passed through.</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>list containing printer layout information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>"rows"</code> means that duplicate spots are printed side-by-side by rows.
+These will be recorded in consecutive rows in the data object.
+</p>
+<p><code>"columns"</code> means that duplicate spots are printed side-by-sidy by columns.
+These will be separated in the data object by <code>layout$nspot.r</code> rows.
+</p>
+<p><code>"subarrays"</code> means that a number of sub-arrays, with identical probes in the same arrangement, are printed on each array.
+The spacing therefore will be the size of a sub-array.
+</p>
+<p><code>"topbottom"</code> is the same as <code>"subarrays"</code> when there are two sub-arrays.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Integer giving spacing between replicate spots in the gene list.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+getSpacing("columns",list(ngrid.r=2,ngrid.c=2,nspot.r=20,nspot.c=19))
+getSpacing("rows",list(ngrid.r=2,ngrid.c=2,nspot.r=20,nspot.c=19))
+getSpacing("topbottom",list(ngrid.r=2,ngrid.c=2,nspot.r=20,nspot.c=19))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

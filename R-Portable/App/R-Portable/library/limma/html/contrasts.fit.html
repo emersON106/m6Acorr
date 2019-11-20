@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute Contrasts from Linear Model Fit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for contrasts.fit {limma}"><tr><td>contrasts.fit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compute Contrasts from Linear Model Fit</h2>
+
+<h3>Description</h3>
+
+<p>Given a linear model fit to microarray data, compute estimated coefficients and standard errors for a given set of contrasts.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+contrasts.fit(fit, contrasts=NULL, coefficients=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>an <code><a href="marraylm.html">MArrayLM</a></code> object or a list object produced by the function <code>lm.series</code> or equivalent. Must contain components <code>coefficients</code> and <code>stdev.unscaled</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>contrasts</code></td>
+<td>
+<p>numeric matrix with rows corresponding to coefficients in <code>fit</code> and columns containing contrasts. May be a vector if there is only one contrast.</p>
+</td></tr>
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>vector indicating which coefficients are to be kept in the revised fit object. An alternative way to specify the <code>contrasts</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function accepts input from any of the functions <code><a href="lmFit.html">lmFit</a></code>, <code>lm.series</code>, <code>mrlm</code>, <code>gls.series</code> or <code>lmscFit</code>.
+The function re-orientates the fitted model object from the coefficients of the original design matrix to any set of contrasts of the original coefficients.
+The coefficients, unscaled standard deviations and correlation matrix are re-calculated in terms of the contrasts.
+</p>
+<p>The idea of this function is to fit a full-rank model using <code>lmFit</code> or equivalent, then use <code>contrasts.fit</code> to obtain coefficients and standard errors for any number of contrasts of the coefficients of the original model.
+Unlike the design matrix input to <code>lmFit</code>, which normally has one column for each treatment in the experiment, the matrix <code>contrasts</code> may have any number of columns and these are not required to be linearly independent.
+Methods of assessing differential expression, such as <code>eBayes</code> or <code>classifyTestsF</code>, can then be applied to fitted model object.
+</p>
+<p>The <code>coefficients</code> argument provides a simpler way to specify the <code>contrasts</code> matrix when the desired contrasts are just a subset of the original coefficients.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An list object of the same class as <code>fit</code>, usually <code><a href="marraylm.html">MArrayLM</a></code>. This is a list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>numeric matrix containing the estimated coefficients for each contrast for each probe.</p>
+</td></tr>
+<tr valign="top"><td><code>stdev.unscaled</code></td>
+<td>
+<p>numeric matrix conformal with <code>coef</code> containing the unscaled standard deviations for the coefficient estimators.</p>
+</td></tr>
+<tr valign="top"><td><code><code>cov.coefficients</code></code></td>
+<td>
+<p>numeric <code>matrix</code> giving the unscaled covariance matrix of the estimable coefficients.</p>
+</td></tr>
+</table>
+<p>Most other components found in <code>fit</code> are passed through unchanged, but <code>t</code>, <code>p.value</code>, <code>lods</code>, <code>F</code> and <code>F.p.value</code> will all be removed.
+</p>
+
+
+<h3>Note</h3>
+
+<p>For efficiency reasons, this function does not re-factorize the design matrix for each probe.
+A consequence is that, if the design matrix is non-orthogonal and the original fit included precision weights or missing values, then the unscaled standard deviations produced by this function are approximate rather than exact.
+The approximation is usually acceptable.
+If not, then the issue can be avoided by redefining the design matrix to fit the contrasts directly.
+</p>
+<p>Even with precision weights, the results from <code>contrasts.fit</code> are always exact if the coefficients being compared are statistically independent.
+This will always be true, for example, if the original fit was a oneway model and the group-means (no-intercept) parametrization was used for the design matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Simulate gene expression data: 6 microarrays and 100 genes
+#  with one gene differentially expressed in first 3 arrays
+M &lt;- matrix(rnorm(100*6,sd=0.3),100,6)
+M[1,1:3] &lt;- M[1,1:3] + 2
+#  Design matrix corresponds to oneway layout, columns are orthogonal
+design &lt;- cbind(First3Arrays=c(1,1,1,0,0,0),Last3Arrays=c(0,0,0,1,1,1))
+fit &lt;- lmFit(M,design=design)
+#  Would like to consider original two estimates plus difference between first 3 and last 3 arrays
+contrast.matrix &lt;- cbind(First3=c(1,0),Last3=c(0,1),"Last3-First3"=c(-1,1))
+fit2 &lt;- contrasts.fit(fit,contrast.matrix)
+fit2 &lt;- eBayes(fit2)
+#  Large values of eb$t indicate differential expression
+results &lt;- decideTests(fit2, method="nestedF")
+vennCounts(results)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

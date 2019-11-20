@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function for reading in coverage data from...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for read.degradation.matrix {sva}"><tr><td>read.degradation.matrix {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function for reading in coverage data from degradation-susceptible regions</h2>
+
+<h3>Description</h3>
+
+<p>This function reads in degradation regions to form 
+a library-size- and read-length-normalized 
+degradation matrix for subsequent RNA quality correction
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.degradation.matrix(covFiles, sampleNames, totalMapped, readLength = 100,
+  normFactor = 8e+07, type = c("bwtool", "region_matrix_single",
+  "region_matrix_all"), BPPARAM = bpparam())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>covFiles</code></td>
+<td>
+<p>coverage file(s) for degradation regions</p>
+</td></tr>
+<tr valign="top"><td><code>sampleNames</code></td>
+<td>
+<p>sample names; creates column names of degradation matrix</p>
+</td></tr>
+<tr valign="top"><td><code>totalMapped</code></td>
+<td>
+<p>how many reads per sample (library size normalization)</p>
+</td></tr>
+<tr valign="top"><td><code>readLength</code></td>
+<td>
+<p>read length in base pairs (read length normalization)</p>
+</td></tr>
+<tr valign="top"><td><code>normFactor</code></td>
+<td>
+<p>common library size to normalize to; 80M reads as default</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>whether input are individual 'bwtool' output, 'region_matrix' run on individual samples, or 'region_matrix' run on all samples together</p>
+</td></tr>
+<tr valign="top"><td><code>BPPARAM</code></td>
+<td>
+<p>(Optional) BiocParallelParam for parallel operation</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>the normalized degradation matrix, region by sample
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# bwtool
+bwPath = system.file('extdata', 'bwtool', package = 'sva')
+degCovAdj = read.degradation.matrix(
+ covFiles = list.files(bwPath,full.names=TRUE),
+ sampleNames = list.files(bwPath), readLength = 76, 
+ totalMapped = rep(100e6,5),type="bwtool")
+ head(degCovAdj)
+ 
+# region_matrix: each sample
+r1Path = system.file('extdata', 'region_matrix_one', package = 'sva')
+degCovAdj1 = read.degradation.matrix(
+ covFiles = list.files(r1Path,full.names=TRUE),
+ sampleNames = list.files(r1Path), readLength = 76, 
+ totalMapped = rep(100e6,5),type="region_matrix_single")
+ head(degCovAdj1)
+ 
+r2Path = system.file('extdata', 'region_matrix_all', package = 'sva')
+degCovAdj2 = read.degradation.matrix(
+ covFiles = list.files(r2Path,full.names=TRUE),
+ sampleNames = list.files(r1Path), readLength = 76, 
+ totalMapped = rep(100e6,5),type="region_matrix_all")
+head(degCovAdj2)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function to adjust gene expression data before network...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sva_network {sva}"><tr><td>sva_network {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function to adjust gene expression data before network inference</h2>
+
+<h3>Description</h3>
+
+<p>This function corrects a gene expression matrix prior to network inference by
+returning the residuals after regressing out the top principal components. 
+The number of principal components to remove can be determined using a 
+permutation-based approach using the &quot;num.sv&quot; function with method = &quot;be&quot;
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sva_network(dat, n.pc)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dat</code></td>
+<td>
+<p>The raw gene expression data matrix (with variables in rows and samples in columns)</p>
+</td></tr>
+<tr valign="top"><td><code>n.pc</code></td>
+<td>
+<p>The number of principal components to remove</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>dat.adjusted Cleaned gene expression data matrix with the top prinicpal components removed
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(bladderbatch)
+data(bladderdata)
+dat &lt;- bladderEset[1:5000,]
+
+pheno = pData(dat)
+edata = exprs(dat)
+mod = model.matrix(~as.factor(cancer), data=pheno)
+
+n.pc = num.sv(edata, mod, method="be")
+dat.adjusted = sva_network(edata, n.pc)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

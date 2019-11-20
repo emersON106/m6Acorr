@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mode estimation for continuous data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for half.range.mode {genefilter}"><tr><td>half.range.mode {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mode estimation for continuous data</h2>
+
+<h3>Description</h3>
+
+<p>For data assumed to be drawn from a unimodal, continuous distribution,
+the mode is estimated by the &ldquo;half-range&rdquo; method. Bootstrap resampling
+for variance reduction may optionally be used.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+half.range.mode(data, B, B.sample, beta = 0.5, diag = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A numeric vector of data from which to estimate the mode.</p>
+</td></tr>
+<tr valign="top"><td><code>B</code></td>
+<td>
+
+<p>Optionally, the number of bootstrap resampling rounds to use. Note
+that <code>B = 1</code> resamples 1 time, whereas omitting <code>B</code>
+uses <code>data</code> as is, without resampling.
+</p>
+</td></tr>
+<tr valign="top"><td><code>B.sample</code></td>
+<td>
+
+<p>If bootstrap resampling is requested, the size of the bootstrap
+samples drawn from <code>data</code>. Default is to use a sample which is
+the same size as <code>data</code>. For large data sets, this may be slow
+and unnecessary.
+</p>
+</td></tr>
+<tr valign="top"><td><code>beta</code></td>
+<td>
+
+<p>The fraction of the remaining range to use at each iteration.
+</p>
+</td></tr>
+<tr valign="top"><td><code>diag</code></td>
+<td>
+
+<p>Print extensive diagnostics. For internal testing only... best left
+<code>FALSE</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Briefly, the mode estimator is computed by iteratively identifying
+densest half ranges. (Other fractions of the current range can be
+requested by setting <code>beta</code> to something other than 0.5.) A densest half
+range is an interval whose width equals half the current range, and
+which contains the maximal number of observations. The subset of
+observations falling in the selected densest half range is then used to compute
+a new range, and the procedure is iterated. See the references for
+details.
+</p>
+<p>If bootstrapping is requested, <code>B</code> half-range mode estimates are
+computed for <code>B</code> bootstrap samples, and their average is returned
+as the final estimate.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The mode estimate.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Richard Bourgon &lt;bourgon@stat.berkeley.edu&gt;</p>
+
+
+<h3>References</h3>
+
+
+<ul>
+<li><p> DR Bickel, &ldquo;Robust estimators of the mode and skewness of
+continuous data.&rdquo; <em>Computational Statistics &amp; Data Analysis</em>
+39:153-163 (2002).
+</p>
+</li>
+<li><p> SB Hedges and P Shah, &ldquo;Comparison of
+mode estimation methods and application in molecular clock analysis.&rdquo; <em>BMC
+Bioinformatics</em> 4:31-41 (2003).
+</p>
+</li></ul>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="shorth.html">shorth</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## A single normal-mixture data set
+
+x &lt;- c( rnorm(10000), rnorm(2000, mean = 3) )
+M &lt;- half.range.mode( x )
+M.bs &lt;- half.range.mode( x, B = 100 )
+
+if(interactive()){
+hist( x, breaks = 40 )
+abline( v = c( M, M.bs ), col = "red", lty = 1:2 )
+legend(
+       1.5, par("usr")[4],
+       c( "Half-range mode", "With bootstrapping (B = 100)" ),
+       lwd = 1, lty = 1:2, cex = .8, col = "red"
+       )
+}
+
+# Sampling distribution, with and without bootstrapping
+
+X &lt;- rbind(
+           matrix( rnorm(1000 * 100), ncol = 100 ),
+           matrix( rnorm(200 * 100, mean = 3), ncol = 100 )
+           )
+M.list &lt;- list(
+               Simple = apply( X, 2, half.range.mode ),
+               BS = apply( X, 2, half.range.mode, B = 100 )
+               )
+
+if(interactive()){
+boxplot( M.list, main = "Effect of bootstrapping" )
+abline( h = 0, col = "red" )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

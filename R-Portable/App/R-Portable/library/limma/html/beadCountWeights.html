@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bead Count Weights for Illumina BeadChips</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for beadCountWeights {limma}"><tr><td>beadCountWeights {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bead Count Weights for Illumina BeadChips</h2>
+
+<h3>Description</h3>
+
+<p>Estimates weights which account for biological variation and technical variation resulting from varying bead numbers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+beadCountWeights(y, x, design = NULL, bead.stdev = NULL, bead.stderr = NULL,
+                 nbeads = NULL, array.cv = TRUE, scale = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>an <code>"EList"</code> object or a numeric matrix containing normalized log2-expression values.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an <code>"EListRaw"</code> object or a numeric matrix of raw expression values, with same dimensions as <code>y</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>the design matrix of the microarray experiment, with rows
+corresponding to arrays and columns to coefficients to be
+estimated.  Defaults to <code>y$design</code> or, if that is <code>NULL</code>, then to a column of ones meaning that the
+arrays are treated as replicates.</p>
+</td></tr>
+<tr valign="top"><td><code>bead.stdev</code></td>
+<td>
+<p>numeric matrix of bead-level standard deviations.</p>
+</td></tr>
+<tr valign="top"><td><code>bead.stderr</code></td>
+<td>
+<p>numeric matrix of bead-level standard errors. Not required if <code>bead.stdev</code> is set.</p>
+</td></tr>
+<tr valign="top"><td><code>nbeads</code></td>
+<td>
+<p>numeric matrix containing number of beads.</p>
+</td></tr>
+<tr valign="top"><td><code>array.cv</code></td>
+<td>
+<p>logical, should technical variation for each observation be calculated from a constant or array-specific coefficient of variation?  The default is to use array-specific coefficients of variation.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>logical, should weights be scaled so that the average weight size is the mean of the inverse technical variance along a probe? By default, weights are scaled so that the average weight size along a probe is 1.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function estimates optimum weights using the bead statistics for each probe for an Illumina expression BeadChip.
+It can be used with any Illumina expression BeadChip, but is most likely to be useful with HumanHT-12 BeadChips.
+</p>
+<p>Arguments <code>x</code> and <code>y</code> are both required.
+<code>x</code> contains the raw expression values and <code>y</code> contains the corresponding log2 values for the same probes and the same arrays after background correction and normalization.
+<code>x</code> and <code>y</code> be any type of object that can be coerced to a matrix, with rows corresponding to probes and columns to arrays.
+<code>x</code> and <code>y</code> must contain the same rows and columns in the same order.
+</p>
+<p>The reliability of the normalized expression value for each probe on each array is measured by estimating its technical and biological variability.
+The bead number weights are the inverse sum of the technical and biological variances.
+</p>
+<p>The technical variance for each probe on each array is inversely proportional to the number of beads and is estimated using array-specific bead-level coefficients of variation.
+</p>
+<p>Coefficients of variation are calculated using raw expression values. 
+</p>
+<p>The biological variance for each probe across the arrays are estimated using a Newton iteration, with the assumption that the total residual deviance for each probe from <code>lmFit</code> is inversely proportional to the sum of the technical variance and biological variance. 
+</p>
+<p>Only one of <code>bead.stdev</code> or <code>bead.stderr</code> needs to be set.
+If <code>bead.stdev</code> is not provided, then it will be computed as <code>bead.stderr * sqrt(nbeads)</code>.
+</p>
+<p>If arguments <code>bead.stdev</code> and <code>nbeads</code> are not set explicitly in the call, then they will be extracted from<code>y$other$BEAD_STDEV</code> and <code>y$other$Avg_NBEADS</code>.
+An <code>EList</code> object containing these components can be created by <code>read.idat</code> or <code>read.ilmn</code>, see the example code below.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list object with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of bead number weights</p>
+</td></tr>
+<tr valign="top"><td><code>cv.constant</code></td>
+<td>
+<p>numeric value of constant bead-level coefficient of variation</p>
+</td></tr>
+<tr valign="top"><td><code>cv.array</code></td>
+<td>
+<p>numeric vector of array-specific bead-level coefficient of variation</p>
+</td></tr>
+<tr valign="top"><td><code>var.technical</code></td>
+<td>
+<p>numeric matrix of technical variances</p>
+</td></tr>
+<tr valign="top"><td><code>var.biological</code></td>
+<td>
+<p>numeric vector of biological variances</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Charity Law and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Law, CW (2013).
+<em>Precision weights for gene expression analysis</em>.
+PhD Thesis. University of Melbourne, Australia.
+<a href="http://repository.unimelb.edu.au/10187/17598">http://repository.unimelb.edu.au/10187/17598</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="read.ilmn.html">read.ilmn</a></code>, <code><a href="read.idat.html">read.idat</a></code>, <code><a href="nec.html">neqc</a></code>.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+z &lt;- read.ilmn(files="probesummaryprofile.txt",
+     ctrfiles="controlprobesummary.txt",
+     other.columns=c("BEAD_STDEV","Avg_NBEADS"))
+y &lt;- neqc(z)
+x &lt;- z[z$genes$Status=="regular",]
+bcw &lt;- beadCountWeights(y,x,design)
+fit &lt;- lmFit(y,design,weights=bcw$weights)
+fit &lt;- eBayes(fit)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

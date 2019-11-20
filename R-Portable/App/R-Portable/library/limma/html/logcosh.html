@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Logarithm of cosh</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for logcosh {limma}"><tr><td>logcosh {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Logarithm of cosh</h2>
+
+<h3>Description</h3>
+
+<p>Compute <code>log(cosh(x))</code> without floating overflow or underflow</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+logcosh(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric vector or matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The computation uses asymptotic expressions for very large or very small arguments.
+For intermediate arguments, <code>log(cosh(x))</code> is returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector or matrix of same dimensions as <code>x</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon K Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="logsumexp.html">logsumexp</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(1e-8,1e-7,1e-6,1e-5,1e-4,1,3,50,800)
+logcosh(x)
+log(cosh(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

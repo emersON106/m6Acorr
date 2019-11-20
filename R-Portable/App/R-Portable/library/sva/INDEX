@@ -1,0 +1,36 @@
+ComBat                  Adjust for batch effects using an empirical
+                        Bayes framework
+empirical.controls      A function for estimating the probability that
+                        each gene is an empirical control
+f.pvalue                A function for quickly calculating f statistic
+                        p-values for use in sva
+fstats                  A function for quickly calculating f statistics
+                        for use in sva
+fsva                    A function for performing frozen surrogate
+                        variable analysis as proposed in Parker,
+                        Corrada Bravo and Leek 2013
+irwsva.build            A function for estimating surrogate variables
+                        by estimating empirical control probes
+num.sv                  A function for calculating the number of
+                        surrogate variables to estimate in a model
+psva                    A function for estimating surrogate variables
+                        with the two step approach of Leek and Storey
+                        2007
+qsva                    A function for computing quality surrogate
+                        variables (qSVs)
+read.degradation.matrix
+                        A function for reading in coverage data from
+                        degradation-susceptible regions
+ssva                    A function for estimating surrogate variables
+                        using a supervised approach
+sva                     sva: a package for removing artifacts from
+                        microarray and sequencing data
+sva.check               A function for post-hoc checking of an sva
+                        object to check for degenerate cases.
+sva_network             A function to adjust gene expression data
+                        before network inference
+svaseq                  A function for estimating surrogate variables
+                        for count based RNA-seq data.
+twostepsva.build        A function for estimating surrogate variables
+                        with the two step approach of Leek and Storey
+                        2007

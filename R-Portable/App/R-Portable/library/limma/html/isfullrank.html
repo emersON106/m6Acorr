@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Check for Full Column Rank</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for is.fullrank {limma}"><tr><td>is.fullrank {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check for Full Column Rank</h2>
+
+<h3>Description</h3>
+
+<p>Test whether a numeric matrix has full column rank.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+is.fullrank(x)
+nonEstimable(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric matrix or vector</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>is.fullrank</code> is used to check the integrity of design matrices in limma, for example after <a href="subsetting.html">subsetting</a> operations.
+</p>
+<p><code>nonEstimable</code> is used by <code><a href="lmFit.html">lmFit</a></code> to report which coefficients in a linear model cannot be estimated.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>is.fullrank</code> returns <code>TRUE</code> or <code>FALSE</code>.
+</p>
+<p><code>nonEstimable</code> returns a character vector of names for the columns of <code>x</code> which are linearly dependent on previous columns.
+If <code>x</code> has full column rank, then the value is <code>NULL</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# TRUE
+is.fullrank(1)
+is.fullrank(cbind(1,0:1))
+
+# FALSE
+is.fullrank(0)
+is.fullrank(matrix(1,2,2))
+nonEstimable(matrix(1,2,2))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

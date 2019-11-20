@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Merge RGList or MAList Data Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for merge {limma}"><tr><td>merge {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Merge RGList or MAList Data Objects</h2>
+
+<h3>Description</h3>
+
+<p>Merge two microarray data sets represented by RGLists in possibly irregular order.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'RGList'
+merge(x,y,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>data object of class <code><a href="rglist.html">RGList</a></code>, <code><a href="malist.html">MAList</a></code>, <code><a href="EList.html">EList</a></code> or <code><a href="EList.html">EListRaw</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>data object of same class as <code>x</code>, corresponding to the same genes as for <code>x</code>, possibly in a different order, but with different arrays.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are accepted but not used at present</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>RGList</code>, <code>MAList</code>, <code>EListRaw</code> and <code>EList</code> data objects are lists containing numeric matrices all of the same dimensions.
+The data objects are merged by merging each of the components by row names or, if there are no row names, by IDs in the <code>genes</code> component.
+Unlike when using <code><a href="cbind.html">cbind</a></code>, row names are not required to be in the same order or to be unique.
+In the case of repeated row names, the order of the rows with repeated names in preserved.
+This means that the first occurrence of each name in <code>x</code> is matched with the first occurrence of the same name in <code>y</code>, the second with the second, and so on.
+The final vector of row names is the same as in <code>x</code>.
+</p>
+<p>Note: if the objects contain the same number of genes in the same order then the appropriate function to combine them is <code><a href="cbind.html">cbind</a></code> rather than <code>merge</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An merged object of the same class as <code>x</code> and <code>y</code> with the same components as <code>x</code>.
+Component matrices have the same rows names as in <code>x</code> but columns from <code>y</code> as well as from <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>R base provides a <code><a href="../../base/html/merge.html">merge</a></code> method for merging data.frames.
+</p>
+<p>An overview of limma commands for reading, subsetting and merging data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+M &lt;- A &lt;- matrix(11:14,4,2)
+rownames(M) &lt;- rownames(A) &lt;- c("a","a","b","c")
+MA1 &lt;- new("MAList",list(M=M,A=A))
+
+M &lt;- A &lt;- matrix(21:24,4,2)
+rownames(M) &lt;- rownames(A) &lt;- c("b","a","a","c")
+MA2 &lt;- new("MAList",list(M=M,A=A))
+
+merge(MA1,MA2)
+merge(MA2,MA1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

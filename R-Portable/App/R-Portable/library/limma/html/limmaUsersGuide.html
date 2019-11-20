@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: View Limma User's Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for limmaUsersGuide {limma}"><tr><td>limmaUsersGuide {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>View Limma User's Guide</h2>
+
+<h3>Description</h3>
+
+<p>Finds the location of the Limma User's Guide and optionally opens it.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+limmaUsersGuide(view=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>view</code></td>
+<td>
+<p>logical, should the document be opened using the default PDF document reader?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function <code>vignette("limma")</code> will find the short limma Vignette which describes how to obtain the Limma User's Guide.
+The User's Guide is not itself a true vignette because it is not automatically generated using <code><a href="../../utils/html/Sweave.html">Sweave</a></code> during the package build process.
+This means that it cannot be found using <code>vignette</code>, hence the need for this special function.
+</p>
+<p>If the operating system is other than Windows, then the PDF viewer used is that given by <code>Sys.getenv("R_PDFVIEWER")</code>.
+The PDF viewer can be changed using <code>Sys.putenv(R_PDFVIEWER=)</code>.
+</p>
+<p>This function is used by drop-down Vignettes menu when the Rgui interface for Windows is used.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Character string giving the file location.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/vignette.html">vignette</a></code>, <code><a href="../../Biobase/html/openPDF.html">openPDF</a></code>, <code><a href="../../Biobase/html/openVignette.html">openVignette</a></code>, <code><a href="../../base/html/Sys.getenv.html">Sys.getenv</a></code>, <code><a href="../../base/html/base-defunct.html">Sys.putenv</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+limmaUsersGuide(view=FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

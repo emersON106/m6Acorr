@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Correlation Between Duplicates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dupcor {limma}"><tr><td>dupcor {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Correlation Between Duplicates</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the correlation between duplicate spots (regularly spaced replicate spots on the same array) or between technical replicates from a series of arrays.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+duplicateCorrelation(object, design=NULL, ndups=2, spacing=1, block=NULL,
+                     trim=0.15, weights=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a numeric matrix of expression values, or any data object from which <code>as.matrix</code> will extract a suitable matrix such as an <code><a href="malist.html">MAList</a></code>, <code>marrayNorm</code> or <code>ExpressionSet</code> object.
+If <code>object</code> is an <code>MAList</code> object then the arguments <code>design</code>, <code>ndups</code>, <code>spacing</code> and <code>weights</code> will be extracted from it if available and do not have to be specified as arguments.
+Specifying these arguments explicitly will over-rule any components found in the data object.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>the design matrix of the microarray experiment, with rows corresponding to arrays and columns to comparisons to be estimated. The number of rows must match the number of columns of <code>object</code>. Defaults to the unit vector meaning that the arrays are treated as replicates.</p>
+</td></tr> 
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>a positive integer giving the number of times each gene is printed on an array. <code>nrow(object)</code> must be divisible by <code>ndups</code>.
+Will be ignored if <code>block</code> is specified.</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>the spacing between the rows of <code>object</code> corresponding to duplicate spots, <code>spacing=1</code> for consecutive spots</p>
+</td></tr>
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p>vector or factor specifying a blocking variable</p>
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+<p>the fraction of observations to be trimmed from each end of <code>tanh(all.correlations)</code> when computing the trimmed mean.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>an optional numeric matrix of the same dimension as <code>object</code> containing weights for each spot. If smaller than <code>object</code> then it will be filled out the same size.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code>block=NULL</code>, this function estimates the correlation between duplicate spots (regularly spaced within-array replicate spots).
+If <code>block</code> is not null, this function estimates the correlation between repeated observations on the blocking variable.
+Typically the blocks are biological replicates and the repeated observations are technical replicates.
+In either case, the correlation is estimated by fitting a mixed linear model by REML individually for each gene.
+The function also returns a consensus correlation, which is a robust average of the individual correlations, which can be used as input for 
+functions <code>lmFit</code> or <code>gls.series</code>.
+</p>
+<p>At this time it is not possible to estimate correlations between duplicate spots and between technical replicates simultaneously.
+If <code>block</code> is not null, then the function will set <code>ndups=1</code>, which is equivalent to ignoring duplicate spots.
+</p>
+<p>For this function to return statistically useful results, there must be at least two more arrays than the number of coefficients to be estimated, i.e., two more than the column rank of <code>design</code>.
+</p>
+<p>The function may take long time to execute as it fits a mixed linear model for each gene for an iterative algorithm.
+It is not uncommon for the function to return a small number of warning messages that correlation estimates cannot be computed for some individual genes.
+This is not a serious concern providing that there are only a few such warnings and the total number of genes is large.
+The consensus estimator computed by this function will not be materially affected by a small number of genes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>consensus.correlation</code></td>
+<td>
+<p>the average estimated inter-duplicate correlation. The average is the trimmed mean of the individual correlations on the atanh-transformed scale.</p>
+</td></tr>
+<tr valign="top"><td><code>cor</code></td>
+<td>
+<p>same as <code>consensus.correlation</code>, for compatibility with earlier versions of the software</p>
+</td></tr>
+<tr valign="top"><td><code>atanh.correlations</code></td>
+<td>
+<p>numeric vector of length <code>nrow(object)/ndups</code> giving the individual genewise atanh-transformed correlations.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Smyth, G. K., Michaud, J., and Scott, H. (2005). The use of within-array replicate spots for assessing differential expression in microarray experiments. <em>Bioinformatics</em> 21(9), 2067-2075.
+[<a href="http://bioinformatics.oxfordjournals.org/content/21/9/2067">http://bioinformatics.oxfordjournals.org/content/21/9/2067</a>]
+[Preprint with corrections: <a href="http://www.statsci.org/smyth/pubs/dupcor.pdf">http://www.statsci.org/smyth/pubs/dupcor.pdf</a>]
+</p>
+
+
+<h3>See Also</h3>
+
+<p>These functions use <code><a href="../../statmod/html/mixedmodel.html">mixedModel2Fit</a></code> from the statmod package.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Simulate gene expression data for 100 probes and 6 microarrays
+# Microarray are in two groups
+# First two probes are more highly expressed in second group
+# Std deviations vary between genes with prior df=4
+sd &lt;- 0.3*sqrt(4/rchisq(100,df=4))
+y &lt;- matrix(rnorm(100*6,sd=sd),100,6)
+rownames(y) &lt;- paste("Gene",1:100)
+y[1:2,4:6] &lt;- y[1:2,4:6] + 2
+design &lt;- cbind(Grp1=1,Grp2vs1=c(0,0,0,1,1,1))
+options(digits=3)
+
+# Fit with correlated arrays
+# Suppose each pair of arrays is a block
+block &lt;- c(1,1,2,2,3,3)
+dupcor &lt;- duplicateCorrelation(y,design,block=block)
+dupcor$consensus.correlation
+fit1 &lt;- lmFit(y,design,block=block,correlation=dupcor$consensus)
+fit1 &lt;- eBayes(fit1)
+topTable(fit1,coef=2)
+
+# Fit with duplicate probes
+# Suppose two side-by-side duplicates of each gene
+rownames(y) &lt;- paste("Gene",rep(1:50,each=2))
+dupcor &lt;- duplicateCorrelation(y,design,ndups=2)
+dupcor$consensus.correlation
+fit2 &lt;- lmFit(y,design,ndups=2,correlation=dupcor$consensus)
+dim(fit2)
+fit2 &lt;- eBayes(fit2)
+topTable(fit2,coef=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

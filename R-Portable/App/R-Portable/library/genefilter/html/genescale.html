@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Scales a matrix or vector.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for genescale {genefilter}"><tr><td>genescale {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Scales a matrix or vector.</h2>
+
+<h3>Description</h3>
+
+<p><code>genescale</code> returns a scaled version of the input matrix m by applying
+the following formula to each column of the matrix:
+</p>
+<p style="text-align: center;"><i>y[i] = ( x[i] - min(x) ) / ( max(x) - min(x) )</i></p>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+genescale(m, axis=2, method=c("Z", "R"), na.rm=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>Input a matrix or a vector with numeric elements. </p>
+</td></tr>
+<tr valign="top"><td><code>axis</code></td>
+<td>
+<p>An integer indicating which axis of <code>m</code> to scale.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>Either &quot;Z&quot; or &quot;R&quot;, indicating whether a Z scaling or a
+range scaling should be performed.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>A boolean indicating whether <code>NA</code>'s should be
+removed.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Either the rows or columns of <code>m</code> are scaled. This is done either
+by subtracting the mean and dividing by the standard deviation (&quot;Z&quot;)
+or by subtracing the minimum and dividing by the range.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A scaled version of the input.
+If <code>m</code> is a <code>matrix</code> or a <code>dataframe</code> then the
+dimensions of the returned value agree with that of <code>m</code>,
+in both cases the returned value is a <code>matrix</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> R. Gentleman </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="genefinder.html">genefinder</a></code>,<code><a href="../../base/html/scale.html">scale</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  m &lt;- matrix(1:12, 4, 3)
+  genescale(m)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

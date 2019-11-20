@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sub-array Quality Weights</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for printtipWeights {limma}"><tr><td>printtipWeights {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sub-array Quality Weights</h2>
+
+<h3>Description</h3>
+
+<p>Estimates relative quality weights for each sub-array in a multi-array experiment.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+printtipWeights(object, design = NULL, weights = NULL, method = "genebygene", layout,
+                maxiter = 50, tol = 1e-10, trace=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>object of class <code>numeric</code>, <code>matrix</code>, <code>MAList</code>, <code>marrayNorm</code>,
+or <code>ExpressionSet</code> containing log-ratios or log-values of
+expression for a series of spotted microarrays.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>the design matrix of the microarray experiment, with rows
+corresponding to arrays and columns to coefficients to be
+estimated.  Defaults to the unit vector meaning that the
+arrays are treated as replicates.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>optional numeric matrix containing prior weights for each spot.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying the estimating algorithm to be used. Choices
+are <code>"genebygene"</code> and <code>"reml"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>list specifying the dimensions of the spot matrix and the grid matrix. For details see <code><a href="PrintLayout.html">PrintLayout-class</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>maxiter</code></td>
+<td>
+<p>maximum number of iterations allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>convergence tolerance.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical variable. If true then output diagnostic information at each iteration of <code>"reml"</code> algorithm.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The relative reliability of each sub-array (print-tip group) is estimated by measuring how
+well the expression values for that sub-array follow the linear model.
+</p>
+<p>The method described in Ritchie et al (2006) and implemented in 
+the <code>arrayWeights</code> function is adapted for this purpose.
+A heteroscedastic model is fitted to the expression values for 
+each gene by calling the function <code>lm.wfit</code>.
+The dispersion model is fitted to the squared residuals from the mean fit, and is set up to 
+have sub-array specific coefficients, which are updated in either full REML 
+scoring iterations, or using an efficient gene-by-gene update algorithm.  
+The final estimates of the sub-array variances are converted to weights.
+</p>
+<p>The data object <code>object</code> is interpreted as for <code>lmFit</code>.
+In particular, the arguments <code>design</code>, <code>weights</code> and <code>layout</code> will 
+be extracted from the data <code>object</code> if available and do not normally need to 
+be set explicitly in the call; if any of these are set in the call then they 
+will over-ride the slots or components in the data <code>object</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix of sub-array weights.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthew Ritchie and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Ritchie, M. E., Diyagama, D., Neilson, van Laar, R., J., Dobrovic, A., Holloway, A., and Smyth, G. K. (2006).
+Empirical array quality weights in the analysis of microarray data.
+<em>BMC Bioinformatics</em> 7, 261.
+<a href="http://www.biomedcentral.com/1471-2105/7/261/abstract">http://www.biomedcentral.com/1471-2105/7/261/abstract</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# This example is designed for work on a subset of the data
+# from ApoAI case study in Limma User's Guide
+
+RG &lt;- backgroundCorrect(RG, method="normexp")
+MA &lt;- normalizeWithinArrays(RG)
+targets &lt;- data.frame(Cy3=I(rep("Pool",6)),Cy5=I(c("WT","WT","WT","KO","KO","KO")))
+design &lt;- modelMatrix(targets, ref="Pool")
+subarrayw &lt;- printtipWeights(MA, design, layout=mouse.setup)
+fit &lt;- lmFit(MA, design, weights=subarrayw)
+fit2 &lt;- contrasts.fit(fit, contrasts=c(-1,1))
+fit2 &lt;- eBayes(fit2)
+# Use of sub-array weights increases the significance of the top genes
+topTable(fit2)
+# Create an image plot of sub-array weights from each array
+zlim &lt;- c(min(subarrayw), max(subarrayw))
+par(mfrow=c(3,2), mai=c(0.1,0.1,0.3,0.1))
+for(i in 1:6) 
+	imageplot(subarrayw[,i], layout=mouse.setup, zlim=zlim, main=paste("Array", i))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

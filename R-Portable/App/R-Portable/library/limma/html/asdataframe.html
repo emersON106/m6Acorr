@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Turn a Microarray Linear Model Object into a Dataframe</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.data.frame {limma}"><tr><td>as.data.frame {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Turn a Microarray Linear Model Object into a Dataframe</h2>
+
+<h3>Description</h3>
+
+<p>Turn a <code>MArrayLM</code> object into a <code>data.frame</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'MArrayLM'
+as.data.frame(x, row.names = NULL, optional = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>MArrayLM</code></p>
+</td></tr>
+<tr valign="top"><td><code>row.names</code></td>
+<td>
+<p><code>NULL</code> or a character vector giving the row names for the
+data frame.  Missing values are not allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>optional</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, setting row names and converting column
+names (to syntactic names) is optional.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments to be passed to or from methods.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This method combines all the components of <code>x</code> which have a row for each probe on the array into a <code>data.frame</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/as.data.frame.html">as.data.frame</a></code> in the base package.
+</p>
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+<a href="06linearmodels.html">06.LinearModels</a> gives an overview of linear model functions in LIMMA.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

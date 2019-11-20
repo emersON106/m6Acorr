@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Construct Matrix of Custom Contrasts</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for makeContrasts {limma}"><tr><td>makeContrasts {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Construct Matrix of Custom Contrasts</h2>
+
+<h3>Description</h3>
+
+<p>Construct the contrast matrix corresponding to specified contrasts of a set of parameters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+makeContrasts(..., contrasts=NULL, levels) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>expressions, or character strings which can be parsed to expressions, specifying contrasts</p>
+</td></tr>
+<tr valign="top"><td><code>contrasts</code></td>
+<td>
+<p>character vector specifying contrasts</p>
+</td></tr>
+<tr valign="top"><td><code>levels</code></td>
+<td>
+<p>character vector or factor giving the names of the parameters of which contrasts are desired, or a design matrix or other object with the parameter names as column names.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function expresses contrasts between a set of parameters as a numeric matrix.
+The parameters are usually the coefficients from a linear model fit, so the matrix specifies which comparisons between the coefficients are to be extracted from the fit.
+The output from this function is usually used as input to <code><a href="contrasts.fit.html">contrasts.fit</a></code>.
+The contrasts can be specified either as expressions using <code>...</code> or as a character vector through <code>contrasts</code>.
+(Trying to specify contrasts both ways will cause an error.)
+</p>
+<p>The parameter names must be syntactically valid variable names in R and so, for example, must begin with a letter rather than a numeral.
+See <code><a href="../../base/html/make.names.html">make.names</a></code> for a complete specification of what is a valid name.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Matrix which columns corresponding to contrasts.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model functions in limma is given by the help page <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+makeContrasts(B-A,C-B,C-A,levels=c("A","B","C"))
+makeContrasts(contrasts="A-(B+C)/2",levels=c("A","B","C"))
+x &lt;- c("B-A","C-B","C-A")
+makeContrasts(contrasts=x,levels=c("A","B","C"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

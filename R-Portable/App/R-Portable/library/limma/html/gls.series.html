@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fit Linear Model to Microarray Data by Generalized Least...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gls.series {limma}"><tr><td>gls.series {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fit Linear Model to Microarray Data by Generalized Least Squares</h2>
+
+<h3>Description</h3>
+
+<p>Fit a linear model genewise to expression data from a series of microarrays.
+The fit is by generalized least squares allowing for correlation between duplicate spots or related arrays.
+This is a utility function for <code>lmFit</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>gls.series(M,design=NULL,ndups=2,spacing=1,block=NULL,correlation=NULL,weights=NULL,...)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>M</code></td>
+<td>
+<p>numeric matrix containing log-ratio or log-expression values for a series of microarrays, rows correspond to genes and columns to arrays.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric design matrix defining the linear model, with rows corresponding to arrays and columns to comparisons to be estimated. The number of rows must match the number of columns of <code>M</code>. Defaults to the unit vector meaning that the arrays are treated as replicates.</p>
+</td></tr> 
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>positive integer giving the number of times each gene is printed on an array. <code>nrow(M)</code> must be divisible by <code>ndups</code>. Ignored if <code>block</code> is not <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>the spacing between the rows of <code>M</code> corresponding to duplicate spots, <code>spacing=1</code> for consecutive spots. Ignored if <code>block</code> is not <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p>vector or factor specifying a blocking variable on the arrays.
+Same length as <code>ncol(M)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>numeric value specifying the inter-duplicate or inter-block correlation.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>an optional numeric matrix of the same dimension as <code>M</code> containing weights for each spot. If it is of different dimension to <code>M</code>, it will be filled out to the same size.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other optional arguments to be passed to <code>dupcor.series</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is a utility function used by the higher level function <code><a href="lmFit.html">lmFit</a></code>.
+Most users should not use this function directly but should use <code><a href="lmFit.html">lmFit</a></code> instead.
+</p>
+<p>This function is for fitting gene-wise linear models when some of the expression values are correlated.
+The correlated groups may arise from replicate spots on the same array (duplicate spots) or from a biological or technical replicate grouping of the arrays.
+This function is normally called by <code>lmFit</code> and is not normally called directly by users.
+</p>
+<p>Note that the correlation is assumed to be constant across genes.
+If <code>correlation=NULL</code> then a call is made to <code>duplicateCorrelation</code> to estimated the correlation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>numeric matrix containing the estimated coefficients for each linear model. Same number of rows as <code>M</code>, same number of columns as <code>design</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>stdev.unscaled</code></td>
+<td>
+<p>numeric matrix conformal with <code>coef</code> containing the unscaled standard deviations for the coefficient estimators. The standard errors are given by <code>stdev.unscaled * sigma</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sigma</code></td>
+<td>
+<p>numeric vector containing the residual standard deviation for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>df.residual</code></td>
+<td>
+<p>numeric vector giving the degrees of freedom corresponding to <code>sigma</code></p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>inter-duplicate or inter-block correlation</p>
+</td></tr>
+<tr valign="top"><td><code>qr</code></td>
+<td>
+<p>QR decomposition of the generalized linear squares problem, i.e., the decomposition of <code>design</code> standardized by the Choleski-root of the correlation matrix defined by <code>correlation</code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="dupcor.html">duplicateCorrelation</a></code>.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

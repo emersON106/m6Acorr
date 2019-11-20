@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A filter function for k elements larger than A.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for kOverA {genefilter}"><tr><td>kOverA {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A filter function for k elements larger than A. </h2>
+
+<h3>Description</h3>
+
+<p><code>kOverA</code> returns a filter function with bindings for <code>k</code> and
+<code>A</code>. This function evaluates to <code>TRUE</code> if at least <code>k</code>
+of the arguments elements are larger than <code>A</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+kOverA(k, A=100, na.rm=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>The value you want to exceed. </p>
+</td></tr>
+<tr valign="top"><td><code>k</code></td>
+<td>
+<p>The number of elements that have to exceed A.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>If set to <code>TRUE</code> any <code>NA</code>'s will be removed. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A function with bindings for <code>A</code> and <code>k</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pOverA.html">pOverA</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+   fg &lt;- kOverA(5, 100)
+   fg(90:100)
+   fg(98:110)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

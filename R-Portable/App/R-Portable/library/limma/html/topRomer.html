@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Top Gene Set Testing Results from Romer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for topRomer {limma}"><tr><td>topRomer {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Top Gene Set Testing Results from Romer</h2>
+
+<h3>Description</h3>
+
+<p>Extract a matrix of the top gene set testing results from the <a href="romer.html">romer</a> output.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+topRomer(x,n=10,alternative="up")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>matrix which is the output from <a href="romer.html">romer</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of top gene set testing results to be extracted.</p>
+</td></tr>
+<tr valign="top"><td><code>alternative</code></td>
+<td>
+<p>character which can be one of the three possible alternative p values: &quot;up&quot;, &quot;down&quot; or &quot;mixed&quot;. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function takes the results from romer and returns a number of top gene set testing results that are sorted by the p values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>matrix, which is sorted by the &quot;up&quot;, &quot;down&quot; or &quot;mixed&quot; p values, with the rows corresponding to estimated p-values for the top number of gene sets and 
+the columns corresponding to the number of genes for each gene set and the alternative hypotheses mixed, up, down.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="romer.html">romer</a></code>
+</p>
+<p>There is a topic page on <a href="10GeneSetTests.html">10.GeneSetTests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See romer for examples
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spot Quality Weights for Spotted Microarrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for QualityWeights {limma}"><tr><td>QualityWeights {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spot Quality Weights for Spotted Microarrays</h2>
+
+<h3>Description</h3>
+
+<p>Functions to calculate quality weights for individual spots based on the image analysis output file for a spotted microarray.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wtarea(ideal = c(160,170))
+wtflags(weight = 0, cutoff = 0)
+wtIgnore.Filter
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ideal</code></td>
+<td>
+<p>numeric vector giving the ideal range of areas for good quality spots (in pixels). The minimum and maximum values are used to specify the range of ideal values. All values should be positive.</p>
+</td></tr>
+<tr valign="top"><td><code>weight</code></td>
+<td>
+<p>non-negative weight to be given to flagged spots.</p>
+</td></tr>
+<tr valign="top"><td><code>cutoff</code></td>
+<td>
+<p>cutoff value for <code>Flags</code> below which spots will be downweighted.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions can be passed as an argument to <code>read.maimages</code> to construct quality weights as the microarray data is read in.
+</p>
+<p><code>wtarea</code> downweights unusually small or large spots and is designed for SPOT output.
+It gives weight 1 to spots that have areas in the ideal range, given in pixels, and linearly downweights spots that are smaller or larger than this range.
+</p>
+<p><code>wtflags</code> is designed for GenePix output and gives the specified weight to spots with <code>Flags</code> value less than the <code>cutoff</code> value.
+Choose <code>cutoff=0</code> to downweight all flagged spots.
+Choose <code>cutoff=-50</code> to downweight bad or absent spots or <code>cutoff=-75</code> to downweight only spots which have been manually flagged as bad.
+</p>
+<p><code>wtIgnore.Filter</code> is designed for QuantArray output and sets the weights equal to the column <code>Ignore Filter</code> produced by QuantArray.
+These weights are 0 for spots to be ignored and 1 otherwise.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A function that takes a dataframe or matrix as argument and produces a numeric vector of weights between 0 and 1.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Read in spot output files from current directory and give full weight to 165
+#  pixel spots.  Note: for this example to run you must set fnames to the names
+#  of actual spot output files (data not provided).
+## Not run: 
+RG &lt;- read.maimages(fnames,source="spot",wt.fun=wtarea(165))
+#  Spot will be downweighted according to weights found in RG
+MA &lt;- normalizeWithinArrays(RG,layout)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normalize Columns of a Matrix to have the same Quantiles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeQuantiles {limma}"><tr><td>normalizeQuantiles {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Normalize Columns of a Matrix to have the same Quantiles</h2>
+
+<h3>Description</h3>
+
+<p>Normalize the columns of a matrix to have the same quantiles, allowing for missing values.
+Users do not normally need to call this function directly - use <code><a href="normalizebetweenarrays.html">normalizeBetweenArrays</a></code> instead.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeQuantiles(A, ties=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>numeric matrix. Missing values are allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>ties</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, ties in each column of <code>A</code> are treated in careful way. tied values will be normalized to the mean of the corresponding pooled quantiles.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is intended to normalize single channel or A-value microarray intensities between arrays.
+Each quantile of each column is set to the mean of that quantile across arrays.
+The intention is to make all the normalized columns have the same empirical distribution.
+This will be exactly true if there are no missing values and no ties within the columns: the normalized columns are then simply permutations of one another.
+</p>
+<p>If there are ties amongst the intensities for a particular array, then with <code>ties=FALSE</code> the ties are broken in an unpredictable order.
+If <code>ties=TRUE</code>, all the tied values for that array will be normalized to the same value, the average of the quantiles for the tied values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix of the same dimensions as <code>A</code> containing the normalized values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Bolstad, B. M., Irizarry R. A., Astrand, M., and Speed, T. P. (2003), A comparison of normalization methods for high density oligonucleotide array data based on bias and variance. <em>Bioinformatics</em> <b>19</b>, 185-193.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A filter function for a t.test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ttest {genefilter}"><tr><td>ttest {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A filter function for a t.test </h2>
+
+<h3>Description</h3>
+
+<p><code>ttest</code> returns a function of one argument with bindings for
+<code>cov</code> and <code>p</code>.
+The function, when evaluated, performs a t-test using <code>cov</code> as
+the covariate. It returns <code>TRUE</code> if the p value for a difference
+in means is less than <code>p</code>. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ttest(m, p=0.05, na.rm=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>If <code>m</code> is of length one then it is assumed that elements
+one through <code>m</code> of <code>x</code> will be one group. Otherwise <code>m</code>
+is presumed to be the same length as <code>x</code> and constitutes the
+groups.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p> The p-value for the test. </p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>If set to <code>TRUE</code> any <code>NA</code>'s will be removed. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When the data can be split into two groups (diseased and normal for
+example) then we often want to select genes on their ability to
+distinguish those two groups. The t-test is well suited to this and
+can be used as a filter function.
+</p>
+<p>This helper function creates a t-test (function) for the specified
+covariate and considers a gene to have passed the filter if the
+p-value for the gene is less than the prespecified <code>p</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>ttest</code> returns a function with bindings for <code>m</code> and
+<code>p</code> that will perform a t-test.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="kOverA.html">kOverA</a></code>, <code><a href="Anova.html">Anova</a></code>, <code><a href="../../stats/html/t.test.html">t.test</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  dat &lt;- c(rep(1,5),rep(2,5))
+  set.seed(5)
+  y &lt;- rnorm(10)
+  af &lt;- ttest(dat, .01)
+  af(y)
+  af2 &lt;- ttest(5, .01)
+  af2(y)
+  y[8] &lt;- NA
+  af(y)
+  af2(y)
+  y[1:5] &lt;- y[1:5]+10
+  af(y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

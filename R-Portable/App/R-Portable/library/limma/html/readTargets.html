@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read Targets File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readTargets {limma}"><tr><td>readTargets {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read Targets File</h2>
+
+<h3>Description</h3>
+
+<p>Read targets file for a microarray experiment into a dataframe.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readTargets(file="Targets.txt", path=NULL, sep="\t", row.names=NULL, quote="\"",...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>character string giving the name of the targets file.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character string giving the directory containing the file.
+Can be omitted if the file is in the current working irectory.</p>
+</td></tr> 
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>field separator character</p>
+</td></tr>
+<tr valign="top"><td><code>row.names</code></td>
+<td>
+<p>character string giving the name of a column from which to obtain row names</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>the set of quoting characters</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code><a href="../../utils/html/read.table.html">read.table</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The targets file is a text file containing information about the RNA samples used as targets in the microarray experiment.
+Rows correspond to arrays and columns to covariates associated with the targets.
+For a two-color experiment, the targets file will normally include columns labelled <code>Cy3</code> and <code>Cy5</code> or similar specifying which RNA samples are hybridized to each channel of each array.
+Other columns may contain any other covariate information associated with the arrays or targets used in the experiment.
+</p>
+<p>If <code>row.names</code> is non-null and there is a column by that name with unique values, then those values will be used as row names for the dataframe.
+If <code>row.names</code> is null, then the column <code>Label</code> will be used if such exists or, failing that, the column <code>FileName</code>.
+</p>
+<p>See the Limma User's Guide for examples of this function.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A dataframe. Character columns are not converted into factors.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

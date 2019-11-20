@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Expected Signal Given Observed Foreground Under Normal+Exp...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normexp.signal {limma}"><tr><td>normexp.signal {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Expected Signal Given Observed Foreground Under Normal+Exp Model</h2>
+
+<h3>Description</h3>
+
+<p>Adjust foreground intensities for observed background using Normal+Exp Model.
+This function is called by <code>backgroundCorrect</code> and is not normally called directly by the user.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normexp.signal(par, x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>par</code></td>
+<td>
+<p>numeric vector containing the parameters of the Normal+Exp distribution, see <code><a href="normexpfit.html">normexp.fit</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector of (background corrected) intensities</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In general the vector <code>normmean</code> is computed conditional on background at each spot.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector containing adjusted intensities.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Ritchie, M. E., Silver, J., Oshlack, A., Silver, J., Holmes, M., Diyagama, D., Holloway, A., and Smyth, G. K. (2007).
+A comparison of background correction methods for two-colour microarrays.
+<em>Bioinformatics</em> 23, 2700-2707.
+<a href="http://bioinformatics.oxfordjournals.org/content/23/20/2700">http://bioinformatics.oxfordjournals.org/content/23/20/2700</a>
+</p>
+<p>Silver, JD, Ritchie, ME, and Smyth, GK (2009).
+Microarray background correction: maximum likelihood estimation for the normal-exponential convolution.
+<em>Biostatistics</em> 10, 352-363.
+<a href="http://biostatistics.oxfordjournals.org/content/10/2/352">http://biostatistics.oxfordjournals.org/content/10/2/352</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="normexpfit.html">normexp.fit</a></code>
+</p>
+<p>An overview of background correction functions is given in <code><a href="04Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre># See normexp.fit</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

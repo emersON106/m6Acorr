@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Kooperberg Model-Based Background Correction for GenePix data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for kooperberg {limma}"><tr><td>kooperberg {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Kooperberg Model-Based Background Correction for GenePix data</h2>
+
+<h3>Description</h3>
+
+<p>This function uses a Bayesian model to 
+background correct GenePix microarray data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+kooperberg(RG, a = TRUE, layout = RG$printer, verbose = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>RG</code></td>
+<td>
+<p>an RGList of GenePix data, read in using <code>read.maimages</code>, with <code>other.columns=c("F635 SD","B635 SD","F532 SD","B532 SD","B532 Mean","B635 Mean","F Pixels","B Pixels")</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>a</code></td>
+<td>
+<p>logical.  If <code>TRUE</code>, the 'a' parameters in the model (equation 3 and 4) are estimated for each slide.  If <code>FALSE</code> the 'a' parameters are set to unity.</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>list containing print layout with components <code>ngrid.r</code>, <code>ngrid.c</code>, <code>nspot.r</code> and <code>nspot.c</code>.  Defaults to <code>RG$printer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical.  If <code>TRUE</code>, progress is reported to standard output.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is for use with GenePix data and is designed to cope with the problem of large numbers of negative intensities and hence missing values on the log-intensity scale.
+It avoids missing values in most cases and at the same time dampens down the variability of log-ratios for low intensity spots.
+See Kooperberg et al (2002) for more details.
+</p>
+<p><code>kooperberg</code> uses the foreground and background intensities, standard
+deviations and number of pixels to compute empirical estimates of the model 
+parameters as described in equation 2 of Kooperberg et al (2002).
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code>RGList</code> containing the components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>matrix containing the background adjusted intensities for
+the red channel for each spot for each array</p>
+</td></tr>
+<tr valign="top"><td><code>G</code></td>
+<td>
+<p>matrix containing the background adjusted intensities for the green channel for each spot for each array</p>
+</td></tr>
+<tr valign="top"><td><code>printer</code></td>
+<td>
+<p>list containing print layout</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Matthew Ritchie</p>
+
+
+<h3>References</h3>
+
+<p>Kooperberg, C., Fazzio, T. G., Delrow, J. J., and Tsukiyama, T. (2002)
+Improved background correction for spotted DNA microarrays.
+<em>Journal of Computational Biology</em> <b>9</b>, 55-66.
+</p>
+<p>Ritchie, M. E., Silver, J., Oshlack, A., Silver, J., Holmes, M., Diyagama, D., Holloway, A., and Smyth, G. K. (2007).
+A comparison of background correction methods for two-colour microarrays.
+<em>Bioinformatics</em> 23, 2700-2707.
+<a href="https://www.ncbi.nlm.nih.gov/pubmed/17720982">https://www.ncbi.nlm.nih.gov/pubmed/17720982</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="04Background.html">04.Background</a> gives an overview of background correction functions defined in the LIMMA package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  This is example code for reading and background correcting GenePix data
+#  given GenePix Results (gpr) files in the working directory (data not
+#  provided).
+## Not run: 
+# get the names of the GenePix image analysis output files in the current directory
+genepixFiles &lt;- dir(pattern="*\\.gpr$")
+RG &lt;- read.maimages(genepixFiles, source="genepix", other.columns=c("F635 SD","B635 SD",
+                    "F532 SD","B532 SD","B532 Mean","B635 Mean","F Pixels","B Pixels"))
+RGmodel &lt;- kooperberg(RG)
+MA &lt;- normalizeWithinArrays(RGmodel)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

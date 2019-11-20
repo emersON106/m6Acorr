@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Mean-Variance Trend to Observation-specific Precision...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vooma {limma}"><tr><td>vooma {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Mean-Variance Trend to Observation-specific Precision Weights for Microarray Data</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the mean-variance relationship and use this to compute appropriate observational-level weights.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vooma(y, design=NULL, correlation, block=NULL, plot=FALSE, span=NULL)
+voomaByGroup(y, group, design=NULL, correlation, block=NULL,
+             plot=FALSE, span=NULL, col=NULL, lwd=1, alpha=0.5,
+             pch=16, cex=0.3, legend="topright")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a numeric <code>matrix</code>, <code>EList</code> object, or any object containing log-expression data that can be coerced to a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix with rows corresponding to samples and columns to coefficients to be estimated.  Defaults to the unit vector meaning that samples are treated as replicates.</p>
+</td></tr>
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p>vector or factor specifying a blocking variable on the arrays. Has length equal to the number of arrays.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>intra-block correlation</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>width of the smoothing window, as a proportion of the data set.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p><code>logical</code> value indicating whether a plot of mean-variance trend should be displayed.</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>categorical vector or factor giving group membership of columns of <code>y</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>vector of colors for plotting group trends</p>
+</td></tr>
+<tr valign="top"><td><code>lwd</code></td>
+<td>
+<p>line width for plotting group trends</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>plotting character. Default is integer code 16 which gives a solid circle. If a vector, then should be of length <code>nrow(y)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>numeric vector of plot symbol expansions.  If a vector, then should be of length equal to number of groups.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>transparancy of points, on scale from <code>0</code> for fully transparant to <code>1</code> for fully opaque.</p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+<p>character string giving position to place legend.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>vooma</code> is an acronym for mean-variance modelling at the observational level for arrays.
+</p>
+<p><code>vooma</code> estimates the mean-variance relationship in the data, and uses this to compute appropriate weights for each observation.
+This done by estimating a mean-variance trend, then interpolating this trend to obtain a precision weight (inverse variance) for each observation.
+The weights can then used by other functions such as <code>lmFit</code> to adjust for heteroscedasticity.
+</p>
+<p><code>voomaByGroup</code> estimates precision weights separately for each group.  In other words, it allows for different mean-variance curves in different groups.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An EList object with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>E</code></td>
+<td>
+<p>numeric matrix of as input</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of weights</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric matrix of experimental design</p>
+</td></tr>
+<tr valign="top"><td><code>genes</code></td>
+<td>
+<p>dataframe of gene annotation, only if <code>counts</code> was a <code>DGEList</code> object</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Charity Law and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Law, C. (2013).
+<em>Precision weights for gene expression analysis</em>.
+PhD Thesis. University of Melbourne, Australia.
+<a href="http://repository.unimelb.edu.au/10187/17598">http://repository.unimelb.edu.au/10187/17598</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="voom.html">voom</a></code>, <code><a href="arrayWeights.html">arrayWeights</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Table of Top Genes from Linear Model Fit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for toptable {limma}"><tr><td>toptable {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Table of Top Genes from Linear Model Fit</h2>
+
+<h3>Description</h3>
+
+<p>Extract a table of the top-ranked genes from a linear model fit.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+topTable(fit, coef=NULL, number=10, genelist=fit$genes, adjust.method="BH",
+         sort.by="B", resort.by=NULL, p.value=1, lfc=0, confint=FALSE)
+toptable(fit, coef=1, number=10, genelist=NULL, A=NULL, eb=NULL, adjust.method="BH",
+         sort.by="B", resort.by=NULL, p.value=1, lfc=0, confint=FALSE, ...)
+topTableF(fit, number=10, genelist=fit$genes, adjust.method="BH",
+         sort.by="F", p.value=1, lfc=0)
+topTreat(fit, coef=1, sort.by="p", resort.by=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>list containing a linear model fit produced by <code>lmFit</code>, <code>lm.series</code>, <code>gls.series</code> or <code>mrlm</code>.
+For <code>topTable</code>, <code>fit</code> should be an object of class <code>MArrayLM</code> as produced by <code>lmFit</code> and <code>eBayes</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>column number or column name specifying which coefficient or contrast of the linear model is of interest. For <code>topTable</code>, can also be a vector of column subscripts, in which case the gene ranking is by F-statistic for that set of contrasts.</p>
+</td></tr>
+<tr valign="top"><td><code>number</code></td>
+<td>
+<p>maximum number of genes to list</p>
+</td></tr>
+<tr valign="top"><td><code>genelist</code></td>
+<td>
+<p>data frame or character vector containing gene information.
+For <code>topTable</code> only, this defaults to <code>fit$genes</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>matrix of A-values or vector of average A-values.
+For <code>topTable</code> only, this defaults to <code>fit$Amean</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>eb</code></td>
+<td>
+<p>output list from <code>ebayes(fit)</code>.
+If <code>NULL</code>, this will be automatically generated.</p>
+</td></tr>
+<tr valign="top"><td><code>adjust.method</code></td>
+<td>
+<p>method used to adjust the p-values for multiple testing.  Options, in increasing conservatism, include <code>"none"</code>, <code>"BH"</code>, <code>"BY"</code> and <code>"holm"</code>.
+See <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> for the complete list of options. A <code>NULL</code> value will result in the default adjustment method, which is <code>"BH"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sort.by</code></td>
+<td>
+<p>character string specifying statistic to rank genes by.
+Possible values for <code>topTable</code> and <code>toptable</code> are <code>"logFC"</code>, <code>"AveExpr"</code>, <code>"t"</code>, <code>"P"</code>, <code>"p"</code>, <code>"B"</code> or <code>"none"</code>.
+(Permitted synonyms are <code>"M"</code> for <code>"logFC"</code>, <code>"A"</code> or <code>"Amean"</code> for <code>"AveExpr"</code>, <code>"T"</code> for <code>"t"</code> and <code>"p"</code> for <code>"P"</code>.)
+Possibilities for <code>topTableF</code> are <code>"F"</code> or <code>"none"</code>.
+Possibilities for <code>topTreat</code> are as for <code>topTable</code> except for <code>"B"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>resort.by</code></td>
+<td>
+<p>character string specifying statistic to sort the selected genes by in the output data.frame.  Possibilities are the same as for <code>sort.by</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>cutoff value for adjusted p-values. Only genes with lower p-values are listed.</p>
+</td></tr>
+<tr valign="top"><td><code>lfc</code></td>
+<td>
+<p>minimum absolute log2-fold-change required. <code>topTable</code> and <code>topTableF</code> include only genes with (at least one) absolute log-fold-changes greater than <code>lfc</code>. <code>topTreat</code> does not remove genes but ranks genes by evidence that their log-fold-change exceeds <code>lfc</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>confint</code></td>
+<td>
+<p>logical, should confidence 95% intervals be output for <code>logFC</code>?  Alternatively, can take a numeric value between zero and one specifying the confidence level required.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For <code>toptable</code>, other arguments are passed to <code>ebayes</code> (if <code>eb=NULL</code>).  For <code>topTreat</code>, other arguments are passed to <code>topTable</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>toptable</code> is an earlier interface and is retained only for backward compatibility.
+</p>
+<p>These functions summarize the linear model fit object produced by <code>lmFit</code>, <code>lm.series</code>, <code>gls.series</code> or <code>mrlm</code> by selecting the top-ranked genes for any given contrast.
+<code>topTable</code> and <code>topTableF</code> assume that the linear model fit has already been processed by <code><a href="ebayes.html">eBayes</a></code>.
+<code>topTreat</code> assumes that the fit has been processed by <code><a href="ebayes.html">treat</a></code>.
+</p>
+<p>The p-values for the coefficient/contrast of interest are adjusted for multiple testing by a call to <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code>.
+The <code>"BH"</code> method, which controls the expected false discovery rate (FDR) below the specified value, is the default adjustment method because it is the most likely to be appropriate for microarray studies.
+Note that the adjusted p-values from this method are bounds on the FDR rather than p-values in the usual sense.
+Because they relate to FDRs rather than rejection probabilities, they are sometimes called q-values.
+See <code>help("p.adjust")</code> for more information.
+</p>
+<p>Note, if there is no good evidence for differential expression in the experiment, that it is quite possible for all the adjusted p-values to be large, even for all of them to be equal to one.
+It is quite possible for all the adjusted p-values to be equal to one if the smallest p-value is no smaller than <code>1/ngenes</code> where <code>ngenes</code> is the number of genes with non-missing p-values.
+</p>
+<p>The <code>sort.by</code> argument specifies the criterion used to select the top genes.
+The choices are: <code>"logFC"</code> to sort by the (absolute) coefficient representing the log-fold-change; <code>"A"</code> to sort by average expression level (over all arrays) in descending order; <code>"T"</code> or <code>"t"</code> for absolute t-statistic; <code>"P"</code> or <code>"p"</code> for p-values; or <code>"B"</code> for the <code>lods</code> or B-statistic.
+</p>
+<p>Normally the genes appear in order of selection in the output table.
+If a different order is wanted, then the <code>resort.by</code> argument may be useful.
+For example, <code>topTable(fit, sort.by="B", resort.by="logFC")</code> selects the top genes according to log-odds of differential expression and then orders the selected genes by log-ratio in decreasing order.
+Or <code>topTable(fit, sort.by="logFC", resort.by="logFC")</code> would select the genes by absolute log-fold-change and then sort them from most positive to most negative.
+</p>
+<p><code>topTableF</code> ranks genes on the basis of moderated F-statistics for one or more coefficients.
+If <code>topTable</code> is called and <code>coef</code> has two or more elements, then the specified columns will be extracted from <code>fit</code> and <code>topTableF</code> called on the result.
+<code>topTable</code> with <code>coef=NULL</code> is the same as <code>topTableF</code>, unless the fitted model <code>fit</code> has only one column.
+</p>
+<p>Toptable output for all probes in original (unsorted) order can be obtained by <code>topTable(fit,sort="none",n=Inf)</code>.
+However <code><a href="writefit.html">write.fit</a></code> or <code><a href="../../base/html/write.html">write</a></code> may be preferable if the intention is to write the results to a file.
+A related method is <code>as.data.frame(fit)</code> which coerces an <code>MArrayLM</code> object to a data.frame.
+</p>
+<p>By default <code>number</code> probes are listed.
+Alternatively, by specifying <code>p.value</code> and <code>number=Inf</code>, all genes with adjusted p-values below a specified value can be listed.
+</p>
+<p>The argument <code>lfc</code> gives the ability to filter genes by log-fold change.
+This argument is not available for <code>topTreat</code> because <code>treat</code> already handles fold-change thresholding in a more sophisticated way.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A dataframe with a row for the <code>number</code> top genes and the following columns:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>genelist</code></td>
+<td>
+<p>one or more columns of probe annotation, if genelist was included as input</p>
+</td></tr>
+<tr valign="top"><td><code>logFC</code></td>
+<td>
+<p>estimate of the log2-fold-change corresponding to the effect or contrast (for <code>topTableF</code> there may be several columns of log-fold-changes)</p>
+</td></tr>
+<tr valign="top"><td><code>CI.L</code></td>
+<td>
+<p>left limit of confidence interval for <code>logFC</code> (if <code>confint=TRUE</code> or <code>confint</code> is numeric)</p>
+</td></tr>
+<tr valign="top"><td><code>CI.R</code></td>
+<td>
+<p>right limit of confidence interval for <code>logFC</code> (if <code>confint=TRUE</code> or <code>confint</code> is numeric)</p>
+</td></tr>
+<tr valign="top"><td><code>AveExpr</code></td>
+<td>
+<p>average log2-expression for the probe over all arrays and channels, same as <code>Amean</code> in the <code>MarrayLM</code> object</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>moderated t-statistic (omitted for <code>topTableF</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>F</code></td>
+<td>
+<p>moderated F-statistic (omitted for <code>topTable</code> unless more than one coef is specified)</p>
+</td></tr>
+<tr valign="top"><td><code>P.Value</code></td>
+<td>
+<p>raw p-value</p>
+</td></tr>
+<tr valign="top"><td><code>adj.P.Value</code></td>
+<td>
+<p>adjusted p-value or q-value</p>
+</td></tr>
+<tr valign="top"><td><code>B</code></td>
+<td>
+<p>log-odds that the gene is differentially expressed (omitted for <code>topTreat</code>)</p>
+</td></tr>
+</table>
+<p>If <code>fit</code> had unique rownames, then the row.names of the above data.frame are the same in sorted order.
+Otherwise, the row.names of the data.frame indicate the row number in <code>fit</code>.
+If <code>fit</code> had duplicated row names, then these are preserved in the <code>ID</code> column of the data.frame, or in <code>ID0</code> if <code>genelist</code> already contained an <code>ID</code> column.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Although <code>topTable</code> enables users to set p-value and lfc cutoffs simultaneously, this is not generally recommended.
+If the fold changes and p-values are not highly correlated, then the use of a fold change cutoff can increase the false discovery rate above the nominal level.
+Users wanting to use fold change thresholding are usually recommended to use <code>treat</code> and <code>topTreat</code> instead.
+</p>
+<p>In general, the adjusted p-values returned by <code>adjust.method="BH"</code> remain valid as FDR bounds only when the genes remain sorted by p-value.
+Resorting the table by log-fold-change can increase the false discovery rate above the nominal level for genes at the top of resorted table.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model and testing functions is given in <a href="06linearmodels.html">06.LinearModels</a>.
+See also <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> in the <code>stats</code> package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  See lmFit examples
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

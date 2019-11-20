@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve the Dimension Names of an RGList, MAList, EList,...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dimnames {limma}"><tr><td>dimnames {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve the Dimension Names of an RGList, MAList, EList, EListRaw or MArrayLM Object</h2>
+
+<h3>Description</h3>
+
+<p>Retrieve the dimension names of a microarray data object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'RGList'
+dimnames(x)
+## S3 replacement method for class 'RGList'
+dimnames(x) &lt;- value
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code>RGList</code>, <code>MAList</code>, <code>EList</code>, <code>EListRaw</code> or (not for assignment) <code>MArrayLM</code></p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>a possible value for <code>dimnames(x)</code>: see <code><a href="../../base/html/dimnames.html">dimnames</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The dimension names of a microarray object are the same as those of the most important matrix component of that object.
+</p>
+<p>A consequence is that <code>rownames</code> and <code>colnames</code> will work as expected.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Either <code>NULL</code> or a list of length 2.
+If a list, its components are either <code>NULL</code> or a character vector the length of the appropriate dimension of <code>x</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/dimnames.html">dimnames</a></code> in the base package.
+</p>
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fit Linear Model to Microrray Data by Ordinary Least Squares</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lm.series {limma}"><tr><td>lm.series {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fit Linear Model to Microrray Data by Ordinary Least Squares</h2>
+
+<h3>Description</h3>
+
+<p>Fit a linear model genewise to expression data from a series of arrays.
+This function uses ordinary least squares and is a utility function for <code>lmFit</code>.</p>
+
+
+<h3>Usage</h3>
+
+<pre>lm.series(M,design=NULL,ndups=1,spacing=1,weights=NULL)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>M</code></td>
+<td>
+<p>numeric matrix containing log-ratio or log-expression values for a series of microarrays, rows correspond to genes and columns to arrays</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric design matrix defining the linear model. The number of rows should agree with the number of columns of M. The number of columns will determine the number of coefficients estimated for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>number of duplicate spots. Each gene is printed ndups times in adjacent spots on each array.</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>the spacing between the rows of <code>M</code> corresponding to duplicate spots, <code>spacing=1</code> for consecutive spots</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>an optional numeric matrix of the same dimension as <code>M</code> containing weights for each spot. If it is of different dimension to <code>M</code>, it will be filled out to the same size.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is a utility function used by the higher level function <code><a href="lmFit.html">lmFit</a></code>.
+Most users should not use this function directly but should use <code><a href="lmFit.html">lmFit</a></code> instead.
+</p>
+<p>The linear model is fit for each gene by calling the function <code>lm.fit</code> or <code>lm.wfit</code> from the base library.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>coefficients</code></td>
+<td>
+<p>numeric matrix containing the estimated coefficients for each linear model. Same number of rows as <code>M</code>, same number of columns as <code>design</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>stdev.unscaled</code></td>
+<td>
+<p>numeric matrix conformal with <code>coef</code> containing the unscaled standard deviations for the coefficient estimators. The standard errors are given by <code>stdev.unscaled * sigma</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sigma</code></td>
+<td>
+<p>numeric vector containing the residual standard deviation for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>df.residual</code></td>
+<td>
+<p>numeric vector giving the degrees of freedom corresponding to <code>sigma</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>qr</code></td>
+<td>
+<p>QR-decomposition of <code>design</code></p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/lmfit.html">lm.fit</a></code>.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See lmFit for examples
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

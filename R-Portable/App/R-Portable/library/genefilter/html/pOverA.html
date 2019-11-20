@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A filter function to filter according to the proportion of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pOverA {genefilter}"><tr><td>pOverA {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A filter function to filter according to the proportion of
+elements larger than A. </h2>
+
+<h3>Description</h3>
+
+<p>A function that returns a function with values for <code>A</code>, <code>p</code>
+and <code>na.rm</code> bound to the specified values. The function takes a
+single vector, <code>x</code>, as an argument.
+When the returned function is evaluated it returns <code>TRUE</code> if the
+proportion of values in <code>x</code> that are larger than <code>A</code> is at
+least <code>p</code>. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pOverA(p=0.05, A=100, na.rm=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>The value to be exceeded. </p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>The proportion that need to exceed <code>A</code> for <code>TRUE</code>
+to be returned. </p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p> If <code>TRUE</code> then <code>NA</code>'s are removed. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>pOverA</code> returns a function with bindings for <code>A</code>, <code>p</code>
+and <code>na.rm</code>. This function evaluates to <code>TRUE</code> if the
+proportion of values in <code>x</code> that are larger than <code>A</code> exceeds
+<code>p</code>. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman</p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="cv.html">cv</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  ff&lt;- pOverA(p=.1, 10)
+  ff(1:20)
+  ff(1:5)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

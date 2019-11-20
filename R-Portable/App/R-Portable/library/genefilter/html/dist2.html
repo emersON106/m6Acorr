@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate an n-by-n matrix by applying a function to all...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dist2 {genefilter}"><tr><td>dist2 {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Calculate an n-by-n matrix by applying a function to
+all pairs of columns of an m-by-n matrix.
+</h2>
+
+<h3>Description</h3>
+
+<p>Calculate an n-by-n matrix by applying a function to
+all pairs of columns of an m-by-n matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  dist2(x, fun, diagonal=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>A symmetric function of two arguments that may be columns of <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>diagonal</code></td>
+<td>
+<p>The value to be used for the diagonal elements of the
+resulting matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>With the default value of <code>fun</code>, this function calculates
+for each pair of columns of <code>x</code> the mean of the absolute values
+of their differences (which is proportional to the L1-norm of their
+difference). This is a distance metric.
+</p>
+<p>The implementation assumes that
+<code>fun(x[,i], x[,j])</code> can be evaluated for all pairs of <code>i</code>
+and <code>j</code> (see examples), and that
+<code>fun</code> is symmetric, i.e.
+<code>fun(a, b) = fun(b, a)</code>.
+<code>fun(a, a)</code> is not actually evaluated, instead the value of <code>diagonal</code>
+is used to fill the diagonal elements of the returned matrix.
+</p>
+<p>Note that <code><a href="../../stats/html/dist.html">dist</a></code> computes distances between rows of
+<code>x</code>, while this function computes relations between columns of
+<code>x</code> (see examples).
+</p>
+
+
+<h3>Value</h3>
+
+<p>A symmetric matrix of size <code>n x n</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wolfgang Huber, James Reid
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+  # example matrix
+  z = matrix(1:15693, ncol=3)
+  matL1 = dist2(z)
+  matL2 = dist2(z, fun=function(a,b) sqrt(sum((a-b)^2, na.rm=TRUE)))
+
+  euc = as.matrix(dist(t(z)))
+
+  stopifnot(identical(dim(matL2), dim(euc)),
+            all(euc==matL2))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

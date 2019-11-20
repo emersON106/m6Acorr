@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function to filter genes.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for genefilter {genefilter}"><tr><td>genefilter {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function to filter genes.</h2>
+
+<h3>Description</h3>
+
+<p><code>genefilter</code> filters genes in the array <code>expr</code> using the
+filter functions in <code>flist</code>. It returns an array of logical
+values (suitable for subscripting) of the same length as there are
+rows in <code>expr</code>. For each row of <code>expr</code> the returned value
+is <code>TRUE</code> if the row passed all the filter functions. Otherwise
+it is set to <code>FALSE</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+genefilter(expr, flist)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>A <code>matrix</code> or <code>ExpressionSet</code> that the
+filter functions will be applied to.</p>
+</td></tr>
+<tr valign="top"><td><code>flist</code></td>
+<td>
+<p>A <code>list</code> of filter functions to apply to the array.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This package uses a very simple but powerful protocol for
+<em>filtering</em> genes. The user simply constructs any number of
+tests that they want to apply. A test is simply a function (as
+constructed using one of the many helper functions in this package)
+that returns <code>TRUE</code> if the gene of interest passes the test (or
+filter) and <code>FALSE</code> if the gene of interest fails.
+</p>
+<p>The benefit of this approach is that each test is constructed
+individually (and can be tested individually). The tests are then
+applied sequentially to each gene. The function returns a logical
+vector indicating whether the gene passed all tests functions or
+failed at least one of them.
+</p>
+<p>Users can construct their own filters. These filters should accept
+a vector of values, corresponding to a row of the <code>expr</code> object.
+The user defined function should return a length 1 logical vector,
+with value <code>TRUE</code> or <code>FALSE</code>. User-defined functions can be 
+combined with <code><a href="filterfun.html">filterfun</a></code>, just as built-in filters.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A logical <code>vector</code> of length equal to the number of rows of
+<code>expr</code>. The values in that <code>vector</code> indicate whether the
+corresponding row of <code>expr</code> passed the set of filter functions.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="genefilter.html">genefilter</a></code>, <code><a href="kOverA.html">kOverA</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+   set.seed(-1)
+   f1 &lt;- kOverA(5, 10)
+   flist &lt;- filterfun(f1)
+   exprA &lt;- matrix(rnorm(1000, 10), ncol = 10)
+   ans &lt;- genefilter(exprA, flist)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

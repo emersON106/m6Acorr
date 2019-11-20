@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read Spot Types File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readSpotTypes {limma}"><tr><td>readSpotTypes {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read Spot Types File</h2>
+
+<h3>Description</h3>
+
+<p>Read a table giving regular expressions to identify different types of spots in the gene-dataframe.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readSpotTypes(file="SpotTypes.txt",path=NULL,sep="\t",check.names=FALSE,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>character string giving the name of the file specifying the spot types.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character string giving the directory containing the file.
+Can be omitted if the file is in the current working irectory.</p>
+</td></tr> 
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the field separator character</p>
+</td></tr>
+<tr valign="top"><td><code>check.names</code></td>
+<td>
+<p>logical, if <code>FALSE</code> column names will not be converted to valid variable names, for example spaces in column names will not be left as is</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>read.table</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The file is a text file with rows corresponding to types of spots and the following columns: <code>SpotType</code> gives the name for the spot type, <code>ID</code> is a regular expression matching the ID column, <code>Name</code> is a regular expression matching the Name column, and <code>Color</code> is the R name for the color to be associated with this type.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data frame with columns
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>SpotType</code></td>
+<td>
+<p>character vector giving names of the spot types</p>
+</td></tr>
+<tr valign="top"><td><code>ID</code></td>
+<td>
+<p>character vector giving regular expressions</p>
+</td></tr>
+<tr valign="top"><td><code>Name</code></td>
+<td>
+<p>character vector giving regular expressions</p>
+</td></tr>
+<tr valign="top"><td><code>Color</code></td>
+<td>
+<p>character vector giving names of colors</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth following idea of James Wettenhall</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

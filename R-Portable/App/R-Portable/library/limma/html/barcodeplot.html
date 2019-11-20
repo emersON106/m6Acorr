@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Barcode Enrichment Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for barcodeplot {limma}"><tr><td>barcodeplot {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Barcode Enrichment Plot</h2>
+
+<h3>Description</h3>
+
+<p>Display the enrichment of one or two gene sets in a ranked gene list.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+barcodeplot(statistics, index = NULL, index2 = NULL, gene.weights = NULL,
+            weights.label = "Weight", labels = c("Down","Up"),
+            quantiles = c(-1,1)*sqrt(2), col.bars = NULL, alpha = 0.4,
+            worm = TRUE, span.worm = 0.45, xlab = "Statistic", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>statistics</code></td>
+<td>
+<p>numeric vector giving the values of statistics to rank genes by.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>index vector for the gene set.
+This can be a vector of indices, or a logical vector of the same length as <code>statistics</code> or, in general, any vector such that <code>statistic[index]</code> gives a subset of the statistic values.
+Can be omitted if <code>gene.weights</code> has same length as <code>statistics</code>, in which case positive values of <code>gene.weights</code> indicate to members of the positive set and negative weights correspond to members of the negative set.</p>
+</td></tr>
+<tr valign="top"><td><code>index2</code></td>
+<td>
+<p>optional index vector for a second (negative) gene set.
+If specified, then <code>index</code> and <code>index2</code> specify positive and negative genes respectively.
+Usually used to distinguish down-regulated genes from up-regulated genes.</p>
+</td></tr>
+<tr valign="top"><td><code>gene.weights</code></td>
+<td>
+<p>numeric vector giving directional weights for the genes in the (first) set.
+Positive and negative weights correspond to positive and negative genes.
+Ignored if <code>index2</code> is non-null.</p>
+</td></tr>
+<tr valign="top"><td><code>weights.label</code></td>
+<td>
+<p>label describing the entries in <code>gene.weights</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>character vector of labels for low and high statistics.  First label is associated with low statistics or negative statistics and is displayed at the left end of the plot.  Second label is associated with high or positive statistics and is displayed at the right end of the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>quantiles</code></td>
+<td>
+<p>numeric vector of length 2, giving cutoff values for <code>statistics</code> considered small or large respectively.  Used to color the rectangle of the barcodeplot.</p>
+</td></tr>
+<tr valign="top"><td><code>col.bars</code></td>
+<td>
+<p>character vector of colors for the vertical bars of the barcodeplot showing the ranks of the gene set members.
+Defaults to <code>"black"</code> for one set or <code>c("red","blue")</code> for two sets.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>transparency for vertical bars.  When <code>gene.weights</code> are not <code>NULL</code>, values <code>0&lt;alpha&lt;1</code> give semitransparent colors for the vertical bars inside the rectangle.  This helps distinguish position bars from the weighted bars and also helps to show the density of the bars when there are many bars.  Ignored if <code>gene.weights=NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>worm</code></td>
+<td>
+<p>logical, should enrichment worms be plotted?</p>
+</td></tr>
+<tr valign="top"><td><code>span.worm</code></td>
+<td>
+<p>loess span for enrichment worms.  Larger spans give smoother worms.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-axis label for <code>statistics</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function plots the positions of one or two gene sets in a ranked list of statistics.
+If there are two sets, then one is considered to be the positive set and the other the down set.
+For example, the first set and second sets often correspond to genes that are expected to be up- or down-regulated respectively.
+The function can optionally display varying weights for different genes, for example log-fold-changes from a previous experiment.
+</p>
+<p>The statistics are ranked left to right from smallest to largest.
+The ranked statistics are represented by a shaded bar or bed, and the positions of the specified subsets are marked by vertical bars, forming a pattern like a barcode.
+An enrichment worm optionally shows the relative enrichment of the vertical bars in each part of the plot.
+The worm is computed by the <code>tricubeMovingAverage</code> function.
+</p>
+<p>Barcode plots are often used in conjunction with gene set tests, and show the enrichment of gene sets amongst high or low ranked genes.
+They were inspired by the set location plot of Subramanian et al (2005), with a number of enhancements, especially the ability to plot positive and negative sets simultaneously.
+Barcode plots first appeared in the literature in Lim et al (2009).
+More recent examples can be seen in Liu et al (2014), Sheikh et al (2015), Witkowski et al (2015) and Ng et al (2015).
+</p>
+<p>The function can be used with any of four different calling sequences:
+</p>
+
+<ul>
+<li> <p><code>index</code> is specified, but not <code>index2</code> or <code>gene.weights</code>.  Single direction plot.
+</p>
+</li>
+<li> <p><code>index</code> and <code>index2</code> are specified.  Two directional plot.
+</p>
+</li>
+<li> <p><code>index</code> and <code>gene.weights</code> are specified.  <code>gene.weights</code> must have same length as <code>statistics[index]</code>.  Plot will be two-directional if <code>gene.weights</code> contains positive and negative values.
+</p>
+</li>
+<li> <p><code>gene.weights</code> is specified by not <code>index</code> or <code>index2</code>.  <code>gene.weights</code> must have same length as <code>statistics</code>.  Plot will be two-directional if <code>gene.weights</code> contains positive and negative values.      
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>No value is returned but a plot is produced as a side effect.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yifang Hu, Gordon Smyth and Di Wu</p>
+
+
+<h3>References</h3>
+
+<p>Ng, AP, Hu, Y, Metcalf, D, Hyland, CD, Ierino, H, Phipson, B, Wu, D, Baldwin, TM, Kauppi, M, Kiu, H, Di, Rago, L, Hilton, DJ, Smyth, GK, Alexander, WS (2015).
+Early lineage priming by trisomy of Erg leads to myeloproliferation in a down syndrome model.
+<em>PLOS Genetics</em> 11, e1005211. 
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/25973911">http://www.ncbi.nlm.nih.gov/pubmed/25973911</a>
+</p>
+<p>Lim E, Vaillant F, Wu D, Forrest NC, Pal B, Hart AH, Asselin-Labat ML, Gyorki DE, Ward T, Partanen A, Feleppa F, Huschtscha LI, Thorne HJ; kConFab; Fox SB, Yan M, French JD, Brown MA, Smyth GK, Visvader JE, and Lindeman GJ (2009).
+Aberrant luminal progenitors as the candidate target population for basal tumor development in BRCA1 mutation carriers.
+<em>Nature Medicine</em> 15, 907-913.
+</p>
+<p>Liu, GJ, Cimmino, L, Jude, JG, Hu, Y, Witkowski, MT, McKenzie, MD, Kartal-Kaess, M, Best, SA, Tuohey, L, Liao, Y, Shi, W, Mullighan, CG, Farrar, MA, Nutt, SL, Smyth, GK, Zuber, J, and Dickins, RA (2014).
+Pax5 loss imposes a reversible differentiation block in B progenitor acute lymphoblastic leukemia.
+<em>Genes &amp; Development</em> 28, 1337-1350. 
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/24939936">http://www.ncbi.nlm.nih.gov/pubmed/24939936</a>
+</p>
+<p>Sheikh, B, Lee, S, El-saafin, F, Vanyai, H, Hu, Y, Pang, SHM, Grabow, S, Strasser, A, Nutt, SL, Alexander, WS, Smyth, GK, Voss, AK, and Thomas, T (2015). 
+MOZ regulates B cell progenitors in mice, consequently, Moz haploinsufficiency dramatically retards MYC-induced lymphoma development. 
+<em>Blood</em> 125, 1910-1921.
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/25605372">http://www.ncbi.nlm.nih.gov/pubmed/25605372</a>
+</p>
+<p>Subramanian A, Tamayo P, Mootha VK, Mukherjee S, Ebert BL, Gillette MA, Paulovich A, Pomeroy SL, Golub TR, Lander ES, and Mesirov JP (2005).
+Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.
+<em>Proc Natl Acad Sci USA</em> 102, 15545-15550.
+</p>
+<p>Witkowski, MT, Cimmino, L, Hu, Y, Trimarchi, T, Tagoh, H, McKenzie, MD, Best, SA, Tuohey, L, Willson, TA, Nutt, SL, Meinrad Busslinger, M, Aifantis, I, Smyth, GK, and Dickins, RA (2015). 
+Activated Notch counteracts Ikaros tumor suppression in mouse and human T cell acute lymphoblastic leukemia.
+<em>Leukemia</em> 29, 1301-1311.
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/25655195">http://www.ncbi.nlm.nih.gov/pubmed/25655195</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="tricubeMovingAverage.html">tricubeMovingAverage</a></code>, <code><a href="roast.html">roast</a></code>, <code><a href="camera.html">camera</a></code>, <code><a href="romer.html">romer</a></code>, <code><a href="geneSetTest.html">geneSetTest</a></code>
+</p>
+<p>There is a topic page on <a href="10GeneSetTests.html">10.GeneSetTests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+stat &lt;- rnorm(100)
+sel &lt;- 1:10
+sel2 &lt;- 11:20
+stat[sel] &lt;- stat[sel]+1
+stat[sel2] &lt;- stat[sel2]-1
+
+# One directional
+barcodeplot(stat, index = sel)
+
+# Two directional
+barcodeplot(stat, index = sel, index2 = sel2)
+
+# Second set can be indicated by negative weights
+barcodeplot(stat, index = c(sel,sel2), gene.weights = c(rep(1,10), rep(-1,10)))
+
+# Two directional with unequal weights
+w &lt;- rep(0,100)
+w[sel] &lt;- runif(10)
+w[sel2] &lt;- -runif(10)
+barcodeplot(stat, gene.weights = w, weights.label = "logFC")
+
+# One directional with unequal weights
+w &lt;- rep(0,100)
+w[sel2] &lt;- -runif(10)
+barcodeplot(stat, gene.weights = w, weights.label = "logFC", col.bars = "dodgerblue")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

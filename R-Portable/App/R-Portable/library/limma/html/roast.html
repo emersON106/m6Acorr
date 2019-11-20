@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rotation Gene Set Tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for roast {limma}"><tr><td>roast {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Rotation Gene Set Tests</h2>
+
+<h3>Description</h3>
+
+<p>Rotation gene set testing for linear models.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## Default S3 method:
+roast(y, index = NULL, design = NULL, contrast = ncol(design), geneid = NULL,
+      set.statistic = "mean", gene.weights = NULL, var.prior = NULL, df.prior = NULL,
+      nrot = 999, approx.zscore = TRUE, ...)
+## Default S3 method:
+mroast(y, index = NULL, design = NULL, contrast = ncol(design), geneid = NULL,
+       set.statistic = "mean", gene.weights = NULL, var.prior = NULL, df.prior = NULL,
+       nrot = 999, approx.zscore = TRUE, adjust.method = "BH",
+       midp = TRUE, sort = "directional", ...)
+## Default S3 method:
+fry(y, index = NULL, design = NULL, contrast = ncol(design), geneid = NULL,
+      gene.weights = NULL, standardize = "posterior.sd", sort = "directional", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric matrix giving log-expression or log-ratio values for a series of microarrays, or any object that can coerced to a matrix including <code>ExpressionSet</code>, <code>MAList</code>, <code>EList</code> or <code>PLMSet</code> objects.
+Rows correspond to probes and columns to samples.
+If either <code>var.prior</code> or <code>df.prior</code> are <code>NULL</code>, then <code>y</code> should contain values for all genes on the arrays. If both prior parameters are given, then only <code>y</code> values for the test set are required.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>index vector specifying which rows (probes) of <code>y</code> are in the test set.
+Can be a vector of integer indices, or a logical vector of length <code>nrow(y)</code>, or a vector of gene IDs corresponding to entries in <code>geneid</code>.
+Alternatively it can be a data.frame with the first column containing the index vector and the second column containing directional gene contribution weights.
+For <code>mroast</code> or <code>fry</code>, <code>index</code> is a list of index vectors or a list of data.frames. </p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix</p>
+</td></tr>
+<tr valign="top"><td><code>contrast</code></td>
+<td>
+<p>contrast for which the test is required.
+Can be an integer specifying a column of <code>design</code>, or the name of a column of <code>design</code>, or a numeric contrast vector of length equal to the number of columns of <code>design</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>geneid</code></td>
+<td>
+<p>gene identifiers corresponding to the rows of <code>y</code>.
+Can be either a vector of length <code>nrow(y)</code> or the name of the column of <code>y$genes</code> containing the gene identifiers.
+Defaults to <code>rownames(y)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>set.statistic</code></td>
+<td>
+<p>summary set statistic. Possibilities are <code>"mean"</code>,<code>"floormean"</code>,<code>"mean50"</code> or <code>"msq"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>gene.weights</code></td>
+<td>
+<p>numeric vector of directional (positive or negative) contribution weights specifying the size and direction of the contribution of each probe to the gene set statistics.
+For <code>mroast</code> or <code>fry</code>, this vector must have length equal to <code>nrow(y)</code>.
+For <code>roast</code>, can be of length <code>nrow(y)</code> or of length equal to the number of genes in the test set.</p>
+</td></tr> 
+<tr valign="top"><td><code>var.prior</code></td>
+<td>
+<p>prior value for residual variances. If not provided, this is estimated from all the data using <code>squeezeVar</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>df.prior</code></td>
+<td>
+<p>prior degrees of freedom for residual variances. If not provided, this is estimated using <code>squeezeVar</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>nrot</code></td>
+<td>
+<p>number of rotations used to compute the p-values. Low values like 999 are suitable for testing but higher values such as 9999 or more are recommended for publication purposes.</p>
+</td></tr>
+<tr valign="top"><td><code>approx.zscore</code></td>
+<td>
+<p>logical, if <code>TRUE</code> then a fast approximation is used to convert t-statistics into z-scores prior to computing set statistics. If <code>FALSE</code>, z-scores will be exact.</p>
+</td></tr>
+<tr valign="top"><td><code>adjust.method</code></td>
+<td>
+<p>method used to adjust the p-values for multiple testing. See <code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>midp</code></td>
+<td>
+<p>logical, should mid-p-values be used in instead of ordinary p-values when adjusting for multiple testing?</p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>character, whether to sort output table by directional p-value (<code>"directional"</code>), non-directional p-value (<code>"mixed"</code>), or not at all (<code>"none"</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>standardize</code></td>
+<td>
+<p>how to standardize for unequal probewise variances. Possibilities are <code>"residual.sd"</code>, <code>"posterior.sd"</code> or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any argument that would be suitable for <code><a href="lmFit.html">lmFit</a></code> or <code><a href="ebayes.html">eBayes</a></code> can be included.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions implement rotation gene set tests proposed by Wu et al (2010).
+They perform <em>self-contained</em> gene set tests in the sense defined by Goeman and Buhlmann (2007).
+For <em>competitive</em> gene set tests, see <code><a href="camera.html">camera</a></code>.
+For a gene set enrichment analysis (GSEA) style analysis using a database of gene sets, see <code><a href="romer.html">romer</a></code>.
+</p>
+<p><code>roast</code> and <code>mroast</code> test whether any of the genes in the set are differentially expressed.
+They can be used for any microarray experiment that can be represented by a linear model.
+The design matrix for the experiment is specified as for the <code><a href="lmFit.html">lmFit</a></code> function, and the contrast of interest is specified as for the <code><a href="contrasts.fit.html">contrasts.fit</a></code> function.
+This allows users to focus on differential expression for any coefficient or contrast in a linear model.
+If <code>contrast</code> is not specified, then the last coefficient in the linear model will be tested.
+</p>
+<p>The argument <code>index</code> is often made using <a href="ids2indices.html">ids2indices</a> but does not have to be.
+Each set to be tested is represented by a vector of row numbers or a vector of gene IDs.
+Gene IDs should correspond to either the rownames of <code>y</code> or the entries of <code>geneid</code>.
+</p>
+<p>All three functions support directional contribution gene weights, which can be entered either through the <code>gene.weights</code> argument or via <code>index</code>.
+Directional gene weights allow each gene to be flagged as to its direction and magnitude of change based on prior experimentation.
+A typical use is to make the <code>gene.weights</code> <code>1</code> or <code>-1</code> depending on whether the gene is up or down-regulated in the pathway under consideration.
+Probes with directional weights of opposite signs are expected to have expression changes in opposite directions.
+Gene with larger gene weights in absolute size will have more weight in the set statistic calculation.
+</p>
+<p>Gene weights can be either genome-wide or set-specific.
+Genome-wide weights can be entered via the <code>gene.weights</code> argument.
+Set specific weights can be input by including the gene weights as part of the set's entry in <code>index</code>.
+If any of the components of <code>index</code> are data.frames, then the second column will be assumed to be gene contribution weights for that set.
+All three functions (<code>roast</code>, <code>mroast</code> and <code>fry</code>) support set-specific gene contribution weights as part of an <code>index</code> data.frame.
+</p>
+<p>Set-specific directional gene weights are used to represent <em>expression signatures</em> assembled from previous experiments, from gene annotation or from prior hypotheses.
+In the output from <code>roast</code>, <code>mroast</code> or <code>fry</code>, a significant <code>"Up"</code> p-value means that the differential expression results found in <code>y</code> are positively correlated with the expression signature coded by the gene weights.
+Conversely, a significant <code>"Down"</code> p-value means that the differential expression log-fold-changes are negatively correlated with the expression signature.
+</p>
+<p>Note that the contribution weights set by <code>gene.weights</code> are different in nature and purpose to the precision weights set by the <code>weights</code> argument of <code>lmFit</code>.
+<code>gene.weights</code> control the contribution of each gene to the formation of the gene set statistics and are directional, i.e., can be positive or negative.
+<code>weights</code> indicate the precision of the expression measurements and should be positive.
+The <code>weights</code> are used to construct genewise test statistics whereas <code>gene.weights</code> are used to combine the genewise test statistics.
+</p>
+<p>The arguments <code>df.prior</code> and <code>var.prior</code> have the same meaning as in the output of the <code><a href="ebayes.html">eBayes</a></code> function.
+If these arguments are not supplied, then they are estimated exactly as is done by <code>eBayes</code>.
+</p>
+<p>The gene set statistics <code>"mean"</code>, <code>"floormean"</code>, <code>"mean50"</code> and <code>msq</code> are defined by Wu et al (2010).
+The different gene set statistics have different sensitivities when only some of the genes in a set are differentially expressed.
+If <code>set.statistic="mean"</code> then the set will be statistically significantly only when the majority of the genes are differentially expressed.
+<code>"floormean"</code> and <code>"mean50"</code> will detect as few as 25% differentially expressed in a set.
+<code>"msq"</code> is sensitive to even smaller proportions of differentially expressed genes, if the effects are reasonably large.
+Overall, the <code>"msq"</code> statistic gives the best power for rejecting the null hypothesis of no differentially expressed genes, but the significance can be driven by a small number of genes.
+In many genomic applications it is appropriate to limit results to gene sets for which most of the genes response in a concordance direction, so the relatively conservative <code>"mean"</code> statistic is the default choice.
+</p>
+<p>The output gives p-values three possible alternative hypotheses, 
+<code>"Up"</code> to test whether the genes in the set tend to be up-regulated, with positive t-statistics,
+<code>"Down"</code> to test whether the genes in the set tend to be down-regulated, with negative t-statistics,
+and <code>"Mixed"</code> to test whether the genes in the set tend to be differentially expressed, without regard for direction.
+</p>
+<p><code>roast</code> estimates p-values by simulation, specifically by random rotations of the orthogonalized residuals (Langsrud, 2005), so p-values will vary slightly from run to run.
+The p-value is computed as <code>(b+1)/(nrot+1)</code> where <code>b</code> is the number of rotations giving a more extreme statistic than that observed (Phipson and Smyth, 2010).
+This means that the smallest possible mixed or two-sided p-values are <code>1/(nrot+1)</code>.
+The function uses a symmetry argument to double the effective number of rotations for the one-sided tests, so the smallest possible <code>"Up"</code> or <code>"Down"</code> p-value is <code>1/(2*nrot+1)</code>.
+</p>
+<p>The number of rotations <code>nrot</code> can (and should) be increased tTo get more precise p-values from <code>roast</code> or <code>mroast</code>,
+The default <code>nrot</code> is set fairly low to facilitate quick testing and experimentation but the smallest possible two-sided p-value is <code>1/nrot</code>.
+To get definitive p-values for publication, at least <code>nrot=9999</code> or higher is recommended.
+</p>
+<p><code>mroast</code> does roast tests for multiple sets, including adjustment for multiple testing.
+By default, <code>mroast</code> reports ordinary p-values but uses mid-p-values (Routledge, 1994) at the multiple testing stage.
+Mid-p-values are probably a good choice when using false discovery rates (<code>adjust.method="BH"</code>) but not when controlling the family-wise type I error rate (<code>adjust.method="holm"</code>).
+</p>
+<p>To improve the performance of the gene set statistics, <code>roast</code> and <code>mroast</code> transform the genewise moderated t-statistics to normality using <code>zscoreT</code>.
+By default, an approximate closed-form transformation is used (<code>approx.zscore=TRUE</code>), which is very much faster than the exact transformation and performs just as well.
+</p>
+<p><code>fry</code> is a fast approximation to <code>mroast</code>.
+In the special case that <code>df.prior</code> is large and <code>set.statistic="mean"</code>, <code>fry</code> gives the same result that<code>mroast</code> would give if an infinite number of rotations were performed.
+In other circumstances, when genes have different variances, <code>fry</code> uses a standardization strategy to approximate the <code>mroast</code> results.
+Using <code>fry</code> is recommended when performing tests for a large number of sets because it is fast and because it returns higher resolution p-values that are not limited by the number of rotations performed.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>roast</code> produces an object of class <code>"Roast"</code>.
+This consists of a list with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>data.frame with columns <code>Active.Prop</code> and <code>P.Value</code>, giving the proportion of genes in the set contributing materially to significance and estimated p-values, respectively.
+Rows correspond to the alternative hypotheses Down, Up, UpOrDown (two-sided) and Mixed.</p>
+</td></tr>
+<tr valign="top"><td><code>var.prior</code></td>
+<td>
+<p>prior value for residual variances.</p>
+</td></tr>
+<tr valign="top"><td><code>df.prior</code></td>
+<td>
+<p>prior degrees of freedom for residual variances.</p>
+</td></tr>
+</table>
+<p><code>mroast</code> produces a data.frame with a row for each set and the following columns:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>NGenes</code></td>
+<td>
+<p>number of genes in set</p>
+</td></tr>
+<tr valign="top"><td><code>PropDown</code></td>
+<td>
+<p>proportion of genes in set with <code>z &lt; -sqrt(2)</code></p>
+</td></tr>
+<tr valign="top"><td><code>PropUp</code></td>
+<td>
+<p>proportion of genes in set with <code>z &gt; sqrt(2)</code></p>
+</td></tr>
+<tr valign="top"><td><code>Direction</code></td>
+<td>
+<p>direction of change, <code>"Up"</code> or <code>"Down"</code></p>
+</td></tr>
+<tr valign="top"><td><code>PValue</code></td>
+<td>
+<p>two-sided directional p-value</p>
+</td></tr>
+<tr valign="top"><td><code>FDR</code></td>
+<td>
+<p>two-sided directional false discovery rate</p>
+</td></tr>
+<tr valign="top"><td><code>PValue.Mixed</code></td>
+<td>
+<p>non-directional p-value</p>
+</td></tr>
+<tr valign="top"><td><code>FDR.Mixed</code></td>
+<td>
+<p>non-directional false discovery rate</p>
+</td></tr>
+</table>
+<p><code>fry</code> produces the same output format as <code>mroast</code> but without the columns <code>PropDown</code> and <code>ProbUp</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>approx.score=TRUE</code> become the default in Bioconductor 3.0 (October 2014).
+</p>
+<p>The default set statistic was changed from <code>"msq"</code> to <code>"mean"</code> in Bioconductor 2.7 (October 2010).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Di Wu</p>
+
+
+<h3>References</h3>
+
+<p>Goeman, JJ, and Buhlmann, P (2007).
+Analyzing gene expression data in terms of gene sets: methodological issues.
+<em>Bioinformatics</em> 23, 980-987. 
+</p>
+<p>Langsrud, O (2005).
+Rotation tests.
+<em>Statistics and Computing</em> 15, 53-60.
+</p>
+<p>Phipson B, and Smyth GK (2010).
+Permutation P-values should never be zero: calculating exact P-values when permutations are randomly drawn.
+<em>Statistical Applications in Genetics and Molecular Biology</em>, Volume 9, Article 39.
+<a href="http://www.statsci.org/smyth/pubs/PermPValuesPreprint.pdf">http://www.statsci.org/smyth/pubs/PermPValuesPreprint.pdf</a>
+</p>
+<p>Routledge, RD (1994).
+Practicing safe statistics with the mid-p.
+<em>Canadian Journal of Statistics</em> 22, 103-110.
+</p>
+<p>Wu, D, Lim, E, Francois Vaillant, F, Asselin-Labat, M-L, Visvader, JE, and Smyth, GK (2010). ROAST: rotation gene set tests for complex microarray experiments.
+<em>Bioinformatics</em> 26, 2176-2182.
+<a href="http://bioinformatics.oxfordjournals.org/content/26/17/2176">http://bioinformatics.oxfordjournals.org/content/26/17/2176</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <a href="10GeneSetTests.html">10.GeneSetTests</a> for a description of other functions used for gene set testing.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnorm(100*4,sd=0.3),100,4)
+design &lt;- cbind(Intercept=1,Group=c(0,0,1,1))
+
+# First set of 5 genes are all up-regulated
+index1 &lt;- 1:5
+y[index1,3:4] &lt;- y[index1,3:4]+3
+roast(y,index1,design,contrast=2)
+
+# Second set of 5 genes contains none that are DE
+index2 &lt;- 6:10
+mroast(y,list(set1=index1,set2=index2),design,contrast=2)
+fry(y,list(set1=index1,set2=index2),design,contrast=2)
+
+# Third set of 6 genes contains three down-regulated genes and three up-regulated genes
+index3 &lt;- 11:16
+y[index3[1:3],3:4] &lt;- y[index3[1:3],3:4]-3
+y[index3[4:6],3:4] &lt;- y[index3[4:6],3:4]+3
+
+# Without gene weights
+mroast(y,list(set1=index1,set2=index2,set3=index3),design,contrast=2)
+fry(y,list(set1=index1,set2=index2,set3=index3),design,contrast=2)
+
+# With gene weights
+index3 &lt;- data.frame(Gene=11:16,Weight=c(-1,-1,-1,1,1,1))
+mroast(y,list(set1=index1,set2=index2,set3=index3),design,contrast=2)
+fry(y,list(set1=index1,set2=index2,set3=index3),design,contrast=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Expression List - class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for EList-class {limma}"><tr><td>EList-class {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Expression List - class</h2>
+
+<h3>Description</h3>
+
+<p>A list-based S4 classes for storing expression values (E-values), for example for a set of one-channel microarrays or a set of RNA-seq samples.
+<code>EListRaw</code> holds expression values on the raw scale.
+<code>EList</code> holds expression values on the log scale, usually after background correction and normalization.
+</p>
+<p><code>EListRaw</code> objects are often created by <code><a href="read.maimages.html">read.maimages</a></code>, while
+<code>EList</code> objects are often created by <code><a href="normalizebetweenarrays.html">normalizeBetweenArrays</a></code> or by <code><a href="voom.html">voom</a></code>.
+Alternatively, an <code>EList</code> object can be created directly by <code>new("EList",x)</code>, where <code>x</code> is a list.
+</p>
+
+
+<h3>Required Components</h3>
+
+<p>These classes contains no slots (other than <code>.Data</code>), but objects should contain a list component <code>E</code>:
+</p>
+
+<dl>
+<dt><code>E</code></dt><dd><p>numeric matrix containing expression values.
+In an <code>EListRaw</code> object, the expression values are unlogged, while in an <code>EList</code> object, they are log2 values.
+Rows correspond to probes and columns to samples.</p>
+</dd>
+</dl>
+
+
+
+<h3>Optional Components</h3>
+
+<p>Optional components include:
+</p>
+
+<dl>
+<dt><code>Eb</code></dt><dd><p>numeric matrix containing unlogged background expression values, of same dimensions as <code>E</code>. For an <code>EListRaw</code> object only.</p>
+</dd>
+<dt><code>weights</code></dt><dd><p>numeric matrix of same dimensions as <code>E</code> containing relative spot quality weights.  Elements should be non-negative.</p>
+</dd>
+<dt><code>other</code></dt><dd><p>list containing other matrices, all of the same dimensions as <code>E</code>.</p>
+</dd>
+<dt><code>genes</code></dt><dd><p>data.frame containing probe information. Should have one row for each probe. May have any number of columns.</p>
+</dd>
+<dt><code>targets</code></dt><dd><p>data.frame containing information on the target RNA samples.  Rows correspond to samples.  May have any number of columns.</p>
+</dd>
+</dl>
+
+<p>Valid <code>EList</code> or <code>EListRaw</code> objects may contain other optional components, but all probe or sample information should be contained in the above components.
+</p>
+
+
+<h3>Methods</h3>
+
+<p>These classes inherit directly from class <code>list</code> so any operation appropriate for lists will work on objects of this class.
+In addition, <code>EList</code> objects can be <a href="subsetting.html">subsetted</a> and <a href="cbind.html">combined</a>.
+<code>EList</code> objects will return dimensions and hence functions such as <code><a href="dim.html">dim</a></code>, <code><a href="../../base/html/nrow.html">nrow</a></code> and <code><a href="../../base/html/nrow.html">ncol</a></code> are defined. 
+<code>EList</code>s also inherit a <code><a href="../../methods/html/show.html">show</a></code> method from the virtual class <code><a href="LargeDataObject.html">LargeDataObject</a></code>, which means that <code>ELists</code> will print in a compact way.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="02classes.html">02.Classes</a> gives an overview of all the classes defined by this package.
+</p>
+<p><code><a href="../../Biobase/html/class.ExpressionSet.html">ExpressionSet</a></code> is a more formal class in the Biobase package used for the same purpose.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

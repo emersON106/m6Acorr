@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normalize Columns of a Matrix by Cyclic Loess</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeCyclicLoess {limma}"><tr><td>normalizeCyclicLoess {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Normalize Columns of a Matrix by Cyclic Loess</h2>
+
+<h3>Description</h3>
+
+<p>Normalize the columns of a matrix, cyclicly applying loess normalization to normalize each pair of columns to each other.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeCyclicLoess(x, weights = NULL, span=0.7, iterations = 3, method = "fast")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric matrix, or object which can be coerced to a numeric matrix, containing log-expression values.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric vector of probe weights. Must be non-negative.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>span of loess smoothing window, between 0 and 1.</p>
+</td></tr>
+<tr valign="top"><td><code>iterations</code></td>
+<td>
+<p>number of times to cycle through all pairs of columns.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying which variant of the cyclic loess method to use. Options are <code>"fast"</code>, <code>"affy"</code> or <code>"pairs"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is intended to normalize single channel or A-value microarray intensities between arrays.
+Cyclic loess normalization is similar effect and intention to quantile normalization, but with some advantages, in particular the ability to incorporate probe weights.
+</p>
+<p>A number of variants of cylic loess have been suggested.
+<code>method="pairs"</code> implements the intuitive idea that each pair of arrays is subjected to loess normalization as for two-color arrays.
+This process is simply cycled through all possible pairs of arrays, then repeated for several <code>iterations</code>.
+This is the method described by Ballman et al (2004) as ordinary cyclic loess normalization.
+</p>
+<p><code>method="affy"</code> implements a method similar to <code>normalize.loess</code> in the affy package,
+except that here we call <code>lowess</code> instead of <code>loess</code> and avoid the use of probe subsets and the <code>predict</code> function.
+In this approach, no array is modified until a complete cycle of all pairs has been completed.
+The adjustments are stored for a complete iteration, then averaged, and finally used to modify the arrays.
+The <code>"affy"</code> method is invariant to the order of the columns of <code>x</code>, whereas the <code>"pairs"</code> method is not.
+The affy approach is presumably that used by Bolstad et al (2003), although the algorithm was not explicitly described in that article.
+</p>
+<p><code>method="fast"</code> implements the &quot;fast linear loess&quot; method of Ballman et al (2004), whereby each array is simply normalized to a reference array,
+the reference array being the average of all the arrays.
+This method is relatively fast because computational time is linear in the number of arrays, whereas <code>"pairs"</code> and <code>"affy"</code> are quadratic in the number of arrays.
+<code>"fast"</code> requires n lowess fits per iteration, where n is the number of arrays, whereas <code>"pairs"</code> and <code>"affy"</code> require n*(n-1)/2 lowess fits per iteration.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix of the same dimensions as <code>x</code> containing the normalized values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yunshun (Andy) Chen and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Bolstad, B. M., Irizarry R. A., Astrand, M., and Speed, T. P. (2003). A comparison of normalization methods for high density oligonucleotide array data based on bias and variance. <em>Bioinformatics</em> <b>19</b>, 185-193.
+</p>
+<p>Ballman, KV
+Grill, DE,
+Oberg, AL and
+Therneau, TM (2004).
+Faster cyclic loess: normalizing RNA arrays via linear models.
+<em>Bioinformatics</em> 20, 2778-2786. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+<p><a href="../../affy/html/normalize.loess.html">normalize.loess</a> in the affy package also implements cyclic loess normalization, without weights.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

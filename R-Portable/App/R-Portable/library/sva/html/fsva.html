@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function for performing frozen surrogate variable analysis...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fsva {sva}"><tr><td>fsva {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function for performing frozen surrogate variable analysis as proposed in Parker, Corrada Bravo and Leek 2013</h2>
+
+<h3>Description</h3>
+
+<p>This function performs frozen surrogate variable analysis as described in Parker, Corrada Bravo and Leek 2013. 
+The approach uses a training database to create surrogate variables which are then used
+to remove batch effects both from the training database and a new data set for prediction purposes.
+For inferential analysis see <code><a href="sva.html">sva</a></code>, <code><a href="svaseq.html">svaseq</a></code>, with low level functionality available
+through <code><a href="irwsva.build.html">irwsva.build</a></code> and <code><a href="ssva.html">ssva</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fsva(dbdat, mod, sv, newdat = NULL, method = c("fast", "exact"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dbdat</code></td>
+<td>
+<p>A m genes by n arrays matrix of expression data from the database/training data</p>
+</td></tr>
+<tr valign="top"><td><code>mod</code></td>
+<td>
+<p>The model matrix for the terms included in the analysis for the training data</p>
+</td></tr>
+<tr valign="top"><td><code>sv</code></td>
+<td>
+<p>The surrogate variable object created by running sva on dbdat using mod.</p>
+</td></tr>
+<tr valign="top"><td><code>newdat</code></td>
+<td>
+<p>(optional) A set of test samples to be adjusted using the training database</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>If method =&quot;fast&quot; then the SVD is calculated using an online approach, this may introduce slight bias. If method=&quot;exact&quot; the exact SVD is calculated, but will be slower</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>db An adjusted version of the training database where the effect of batch/expression heterogeneity has been removed
+</p>
+<p>new An adjusted version of the new samples, adjusted one at a time using the fsva methodology.
+</p>
+<p>newsv Surrogate variables for the new samples
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(bladderbatch)
+library(pamr)
+data(bladderdata)
+dat &lt;- bladderEset[1:50,]
+
+pheno = pData(dat)
+edata = exprs(dat)
+
+set.seed(1234)
+trainIndicator = sample(1:57,size=30,replace=FALSE)
+testIndicator = (1:57)[-trainIndicator]
+trainData = edata[,trainIndicator]
+testData = edata[,testIndicator]
+trainPheno = pheno[trainIndicator,]
+testPheno = pheno[testIndicator,]
+
+mydata = list(x=trainData,y=trainPheno$cancer)
+mytrain = pamr.train(mydata)
+table(pamr.predict(mytrain,testData,threshold=2),testPheno$cancer)
+
+trainMod = model.matrix(~cancer,data=trainPheno)
+trainMod0 = model.matrix(~1,data=trainPheno)
+trainSv = sva(trainData,trainMod,trainMod0)
+
+fsvaobj = fsva(trainData,trainMod,trainSv,testData)
+mydataSv = list(x=fsvaobj$db,y=trainPheno$cancer)
+mytrainSv = pamr.train(mydataSv)
+table(pamr.predict(mytrainSv,fsvaobj$new,threshold=1),testPheno$cancer)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

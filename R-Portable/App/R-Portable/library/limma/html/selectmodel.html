@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Select Appropriate Linear Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for selectModel {limma}"><tr><td>selectModel {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Select Appropriate Linear Model</h2>
+
+<h3>Description</h3>
+
+<p>Select the best fitting linear model for each gene by minimizing an information criterion.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+selectModel(y, designlist, criterion="aic", df.prior=0, s2.prior=NULL, s2.true=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a matrix-like data object, containing log-ratios or log-values of expression for a series of microarrays.
+Any object class which can be coerced to matrix is acceptable including <code>numeric</code>, <code>matrix</code>, <code>MAList</code>, <code>marrayNorm</code>, <code>ExpressionSet</code> or <code>PLMset</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>designlist</code></td>
+<td>
+<p>list of design matrices</p>
+</td></tr> 
+<tr valign="top"><td><code>criterion</code></td>
+<td>
+<p>information criterion to be used for model selection, <code>"aic"</code>, <code>"bic"</code> or <code>"mallowscp"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>df.prior</code></td>
+<td>
+<p>prior degrees of freedom for residual variances. See <code><a href="squeezeVar.html">squeezeVar</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>s2.prior</code></td>
+<td>
+<p>prior value for residual variances, to be used if <code>df.prior</code>&gt;0.</p>
+</td></tr>
+<tr valign="top"><td><code>s2.true</code></td>
+<td>
+<p>numeric vector of true variances, to be used if <code>criterion="mallowscp"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other optional arguments to be passed to <code>lmFit</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function chooses, for each probe, the best fitting model out of a set of alternative models represented by a list of design matrices.
+Selection is by Akaike's Information Criterion (AIC), Bayesian Information Criterion (BIC) or by Mallow's Cp.
+</p>
+<p>The criteria have been generalized slightly to accommodate an information prior on the variances represented by <code>s2.prior</code> and <code>df.prior</code> or by <code>s2.post</code>.
+Suitable values for these parameters can be estimated using <code><a href="squeezeVar.html">squeezeVar</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>List with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>IC</code></td>
+<td>
+<p>matrix of information criterion scores, rows for probes and columns for models</p>
+</td></tr>
+<tr valign="top"><td><code>pref</code></td>
+<td>
+<p>factor indicating the model with best (lowest) information criterion score</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Alicia Oshlack and Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+nprobes &lt;- 100
+narrays &lt;- 5
+y &lt;- matrix(rnorm(nprobes*narrays),nprobes,narrays)
+A &lt;- c(0,0,1,1,1)
+B &lt;- c(0,1,0,1,1)
+designlist &lt;- list(
+  None=cbind(Int=c(1,1,1,1,1)),
+  A=cbind(Int=1,A=A),
+  B=cbind(Int=1,B=B),
+  Both=cbind(Int=1,AB=A*B),
+  Add=cbind(Int=1,A=A,B=B),
+  Full=cbind(Int=1,A=A,B=B,AB=A*B)
+)
+out &lt;- selectModel(y,designlist)
+table(out$pref)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

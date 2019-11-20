@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reform a Design Matrix to that Contrasts Become Coefficients</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for contrastAsCoef {limma}"><tr><td>contrastAsCoef {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reform a Design Matrix to that Contrasts Become Coefficients</h2>
+
+<h3>Description</h3>
+
+<p>Reform a design matrix so that one or more coefficients from the new matrix correspond to specified contrasts of coefficients from the old matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+contrastAsCoef(design, contrast=NULL, first=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>numeric design matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>contrast</code></td>
+<td>
+<p>numeric matrix with rows corresponding to columns of the design matrix (coefficients) and columns containing contrasts. May be a vector if there is only one contrast.</p>
+</td></tr>
+<tr valign="top"><td><code>first</code></td>
+<td>
+<p>logical, should coefficients corresponding to contrasts be the first columns (<code>TRUE</code>) or last columns (<code>FALSE</code>) of the output design matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If the contrasts contained in the columns of <code>contrast</code> are not linearly dependent, then superfluous columns are dropped until the remaining matrix has full column rank.
+The number of retained contrasts is stored in <code>qr$rank</code> and the retained columns are given by <code>qr$pivot</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>reformed design matrix</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>columns of design matrix which hold the meaningful coefficients</p>
+</td></tr>
+<tr valign="top"><td><code>qr</code></td>
+<td>
+<p>QR-decomposition of contrast matrix</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/model.matrix.html">model.matrix</a></code> in the stats package.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+design &lt;- cbind(1,c(0,0,1,1,0,0),c(0,0,0,0,1,1))
+cont &lt;- c(0,-1,1)
+design2 &lt;- contrastAsCoef(design, cont)$design
+
+#  Original coef[3]-coef[2] becomes coef[1]
+y &lt;- rnorm(6)
+fit1 &lt;- lm(y~0+design)
+fit2 &lt;- lm(y~0+design2)
+coef(fit1)
+coef(fit1) 
+coef(fit2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

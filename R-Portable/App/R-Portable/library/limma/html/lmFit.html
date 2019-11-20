@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Linear Model for Series of Arrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lmFit {limma}"><tr><td>lmFit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Linear Model for Series of Arrays</h2>
+
+<h3>Description</h3>
+
+<p>Fit linear model for each gene given a series of arrays</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lmFit(object, design=NULL, ndups=1, spacing=1, block=NULL, correlation, weights=NULL,
+      method="ls", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A matrix-like data object containing log-ratios or log-expression values for a series of arrays, with rows corresponding to genes and columns to samples.
+Any type of data object that can be processed by <code><a href="getEAWP.html">getEAWP</a></code> is acceptable.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>the design matrix of the microarray experiment, with rows corresponding to arrays and columns to coefficients to be estimated.  Defaults to the unit vector meaning that the arrays are treated as replicates.</p>
+</td></tr> 
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>positive integer giving the number of times each distinct probe is printed on each array.</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>positive integer giving the spacing between duplicate occurrences of the same probe, <code>spacing=1</code> for consecutive rows.</p>
+</td></tr>
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p>vector or factor specifying a blocking variable on the arrays. Has length equal to the number of arrays. Must be <code>NULL</code> if <code>ndups&gt;2</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>the inter-duplicate or inter-technical replicate correlation</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>non-negative precision weights.  Can be a numeric matrix of individual weights of same size as the object expression matrix, or a numeric vector of array weights with length equal to <code>ncol</code> of the expression matrix, or a numeric vector of gene weights with length equal to <code>nrow</code> of the expression matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>fitting method; <code>"ls"</code> for least squares or <code>"robust"</code> for robust regression</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other optional arguments to be passed to <code>lm.series</code>, <code>gls.series</code> or <code>mrlm</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function fits multiple linear models by weighted or generalized least squares.
+It accepts data from a experiment involving a series of microarrays with the same set of probes.
+A linear model is fitted to the expression data for each probe.
+The expression data should be log-ratios for two-color array platforms or log-expression values for one-channel platforms.
+(To fit linear models to the individual channels of two-color array data, see <code><a href="lmscFit.html">lmscFit</a></code>.)
+The coefficients of the fitted models describe the differences between the RNA sources hybridized to the arrays.
+The probe-wise fitted model results are stored in a compact form suitable for further processing by other functions in the limma package.
+</p>
+<p>The function allows for missing values and accepts quantitative precision weights through the <code>weights</code> argument.
+It also supports two different correlation structures.
+If <code>block</code> is not <code>NULL</code> then different arrays are assumed to be correlated.
+If <code>block</code> is <code>NULL</code> and <code>ndups</code> is greater than one then replicate spots on the same array are assumed to be correlated.  
+It is not possible at this time to fit models with both a block structure and a duplicate-spot correlation structure simultaneously.
+</p>
+<p>If <code>object</code> is a matrix then it should contain log-ratios or log-expression data with rows corresponding to probes and columns to arrays.
+(A numeric vector is treated the same as a matrix with one column.)
+For objects of other classes, a matrix of expression values is taken from the appropriate component or slot of the object.
+If <code>object</code> is of class <code>MAList</code> or <code>marrayNorm</code>, then the matrix of log-ratios (M-values) is extracted.
+If <code>object</code> is of class <code>ExpressionSet</code>, then the expression matrix is extracted.
+(This may contain log-expression or log-ratio values, depending on the platform.)
+If <code>object</code> is of class <code>PLMset</code> then the matrix of chip coefficients <code>chip.coefs</code> is extracted.
+</p>
+<p>The arguments <code>design</code>, <code>ndups</code>, <code>spacing</code> and <code>weights</code> will be extracted from the data <code>object</code> if available and do not normally need to set explicitly in the call.
+On the other hand, if any of these are set in the function call then they will over-ride the slots or components in the data <code>object</code>.
+If <code>object</code> is an <code>PLMset</code>, then weights are computed as <code>1/pmax(object@se.chip.coefs, 1e-05)^2</code>.
+If <code>object</code> is an <code>ExpressionSet</code> object, then weights are not computed.
+</p>
+<p>If the argument <code>block</code> is used, then it is assumed that <code>ndups=1</code>.
+</p>
+<p>The <code>correlation</code> argument has a default value of <code>0.75</code>, but in normal use this default value should not be relied on and the correlation value should be estimated using the function <code>duplicateCorrelation</code>.
+The default value is likely to be too high in particular if used with the <code>block</code> argument.
+</p>
+<p>The actual linear model computations are done by passing the data to one the lower-level functions <code>lm.series</code>, <code>gls.series</code> or <code>mrlm</code>.
+The function <code>mrlm</code> is used if <code>method="robust"</code>.
+If <code>method="ls"</code>, then <code>gls.series</code> is used if a correlation structure has been specified, i.e., if <code>ndups&gt;1</code> or <code>block</code> is non-null and <code>correlation</code> is different from zero.
+If <code>method="ls"</code> and there is no correlation structure, <code>lm.series</code> is used.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code><a href="marraylm.html">MArrayLM</a></code> object containing the result of the fits.
+</p>
+<p>The rownames of <code>object</code> are preserved in the fit object and can be retrieved by <code>rownames(fit)</code> where <code>fit</code> is output from <code>lmFit</code>.
+The column names of <code>design</code> are preserved as column names and can be retrieved by <code>colnames(fit)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code>lmFit</code> uses <code><a href="getEAWP.html">getEAWP</a></code> to extract expression values, gene annotation and so from the data <code>object</code>.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Simulate gene expression data for 100 probes and 6 microarrays
+# Microarray are in two groups
+# First two probes are differentially expressed in second group
+# Std deviations vary between genes with prior df=4
+sd &lt;- 0.3*sqrt(4/rchisq(100,df=4))
+y &lt;- matrix(rnorm(100*6,sd=sd),100,6)
+rownames(y) &lt;- paste("Gene",1:100)
+y[1:2,4:6] &lt;- y[1:2,4:6] + 2
+design &lt;- cbind(Grp1=1,Grp2vs1=c(0,0,0,1,1,1))
+options(digits=3)
+
+# Ordinary fit
+fit &lt;- lmFit(y,design)
+fit &lt;- eBayes(fit)
+topTable(fit,coef=2)
+dim(fit)
+colnames(fit)
+rownames(fit)[1:10]
+names(fit)
+
+# Fold-change thresholding
+fit2 &lt;- treat(fit,lfc=0.1)
+topTreat(fit2,coef=2)
+
+# Volcano plot
+volcanoplot(fit,coef=2,highlight=2)
+
+# Mean-difference plot
+plotMD(fit,column=2)
+
+# Q-Q plot of moderated t-statistics
+qqt(fit$t[,2],df=fit$df.residual+fit$df.prior)
+abline(0,1)
+
+# Various ways of writing results to file
+## Not run: write.fit(fit,file="exampleresults.txt")
+## Not run: write.table(fit,file="exampleresults2.txt")
+
+# Fit with correlated arrays
+# Suppose each pair of arrays is a block
+block &lt;- c(1,1,2,2,3,3)
+dupcor &lt;- duplicateCorrelation(y,design,block=block)
+dupcor$consensus.correlation
+fit3 &lt;- lmFit(y,design,block=block,correlation=dupcor$consensus)
+
+# Fit with duplicate probes
+# Suppose two side-by-side duplicates of each gene
+rownames(y) &lt;- paste("Gene",rep(1:50,each=2))
+dupcor &lt;- duplicateCorrelation(y,design,ndups=2)
+dupcor$consensus.correlation
+fit4 &lt;- lmFit(y,design,ndups=2,correlation=dupcor$consensus)
+dim(fit4)
+fit4 &lt;- eBayes(fit4)
+topTable(fit4,coef=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

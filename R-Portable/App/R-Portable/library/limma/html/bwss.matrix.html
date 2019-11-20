@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Between and within sums of squares for matrix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bwss.matrix {limma}"><tr><td>bwss.matrix {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Between and within sums of squares for matrix</h2>
+
+<h3>Description</h3>
+
+<p>Sums of squares between and within the columns of a matrix. Allows for missing values. This function is called by the <code><a href="anova-method.html">anova</a></code> method for <code>MAList</code> objects.</p>
+
+
+<h3>Usage</h3>
+
+<pre>bwss.matrix(x)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is equivalent to a one-way analysis of variance where the columns of the matrix are the groups.
+If <code>x</code> is a matrix then <code>bwss.matrix(x)</code> is the same as <code>bwss(x,col(x))</code> except for speed of execution.</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>bss</code></td>
+<td>
+<p>sums of squares between the column means.</p>
+</td></tr>
+<tr valign="top"><td><code>wss</code></td>
+<td>
+<p>sums of squares within the column means.</p>
+</td></tr>
+<tr valign="top"><td><code>bdf</code></td>
+<td>
+<p>degrees of freedom corresponding to <code>bss</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>wdf</code></td>
+<td>
+<p>degrees of freedom corresponding to <code>wss</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bwss.html">bwss</a></code>, <code><a href="anova-method.html">anova.MAList</a></code></p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

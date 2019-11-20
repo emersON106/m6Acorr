@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read ImaGene Header Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readImaGeneHeader {limma}"><tr><td>readImaGeneHeader {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read ImaGene Header Information</h2>
+
+<h3>Description</h3>
+
+<p>Read the header information from an ImaGene image analysis output file.
+This function is used internally by <code>read.maimages</code> and is not usually called directly by users.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readImaGeneHeader(file)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>character string giving file name or path</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The raw data files exported by the image analysis software ImaGene include a number of header lines which contain information about the printing and scanning processes.
+This function extracts that information and locates the line where the intensity data begins.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list containing information read from the header of the ImaGene file.
+Each Begin-End environment found in the file header will become a recursive list in the output object, with components corresponding to fields in the file.
+See the ImaGene documentation for further information.
+The output object will also contain a component <code>NHeaderRecords</code>giving the number of lines in the file before the intensity data begins.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.biodiscovery.com/software/imagene">http://www.biodiscovery.com/software/imagene</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="read.maimages.html">read.imagene</a></code>
+</p>
+<p>An overview of LIMMA functions to read data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+h &lt;- readImaGeneHeader("myImaGenefile.txt")
+names(h)
+h$NHeaderRecords
+h[["Field Dimensions"]]
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

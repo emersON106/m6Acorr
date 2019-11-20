@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Background Correction</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 04.Background {limma}"><tr><td>04.Background {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Background Correction</h2>
+
+<h3>Description</h3>
+
+<p>This page deals with background correction methods provided by the <code><a href="backgroundcorrect.html">backgroundCorrect</a></code>, <code><a href="kooperberg.html">kooperberg</a></code> or <code><a href="nec.html">neqc</a></code> functions.
+Microarray data is typically background corrected by one of these functions before normalization and other downstream analysis.
+</p>
+<p><code>backgroundCorrect</code> works on matrices, <code>EListRaw</code> or <code>RGList</code> objects, and calls <code><a href="backgroundcorrect.html">backgroundCorrect.matrix</a></code>.
+</p>
+<p>The <code>movingmin</code> method of <code>backgroundCorrect</code> uses utility functions <code><a href="ma3x3.html">ma3x3.matrix</a></code> and <code><a href="ma3x3.html">ma3x3.spottedarray</a></code>.
+</p>
+<p>The <code>normexp</code> method of <code>backgroundCorrect</code> uses utility functions <code><a href="normexpfit.html">normexp.fit</a></code> and <code><a href="normexpsignal.html">normexp.signal</a></code>.
+</p>
+<p><code><a href="kooperberg.html">kooperberg</a></code> is a Bayesian background correction tool designed specifically for two-color GenePix data.
+It is computationally intensive and requires several additional columns from the GenePix data files.
+These can be read in using <code>read.maimages</code> and specifying the <code>other.columns</code> argument.
+</p>
+<p><code><a href="nec.html">neqc</a></code> is for single-color data.
+It performs normexp background correction and quantile normalization using control probes.
+It uses utility functions <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> and <code><a href="normexpsignal.html">normexp.signal</a></code>.
+If <code>robust=TRUE</code>, then <code>normexp.fit.control</code> uses the function <code>huber</code> in the MASS package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Normalization of Microarray Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 05.Normalization {limma}"><tr><td>05.Normalization {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Normalization of Microarray Data</h2>
+
+<h3>Description</h3>
+
+<p>This page gives an overview of the LIMMA functions available to normalize data from single-channel or two-colour microarrays.
+Smyth and Speed (2003) give an overview of the normalization techniques implemented in the functions for two-colour arrays.
+</p>
+<p>Usually data from spotted microarrays will be normalized using <code><a href="normalizeWithinArrays.html">normalizeWithinArrays</a></code>.
+A minority of data will also be normalized using <code><a href="normalizebetweenarrays.html">normalizeBetweenArrays</a></code> if diagnostic plots suggest a difference in scale between the arrays.
+</p>
+<p>In rare circumstances, data might be normalized using <code><a href="normalizeprintorder.html">normalizeForPrintorder</a></code> before using <code><a href="normalizeWithinArrays.html">normalizeWithinArrays</a></code>.
+</p>
+<p>All the normalization routines take account of spot quality weights which might be set in the data objects.
+The weights can be temporarily modified using <code><a href="modifyWeights.html">modifyWeights</a></code> to, for example, remove ratio control spots from the normalization process.
+</p>
+<p>If one is planning analysis of single-channel information from the microarrays rather than analysis of differential expression based on log-ratios, then the data should be normalized using a single channel-normalization technique.
+Single channel normalization uses further options of the <code><a href="normalizebetweenarrays.html">normalizeBetweenArrays</a></code> function.
+For more details see the <a href="limmaUsersGuide.html">LIMMA User's Guide</a> which includes a section on single-channel normalization.
+</p>
+<p><code>normalizeWithinArrays</code> uses utility functions <code><a href="normalizeWithinArrays.html">MA.RG</a></code>, <code><a href="loessfit.html">loessFit</a></code> and <code><a href="normalizeRobustSpline.html">normalizeRobustSpline</a></code>.
+</p>
+<p><code>normalizeBetweenArrays</code> is the main normalization function for one-channel arrays,
+as well as an optional function for two-colour arrays.
+<code>normalizeBetweenArrays</code> uses utility functions <code><a href="normalizeMedianAbsValues.html">normalizeMedianAbsValues</a></code>, <code><a href="normalizeMedianAbsValues.html">normalizeMedianAbsValues</a></code>, <code><a href="normalizequantiles.html">normalizeQuantiles</a></code> and <code><a href="normalizeCyclicLoess.html">normalizeCyclicLoess</a></code>, none of which need to be called directly by users.
+</p>
+<p><code><a href="nec.html">neqc</a></code> is a between array normalization function customized for Illumina BeadChips.
+</p>
+<p>The function <code><a href="normalizeVSN.html">normalizeVSN</a></code> is also provided as a interface to the vsn package.
+It performs variance stabilizing normalization, an algorithm which includes background correction, within and between normalization together, and therefore doesn't fit into the paradigm of the other methods.
+</p>
+<p><code><a href="removeBatchEffect.html">removeBatchEffect</a></code> can be used to remove a batch effect, associated with hybridization time or some other technical variable, prior to unsupervised analysis.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Smyth, G. K., and Speed, T. P. (2003). Normalization of cDNA microarray data.
+<em>Methods</em> 31, 265-273.
+<a href="http://www.statsci.org/smyth/pubs/normalize.pdf">http://www.statsci.org/smyth/pubs/normalize.pdf</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Genuine Association of Gene Expression Profiles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for genas {limma}"><tr><td>genas {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Genuine Association of Gene Expression Profiles</h2>
+
+<h3>Description</h3>
+
+<p>Calculates biological correlation between two gene expression profiles.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+genas(fit, coef=c(1,2), subset="all", plot=FALSE, alpha=0.4)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> fitted model object produced by <code>lmFit</code> or <code>contrasts.fit</code> and followed by <code>eBayes</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>numeric vector of length 2 indicating which columns in the fit object are to be correlated.</p>
+</td></tr>
+<tr valign="top"><td><code>subset</code></td>
+<td>
+<p>character string indicating which subset of genes to include in the correlation analysis.
+Choices are <code>"all"</code>, <code>"Fpval"</code>, <code>"p.union"</code>, <code>"p.int"</code>, <code>"logFC"</code> or <code>"predFC"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical, should a scatterplot be produced summarizing the correlation analysis?</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>numeric value between 0 and 1 determining the transparency of the technical and biological ellipses if a plot is produced.
+<code>alpha=0</code> indicates fully transparent and <code>alpha=1</code> indicates fully opague.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function estimates the biological correlation between two different contrasts in a linear model.
+By biological correlation, we mean the correlation that would exist between the log2-fold changes (logFC) for the two contrasts, if measurement error could be eliminated and the true log-fold-changes were known.
+This function is motivated by the fact that different contrasts for a linear model are often strongly correlated in a technical sense.
+For example, the estimated logFC for multiple treatment conditions compared back to the same control group will be positively correlated even in the absence of any biological effect.
+This function aims to separate the biological from the technical components of the correlation.
+The method is explained briefly in Majewski et al (2010) and in full detail in Phipson (2013).
+</p>
+<p>The <code>subset</code> argument specifies whether and how the fit object should be subsetted.
+Ideally, only genes that are truly differentially expressed for one or both of the contrasts should be used estimate the biological correlation.
+The default is <code>"all"</code>, which uses all genes in the fit object to estimate the biological correlation.
+The option <code>"Fpval"</code> chooses genes based on how many F-test p-values are estimated to be truly significant using the function <code>propTrueNull</code>.
+This should capture genes that display any evidence of differential expression in either of the two contrasts.
+The options <code>"p.union"</code> and <code>"p.int"</code> are based on the moderated t p-values from both contrasts.
+From the <code>propTrueNull</code> function an estimate of the number of p-values truly significant in either of the two contrasts can be obtained.
+&quot;p.union&quot; takes the union of these genes and <code>"p.int"</code> takes the intersection of these genes.
+The other options, <code>"logFC"</code> and <code>"predFC"</code> subsets on genes that attain a logFC or predFC at least as large as the 90th percentile of the log fold changes or predictive log fold changes on the absolute scale. 
+</p>
+<p>The <code>plot</code> option is a logical argument that specifies whether or not to plot a scatter plot of log-fold-changes for the two contrasts.
+The biological and technical correlations are overlaid on the scatterplot using semi-transparent ellipses.
+<code>library(ellipse)</code> is required to enable the plotting of ellipses.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>genas</code> produces a list with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>technical.correlation</code></td>
+<td>
+<p>estimate of the technical correlation</p>
+</td></tr>
+<tr valign="top"><td><code>biological.correlation</code></td>
+<td>
+<p>estimate of the biological correlation</p>
+</td></tr>
+<tr valign="top"><td><code>covariance.matrix</code></td>
+<td>
+<p>estimate of the covariance matrix from which the biological correlation is obtained</p>
+</td></tr>
+<tr valign="top"><td><code>deviance</code></td>
+<td>
+<p>the likelihood ratio test statistic used to test whether the biological correlation is equal to 0</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>the p.value associated with <code>deviance</code></p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>the number of genes used to estimate the biological correlation</p>
+</td></tr> 
+</table>
+
+
+<h3>Note</h3>
+
+<p>As present, <code>genas</code> assumes that technical correlations between coefficients are the same for all genes, and hence it only works with fit objects that were created without observation weights or missing values.
+It does not work with <code>voom</code> pipelines, because these involve observation weights.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Belinda Phipson and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Majewski, IJ, Ritchie, ME, Phipson, B, Corbin, J, Pakusch, M, Ebert, A, Busslinger, M, Koseki, H, Hu, Y, Smyth, GK, Alexander, WS, Hilton, DJ, and Blewitt, ME (2010).
+Opposing roles of polycomb repressive complexes in hematopoietic stem and progenitor cells.
+<em>Blood</em> 116, 731-739.
+<a href="http://www.bloodjournal.org/content/116/5/731">http://www.bloodjournal.org/content/116/5/731</a>
+</p>
+<p>Phipson, B. (2013).
+<em>Empirical Bayes modelling of expression profiles and their associations</em>.
+PhD Thesis. University of Melbourne, Australia.
+<a href="http://repository.unimelb.edu.au/10187/17614">http://repository.unimelb.edu.au/10187/17614</a>
+</p>
+<p>Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015).
+limma powers differential expression analyses for RNA-sequencing and microarray studies.
+<em>Nucleic Acids Research</em> 43, e47.
+<a href="http://nar.oxfordjournals.org/content/43/7/e47">http://nar.oxfordjournals.org/content/43/7/e47</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lmFit.html">lmFit</a></code>, <code><a href="ebayes.html">eBayes</a></code>, <code><a href="contrasts.fit.html">contrasts.fit</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Simulate gene expression data
+
+#  Three conditions (Control, A and B) and 1000 genes
+ngene &lt;- 1000
+mu.A &lt;- mu.B &lt;- mu.ctrl &lt;- rep(5,ngene)
+
+#  200 genes are differentially expressed.
+#  All are up in condition A and down in B
+#  so the biological correlation is negative.
+mu.A[1:200] &lt;- mu.ctrl[1:200]+2
+mu.B[1:200] &lt;- mu.ctrl[1:200]-2
+
+#  Two microarrays for each condition
+mu &lt;- cbind(mu.ctrl,mu.ctrl,mu.A,mu.A,mu.B,mu.B)
+y &lt;- matrix(rnorm(6000,mean=mu,sd=1),ngene,6)
+
+# two experimental groups and one control group with two replicates each
+group &lt;- factor(c("Ctrl","Ctrl","A","A","B","B"), levels=c("Ctrl","A","B"))
+design &lt;- model.matrix(~group)
+
+# fit a linear model
+fit &lt;- lmFit(y,design)
+fit &lt;- eBayes(fit)
+
+#  Estimate biological correlation between the logFC profiles
+#  for A-vs-Ctrl and B-vs-Ctrl
+genas(fit, coef=c(2,3), plot=TRUE, subset="F")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

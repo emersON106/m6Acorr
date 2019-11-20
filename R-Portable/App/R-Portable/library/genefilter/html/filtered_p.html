@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute and adjust p-values, with filtering</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for filtered_p {genefilter}"><tr><td>filtered_p {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Compute and adjust p-values, with filtering
+</h2>
+
+<h3>Description</h3>
+
+<p>Given filter and test statistics in the form of unadjusted p-values,
+or functions able to compute these statistics from the data, filter
+and then correct the p-values across a range of filtering
+stringencies. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+filtered_p(filter, test, theta, data, method = "none")
+filtered_R(alpha, filter, test, theta, data, method = "none")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+
+<p>A cutoff to which p-values, possibly adjusted for multiple testing,
+will be compared.
+</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+
+<p>A vector of stage-one filter statistics, or a function which is able
+to compute this vector from <code>data</code>, if <code>data</code> is supplied.
+</p>
+</td></tr>
+<tr valign="top"><td><code>test</code></td>
+<td>
+
+<p>A vector of unadjusted p-values, or a function which is able
+to compute this vector from the filtered portion of <code>data</code>, if
+<code>data</code> is supplied. The option to supply a function is useful
+when the value of the test statistic depends on which hypotheses are
+filtered out at stage one. (The <span class="pkg">limma</span> t-statistic is an
+example.) 
+</p>
+</td></tr>
+<tr valign="top"><td><code>theta</code></td>
+<td>
+
+<p>A vector with one or more filtering fractions to consider. Actual
+cutoffs are then computed internally by applying
+<code><a href="../../stats/html/quantile.html">quantile</a></code> to the filter statistics contained in (or
+produced by) the <code>filter</code> argument.
+</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+
+<p>If <code>filter</code> and/or <code>test</code> are functions rather than
+vectors of statistics, they will be applied to <code>data</code>. The
+functions will be passed the whole <code>data</code> object, and must work
+over rows, etc. themselves as appropriate.
+</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>The unadjusted p-values contained in (or produced by) <code>test</code>
+will be adjusted for multiple testing after filtering, using the
+<code><a href="../../stats/html/p.adjust.html">p.adjust</a></code> function in the <span class="pkg">stats</span> package. See the
+<code>method</code> argument there for options.
+</p>
+</td></tr></table>
+<p>p
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>filtered_p</code>, a matrix of p-values, possible adjusted for
+multiple testing, with one row per null hypothesis and one column per
+filtering fraction given in <code>theta</code>. For a given column, entries
+which have been filtered out are <code>NA</code>.
+</p>
+<p>For <code>filtered_R</code>, a count of the entries in the <code>filtered_p</code>
+result which are less than <code>alpha</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Richard Bourgon &lt;bourgon@ebi.ac.uk&gt;</p>
+
+
+<h3>See Also</h3>
+
+<p>See <code><a href="rejection_plot.html">rejection_plot</a></code> for visualization of
+<code>filtered_p</code> results.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See the vignette: Diagnostic plots for independent filtering
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

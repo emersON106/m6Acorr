@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mean-Difference Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mdplot {limma}"><tr><td>mdplot {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mean-Difference Plot</h2>
+
+<h3>Description</h3>
+
+<p>Creates a mean-difference plot of two columns of a matrix.</p>
+
+
+<h3>Usage</h3>
+
+<pre>mdplot(x, columns=c(1,2), xlab="Mean", ylab="Difference", main=NULL, ...)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric <code>matrix</code> with at least two columns.</p>
+</td></tr>
+<tr valign="top"><td><code>columns</code></td>
+<td>
+<p>which columns of <code>x</code> to compare. Plot will display second minus first.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>label for the x-axis.</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>label for the y-axis.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>title of the plot. Defaults to </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code><a href="plotWithHighlights.html">plotWithHighlights</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Plots differences vs means for a set of bivariate values.
+This is a generally useful approach for comparing two correlated measures of the same underlying phenomenon.
+Bland and Altman (1986) argue it is more information than a simple scatterplot of the two variables.
+The bivariate values are stored as columns of <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Cleveland, W. S., (1993). Visualizing Data. Hobart Press.
+</p>
+<p>Bland, J. M., and Altman, D. G. (1986). Statistical methods for assessing agreement between two methods of clinical measurement. Lancet 327, 307-310.
+</p>
+<p>See also <a href="http://www.statsci.org/micrarra/refs/maplots.html">http://www.statsci.org/micrarra/refs/maplots.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotWithHighlights.html">plotWithHighlights</a></code>
+</p>
+<p><code><a href="plotMD.html">plotMD</a></code> is an object-oriented implementation of mean-difference plots for expression data.
+</p>
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x1 &lt;- runif(100)
+x2 &lt;- (x1 + rnorm(100,sd=0.01))^1.2
+oldpar &lt;- par(mfrow=c(1,2))
+plot(x1,x2)
+mdplot(cbind(x1,x2),bg.pch=1,bg.cex=1)
+par(oldpar)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

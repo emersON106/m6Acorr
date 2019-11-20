@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rotation Gene Set Enrichment Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for romer {limma}"><tr><td>romer {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Rotation Gene Set Enrichment Analysis</h2>
+
+<h3>Description</h3>
+
+<p>Gene set enrichment analysis for linear models using rotation tests (ROtation testing using MEan Ranks).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## Default S3 method:
+romer(y, index, design = NULL, contrast = ncol(design),
+      array.weights = NULL, block = NULL, correlation,
+      set.statistic = "mean", nrot = 9999, shrink.resid = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric matrix giving log-expression values.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>list of indices specifying the rows of <code>y</code> in the gene sets. The list can be made using <code><a href="ids2indices.html">ids2indices</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>contrast</code></td>
+<td>
+<p>contrast for which the test is required. Can be an integer specifying a column of <code>design</code>, or else a contrast vector of length equal to the number of columns of <code>design</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>array.weights</code></td>
+<td>
+<p>optional numeric vector of array weights.</p>
+</td></tr> 
+<tr valign="top"><td><code>block</code></td>
+<td>
+<p>optional vector of blocks.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>correlation between blocks.</p>
+</td></tr>
+<tr valign="top"><td><code>set.statistic</code></td>
+<td>
+<p>statistic used to summarize the gene ranks for each set. Possible values are <code>"mean"</code>, <code>"floormean"</code> or <code>"mean50"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>nrot</code></td>
+<td>
+<p>number of rotations used to estimate the p-values.</p>
+</td></tr>
+<tr valign="top"><td><code>shrink.resid</code></td>
+<td>
+<p>logical, should the residuals be shrunk to remove systematics effects before rotation.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments not currently used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements the ROMER procedure described by Majewski et al (2010) and Ritchie et al (2015).
+<code>romer</code> tests a hypothesis similar to that of Gene Set Enrichment Analysis (GSEA) (Subramanian et al, 2005) but is designed for use with linear models.
+Like GSEA, it is designed for use with a database of gene sets.
+Like GSEA, it is a competitive test in that the different gene sets are pitted against one another.
+Instead of permutation, it uses rotation, a parametric resampling method suitable for linear models (Langsrud, 2005; Wu et al, 2010).
+<code>romer</code> can be used with any linear model with some level of replication.
+</p>
+<p>In the output, p-values are given for each set for three possible alternative hypotheses.
+The alternative &quot;up&quot; means the genes in the set tend to be up-regulated, with positive t-statistics.
+The alternative &quot;down&quot; means the genes in the set tend to be down-regulated, with negative t-statistics.
+The alternative &quot;mixed&quot; test whether the genes in the set tend to be differentially expressed, without regard for direction.
+In this case, the test will be significant if the set contains mostly large test statistics, even if some are positive and some are negative.
+The first two alternatives are appropriate if you have a prior expection that all the genes in the set will react in the same direction.
+The &quot;mixed&quot; alternative is appropriate if you know only that the genes are involved in the relevant pathways, without knowing the direction of effect for each gene.
+</p>
+<p>Note that <code>romer</code> estimates p-values by simulation, specifically by random rotations of the orthogonalized residuals (called effects in R).
+This means that the p-values will vary slightly from run to run.
+To get more precise p-values, increase the number of rotations <code>nrot</code>.
+By default, the orthogonalized residual corresponding to the contrast being tested is shrunk have the same expected squared size as a null residual.
+</p>
+<p>The argument <code>set.statistic</code> controls the way that t-statistics are summarized to form a summary test statistic for each set.
+In all cases, genes are ranked by moderated t-statistic.
+If <code>set.statistic="mean"</code>, the mean-rank of the genes in each set is the summary statistic.
+If <code>set.statistic="floormean"</code> then negative t-statistics are put to zero before ranking for the up test, and vice versa for the down test.
+This improves the power for detecting genes with a subset of responding genes.
+If <code>set.statistics="mean50"</code>, the mean of the top 50% ranks in each set is the summary statistic.
+This statistic performs well in practice but is slightly slower to compute.
+See Wu et al (2010) for discussion of these set statistics.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric matrix giving p-values and the number of matched genes in each gene set.
+Rows correspond to gene sets.
+There are four columns giving the number of genes in the set and p-values for the alternative hypotheses mixed, up or down.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yifang Hu and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Langsrud, O (2005).
+Rotation tests.
+<em>Statistics and Computing</em> 15, 53-60
+</p>
+<p>Majewski, IJ, Ritchie, ME, Phipson, B, Corbin, J, Pakusch, M, Ebert, A, Busslinger, M, Koseki, H, Hu, Y, Smyth, GK, Alexander, WS, Hilton, DJ, and Blewitt, ME (2010).
+Opposing roles of polycomb repressive complexes in hematopoietic stem and progenitor cells.
+<em>Blood</em> 116, 731-739.
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/20445021">http://www.ncbi.nlm.nih.gov/pubmed/20445021</a>
+</p>
+<p>Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015).
+limma powers differential expression analyses for RNA-sequencing and microarray studies.
+<em>Nucleic Acids Research</em> 43, e47.
+<a href="http://nar.oxfordjournals.org/content/43/7/e47">http://nar.oxfordjournals.org/content/43/7/e47</a>
+</p>
+<p>Subramanian, A, Tamayo, P, Mootha, VK, Mukherjee, S, Ebert, BL, Gillette, MA, Paulovich, A, Pomeroy, SL, Golub, TR, Lander, ES and Mesirov JP (2005).
+Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles.
+<em>Proc Natl Acad Sci U S A</em> 102, 15545-15550
+</p>
+<p>Wu, D, Lim, E, Francois Vaillant, F, Asselin-Labat, M-L, Visvader, JE, and Smyth, GK (2010).
+ROAST: rotation gene set tests for complex microarray experiments.
+<em>Bioinformatics</em> 26, 2176-2182.
+<a href="http://bioinformatics.oxfordjournals.org/content/26/17/2176">http://bioinformatics.oxfordjournals.org/content/26/17/2176</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="topRomer.html">topRomer</a></code>,
+<code><a href="ids2indices.html">ids2indices</a></code>,
+<code><a href="roast.html">roast</a></code>,
+<code><a href="camera.html">camera</a></code>,
+<code><a href="geneSetTest.html">wilcoxGST</a></code>
+</p>
+<p>There is a topic page on <a href="10GeneSetTests.html">10.GeneSetTests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnorm(100*4),100,4)
+design &lt;- cbind(Intercept=1,Group=c(0,0,1,1))
+index &lt;- 1:5
+y[index,3:4] &lt;- y[index,3:4]+3
+
+index1 &lt;- 1:5
+index2 &lt;- 6:10
+r &lt;- romer(y=y,index=list(set1=index1,set2=index2),design=design,contrast=2,nrot=99)
+r
+topRomer(r,alt="up")
+topRomer(r,alt="down")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

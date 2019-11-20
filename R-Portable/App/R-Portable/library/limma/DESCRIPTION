@@ -1,0 +1,33 @@
+Package: limma
+Version: 3.40.6
+Date: 2019-07-26
+Title: Linear Models for Microarray Data
+Description: Data analysis, linear models and differential expression for microarray data.
+Author: Gordon Smyth [cre,aut], Yifang Hu [ctb], Matthew Ritchie [ctb], Jeremy Silver [ctb], James Wettenhall [ctb], Davis McCarthy [ctb], Di Wu [ctb], Wei Shi [ctb], Belinda Phipson [ctb], Aaron Lun [ctb], Natalie Thorne [ctb], Alicia Oshlack [ctb], Carolyn de Graaf [ctb], Yunshun Chen [ctb], Mette Langaas [ctb], Egil Ferkingstad [ctb], Marcus Davy [ctb], Francois Pepin [ctb], Dongseok Choi [ctb]
+Maintainer: Gordon Smyth <smyth@wehi.edu.au>
+License: GPL (>=2)
+Depends: R (>= 3.6.0)
+Imports: grDevices, graphics, stats, utils, methods
+Suggests: affy, AnnotationDbi, BiasedUrn, Biobase, ellipse, GO.db,
+        gplots, illuminaio, locfit, MASS, org.Hs.eg.db, splines,
+        statmod (>= 1.2.2), vsn
+URL: http://bioinf.wehi.edu.au/limma
+biocViews: ExonArray, GeneExpression, Transcription,
+        AlternativeSplicing, DifferentialExpression,
+        DifferentialSplicing, GeneSetEnrichment, DataImport, Bayesian,
+        Clustering, Regression, TimeCourse, Microarray, MicroRNAArray,
+        mRNAMicroarray, OneChannel, ProprietaryPlatforms, TwoChannel,
+        Sequencing, RNASeq, BatchEffect, MultipleComparison,
+        Normalization, Preprocessing, QualityControl,
+        BiomedicalInformatics, CellBiology, Cheminformatics,
+        Epigenetics, FunctionalGenomics, Genetics, ImmunoOncology,
+        Metabolomics, Proteomics, SystemsBiology, Transcriptomics
+git_url: https://git.bioconductor.org/packages/limma
+git_branch: RELEASE_3_9
+git_last_commit: 3ae0767
+git_last_commit_date: 2019-07-26
+Date/Publication: 2019-07-26
+NeedsCompilation: yes
+Packaged: 2019-07-27 01:00:58 UTC; biocbuild
+Built: R 3.6.0; i386-w64-mingw32; 2019-07-27 13:12:36 UTC; windows
+Archs: i386, x64

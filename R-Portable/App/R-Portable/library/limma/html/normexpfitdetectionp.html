@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Estimate Normexp Model Parameter Using Negative Controls...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normexp.fit.detection.p {limma}"><tr><td>normexp.fit.detection.p {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Estimate Normexp Model Parameter Using Negative Controls Inferred from Regular Probes</h2>
+
+<h3>Description</h3>
+
+<p>Detection p values from Illumina BeadChip microarray data can be used to infer negative control probe intensities from regular probe intensities by using detection p value information when negative control data are not available. The inferred negative control intensities can then be used in the background correction in the same way as those control data outputted from BeadChip used in the <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normexp.fit.detection.p(x, detection.p="Detection")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class <code>EListRaw-class</code> or <code>matrix</code> containing raw intensities of regular probes for a series of microarrays</p>
+</td></tr>
+<tr valign="top"><td><code>detection.p</code></td>
+<td>
+<p>a character string giving the name of the component which contains detection p value information in <code>x</code> or a numeric matrix giving detection p values, <code>Detection</code> by default</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function estimates the normexp parameters in the same way as <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> does, except that negative control probe intensities are inferred from regular probes by taking advantage of detection p value information rather than from the control probe profile outputted by BeadStudio.
+</p>
+<p>Calculation of detection p values in Illumina BeadChip data is based on the rank of probe intensities in the list of negative control probe intensities.
+Therefore, the detection p values can be used to find regular probes which have expression intensities falling into the range of negative control probe intensities. 
+These probes give a good approximation to the real negative control data and thus can be used to estimate the mean and standard deviation of background intensities when negative control data is not available.
+</p>
+<p>If <code>x</code> is an <code>EListRaw-class</code> object, this function will try to look for the component which includes detection p value matrix in <code>x</code> when <code>detection.p</code> is a character string. 
+This function assumes that this component is located within the <code>other</code> component in <code>x</code>.
+The component name specified by <code>detection.p</code> should be exactly the same as the name of the detection p value component in <code>x</code>.
+If <code>detection.p</code> is a matrix, then this matrix will be used as the detection p value data used in this function.
+</p>
+<p>If <code>x</code> is an <code>matrix</code> object, then <code>detection.p</code> has to be a data matrix which includes detection p values.
+</p>
+<p>When <code>detection.p</code> is a <code>matrix</code>, it has to have the same dimension as that of <code>x</code>.
+</p>
+<p>This function will replace the detection p values with 1 subtracted by these values if high intensity probes have detection p values less than those from low intensity probes.
+</p>
+<p>Note that when control data are available, the <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> function should be used instead.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix containing estimated parameters with rows being arrays and with columns being parameters.
+Column names are <code>mu</code>, <code>logsigma</code> and <code>logalpha</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei Shi and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Shi W, Oshlack A and Smyth GK (2010).
+Optimizing the noise versus bias trade-off for Illumina Whole Genome Expression BeadChips.
+<em>Nucleic Acids Research</em> 38, e204.
+<a href="http://nar.oxfordjournals.org/content/38/22/e204">http://nar.oxfordjournals.org/content/38/22/e204</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="nec.html">nec</a></code> calls this function to get the parameters of the normal+exponential convolution model when control probe profile file is not available and then calls <code><a href="normexpsignal.html">normexp.signal</a></code> to perform the background correction.
+</p>
+<p><code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> estimates normexp parameters using control data outputted by BeadStudio.
+</p>
+<p><code><a href="normexpfit.html">normexp.fit</a></code> estimates normexp parameters using a saddle-point approximation or other mothods.
+</p>
+<p>An overview of background correction functions is given in <code><a href="04Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# read in BeadChip data which do not have control data available
+x &lt;- read.ilmn(files="sample probe profile")
+# estimated normexp parameters
+normexp.fit.detection.p(x)
+# normalization using inferred negative controls
+y &lt;- neqc(x)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

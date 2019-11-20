@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract Log-Expression Matrix from MAList</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for exprs.MA {limma}"><tr><td>exprs.MA {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract Log-Expression Matrix from MAList</h2>
+
+<h3>Description</h3>
+
+<p>Extract the matrix of log-expression values from an <code>MAList</code> object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+exprs.MA(MA)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>MA</code></td>
+<td>
+<p>an <code>MAList</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Converts M and A-values to log-expression values.
+The output matrix will have two columns for each array, in the order green, red for each array.
+</p>
+<p>This contrasts with <code>as.matrix.MAList</code> which extracts the M-values only, or <code>RG.MA</code> which converts to expression values in <code>RGList</code> form.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix with twice the columns of the input.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Weighted Median</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for weighted.median {limma}"><tr><td>weighted.median {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Weighted Median</h2>
+
+<h3>Description</h3>
+
+<p>Compute a weighted median of a numeric vector.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+weighted.median(x, w, na.rm = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric vector containing the values whose mean is to be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>w</code></td>
+<td>
+<p>a vector of weights the same length as <code>x</code> giving
+the weights to use for each element of <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>a logical value indicating whether <code>NA</code>
+values in <code>x</code> should be stripped before the computation proceeds.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>w</code> is missing then all elements of <code>x</code> are
+given the same weight.
+</p>
+<p>Missing values in <code>w</code> are not handled.
+</p>
+<p>The weighted median is the median of the discrete distribution with
+values given by <code>x</code> and probabilities given by <code>w/sum(w)</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric value giving the weighted median</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/median.html">median</a></code>, <code><a href="../../stats/html/weighted.mean.html">weighted.mean</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## GPA from Siegel 1994
+wt &lt;- c(5,  5,  4,  1)/15
+x &lt;- c(3.7,3.3,3.5,2.8)
+xm &lt;- weighted.median(x,wt)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

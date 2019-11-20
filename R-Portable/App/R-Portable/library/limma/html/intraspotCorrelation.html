@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Intra-Spot Correlation for Two Color Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for intraspotCorrelation {limma}"><tr><td>intraspotCorrelation {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Intra-Spot Correlation for Two Color Data</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the within-block correlation associated with spots for spotted two color microarray data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+intraspotCorrelation(object, design, trim=0.15)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an <code><a href="malist.html">MAList</a></code> object or a list from which <code>M</code> and <code>A</code> values may be extracted</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>a numeric matrix containing the design matrix for linear model in terms of the individual channels.
+The number of rows should be twice the number of arrays.
+The number of columns will determine the number of coefficients estimated for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+<p>the fraction of observations to be trimmed from each end of the atanh-correlations when computing the consensus correlation. See <code><a href="../../base/html/mean.html">mean</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function estimates the correlation between two channels observed on each spot.
+The correlation is estimated by fitting a heteroscedastic regression model to the M and A-values of each gene.
+The function also returns a consensus correlation, which is a robust average of the individual correlations, which can be used as input for 
+functions <code>lmscFit</code>.
+</p>
+<p>The function may take long time to execute.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>consensus.correlation</code></td>
+<td>
+<p>robust average of the estimated inter-duplicate correlations. The average is the trimmed mean of the correlations for individual genes on the atanh-transformed scale.</p>
+</td></tr>
+<tr valign="top"><td><code>atanh.correlations</code></td>
+<td>
+<p>a numeric vector giving the individual genewise correlations on the atanh scale</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>numeric matrix of degrees of freedom associated with the correlations. The first column gives the degrees of freedom for estimating the within-spot or M-value mean square while the second gives the degrees of freedom for estimating the between spot or A-value mean square.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Smyth, G. K. (2005). Individual channel analysis of two-colour microarray data.
+<em>Proceedings of the 55th Session of the International Statistics Institute</em>, 5-12 April 2005, Sydney, Australia, Paper 116.
+<a href="http://www.statsci.org/smyth/pubs/ISI2005-116.pdf">http://www.statsci.org/smyth/pubs/ISI2005-116.pdf</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>This function uses <code><a href="../../statmod/html/remlscor.html">remlscore</a></code> from the statmod package.
+</p>
+<p>An overview of methods for single channel analysis in limma is given by <a href="07SingleChannel.html">07.SingleChannel</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  See lmscFit
+## Not run: 
+corfit &lt;- intraspotCorrelation(MA, design)
+all.correlations &lt;- tanh(corfit$atanh.correlations)
+boxplot(all.correlations)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

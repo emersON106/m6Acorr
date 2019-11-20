@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Hypothesis Testing for Linear Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 08.Tests {limma}"><tr><td>08.Tests {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Hypothesis Testing for Linear Models</h2>
+
+<h3>Description</h3>
+
+<p>LIMMA provides a number of functions for multiple testing across both contrasts and genes.
+The starting point is an <code>MArrayLM</code> object, called <code>fit</code> say, resulting from fitting a linear model and running <code>eBayes</code> and, optionally, <code>contrasts.fit</code>.
+See <a href="06linearmodels.html">06.LinearModels</a> or <a href="07SingleChannel.html">07.SingleChannel</a> for details.
+</p>
+
+
+<h3>Multiple testing across genes and contrasts</h3>
+
+<p>The key function is <code><a href="decideTests.html">decideTests</a></code>.
+This function writes an object of class <code><a href="TestResults.html">TestResults</a></code>, which is basically a matrix of <code>-1</code>, <code>0</code> or <code>1</code> elements, of the same dimension as <code>fit$coefficients</code>, indicating whether each coefficient is significantly different from zero.
+A number of different multiple testing strategies are provided.
+<code>decideTests</code> calls <code><a href="classifytestsF.html">classifyTestsF</a></code> to implement the nested F-test strategt. 
+</p>
+<p><code><a href="selectmodel.html">selectModel</a></code> chooses between linear models for each probe using AIC or BIC criteria.
+This is an alternative to hypothesis testing and can choose between non-nested models.
+</p>
+<p>A number of other functions are provided to display the results of <code>decideTests</code>.
+The functions <code><a href="heatdiagram.html">heatDiagram</a></code> (or the older version <code><a href="heatdiagram.html">heatdiagram</a></code> displays the results in a heat-map style display.
+This allows visual comparison of the results across many different conditions in the linear model.
+</p>
+<p>The functions <code><a href="venn.html">vennCounts</a></code> and <code><a href="venn.html">vennDiagram</a></code> provide Venn diagram style summaries of the results.
+</p>
+<p>Summary and <code>show</code> method exists for objects of class <code>TestResults</code>.
+</p>
+<p>The results from <code>decideTests</code> can also be included when the results of a linear model fit are written to a file using <code><a href="writefit.html">write.fit</a></code>.
+</p>
+
+
+<h3>Gene Set Tests</h3>
+
+<p>Competitive gene set testing for an individual gene set is provided by <code><a href="geneSetTest.html">wilcoxGST</a></code> or <code><a href="geneSetTest.html">geneSetTest</a></code>, which permute genes.
+The gene set can be displayed using <code><a href="barcodeplot.html">barcodeplot</a></code>.
+</p>
+<p>Self-contained gene set testing for an individual set is provided by <code><a href="roast.html">roast</a></code>, which uses rotation technology, analogous to permuting arrays.
+</p>
+<p>Gene set enrichment analysis for a large database of gene sets is provided by <code><a href="romer.html">romer</a></code>.
+<code><a href="topRomer.html">topRomer</a></code> is used to rank results from <code>romer</code>.
+</p>
+<p>The functions <code><a href="alias2Symbol.html">alias2Symbol</a></code>, <code><a href="alias2Symbol.html">alias2SymbolTable</a></code> and <code><a href="alias2Symbol.html">alias2SymbolUsingNCBI</a></code> are provided to help match gene sets with microarray probes by way of official gene symbols.
+</p>
+
+
+<h3>Global Tests</h3>
+
+<p>The function <code><a href="genas.html">genas</a></code> can test for associations between two contrasts in a linear model.
+</p>
+<p>Given a set of p-values, the function <code><a href="propTrueNull.html">propTrueNull</a></code> can be used to estimate the proportion of true null hypotheses.
+</p>
+<p>When evaluating test procedures with simulated or known results, the utility function <code><a href="auROC.html">auROC</a></code> can be used to compute the area under the Receiver Operating Curve for the test results for a given probe.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

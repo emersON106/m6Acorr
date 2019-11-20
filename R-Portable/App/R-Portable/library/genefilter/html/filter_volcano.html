@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Volcano plot for overall variance filtering</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for filter_volcano {genefilter}"><tr><td>filter_volcano {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Volcano plot for overall variance filtering</h2>
+
+<h3>Description</h3>
+
+<p>Generate a volcano plot contrasting p-value with fold change (on the
+log scale), in order to visualize the effect of filtering on overall
+variance and also assign significance via p-value.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+filter_volcano(
+               d, p, S,
+               n1, n2,
+               alpha, S_cutoff,
+               cex = 0.5, pch = 19,
+               xlab = expression(paste(log[2], " fold change")),
+               ylab = expression(paste("-", log[10], " p")),
+               cols = c("grey80", "grey50", "black"),
+               ltys = c(1, 3),
+               use_legend = TRUE,
+               ...
+               )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>d</code></td>
+<td>
+<p>Fold changes, typically on the log scale, base 2.</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>The p-values</p>
+</td></tr>
+<tr valign="top"><td><code>S</code></td>
+<td>
+
+<p>The overall standard deviation filter statistics, i.e., the
+square roots of the overall variance filter statistics.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n1</code></td>
+<td>
+<p>Sample size for group 1.</p>
+</td></tr>
+<tr valign="top"><td><code>n2</code></td>
+<td>
+<p>Sample size for group 2.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>Significance cutoff used for p-values.</p>
+</td></tr>
+<tr valign="top"><td><code>S_cutoff</code></td>
+<td>
+
+<p>Filter cutoff used for the overall standard deviation in <code>S</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>Point size for plotting.</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>Point character for plotting.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>Label for x-axis.</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>Label for y-axis.</p>
+</td></tr>
+<tr valign="top"><td><code>cols</code></td>
+<td>
+
+<p>A vector of three colors used for plotting. These correspond to
+filtered data, data which pass the filter but are insignificant, and
+data pass the filter and are also statistically significant.
+</p>
+</td></tr>
+<tr valign="top"><td><code>ltys</code></td>
+<td>
+
+<p>The induced bound on log-scale fold change is plotted, as is the
+significance cutoff for data passing the filter. The <code>ltys</code>
+argument gives line styles for these drawing these two thresholds on
+the plot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>use_legend</code></td>
+<td>
+<p>Should a legend for point color be produced?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments for <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Richard Bourgon &lt;bourgon@ebi.ac.uk&gt;</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See the vignette: Diagnostic plots for independent filtering
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

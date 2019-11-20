@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class &quot;rowROC&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rowROC-class {genefilter}"><tr><td>rowROC-class {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class &quot;rowROC&quot;</h2>
+
+<h3>Description</h3>
+
+<p>A class to model ROC curves and corresponding area under
+the curve as produced by rowpAUCs.</p>
+
+
+<h3>Objects from the Class</h3>
+
+<p>Objects can be created by calls of the form <code>new("rowROC", ...)</code>.
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>data</code>:</dt><dd><p>Object of class <code>"matrix"</code> The input data.</p>
+</dd>
+<dt><code>ranks</code>:</dt><dd><p>Object of class <code>"matrix"</code> The ranked
+input data. </p>
+</dd>
+<dt><code>sens</code>:</dt><dd><p>Object of class <code>"matrix"</code> Matrix of
+senitivity values for each gene at each cutpoint. </p>
+</dd>
+<dt><code>spec</code>:</dt><dd><p>Object of class <code>"matrix"</code> Matrix of
+specificity values for each gene at each cutpoint.</p>
+</dd>
+<dt><code>pAUC</code>:</dt><dd><p>Object of class <code>"numeric"</code> The partial
+area under the curve (integrated from 0 to <code>p</code>. </p>
+</dd>
+<dt><code>AUC</code>:</dt><dd><p>Object of class <code>"numeric"</code> The total area
+under the curve. </p>
+</dd>
+<dt><code>factor</code>:</dt><dd><p>Object of class <code>"factor"</code> The factor
+used for classification.</p>
+</dd>
+<dt><code>cutpoints</code>:</dt><dd><p>Object of class <code>"matrix"</code> The values
+of the cutpoints at which specificity ans sensitivity was
+calculated. (Note: the data is ranked prior to computation
+of ROC curves, the cutpoints map to the ranked data.</p>
+</dd>
+<dt><code>caseNames</code>:</dt><dd><p>Object of class <code>"character"</code> The
+names of the two classification cases.</p>
+</dd>
+<dt><code>p</code>:</dt><dd><p>Object of class <code>"numeric"</code> The limit to which
+<code>pAUC</code> is integrated. </p>
+</dd>
+</dl>
+
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>show <code>signature(object="rowROC")</code></dt><dd><p>Print nice info
+about the object.</p>
+</dd>
+<dt>[ <code>signature(x="rowROC", j="missing")</code></dt><dd><p>Subset the
+object according to rows/genes.</p>
+</dd>
+<dt>plot <code>signature(x="rowROC", y="missing")</code></dt><dd><p>Plot the ROC
+curve of the first row of the object along with the <code>pAUC</code>.
+To plot the curve for a specific row/gene subsetting should be done
+first (i.e. <code>plot(rowROC[1])</code>.</p>
+</dd>
+<dt>pAUC <code>signature(object="rowROC", p="numeric", flip="logical")</code></dt><dd><p>Integrate
+area under the curve from <code>0</code> to <code>p</code>. This method
+returns a new <code>rowROC</code> object.</p>
+</dd>
+<dt>AUC <code>signature(object="rowROC")</code></dt><dd><p>Integrate
+total area under the curve. This method returns a new
+<code>rowROC</code> object.</p>
+</dd>
+<dt>sens <code>signature(object="rowROC")</code></dt><dd><p>Accessor method for
+sensitivity slot.</p>
+</dd>
+<dt>spec <code>signature(object="rowROC")</code></dt><dd><p>Accessor method for
+specificity slot.</p>
+</dd>
+<dt>area <code>signature(object="rowROC", total="logical")</code></dt><dd><p>Accessor method for
+pAUC slot.</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Florian Hahne &lt;fhahne@fhcrc.org&gt;</p>
+
+
+<h3>References</h3>
+
+<p>Pepe MS, Longton G, Anderson GL,
+Schummer M.: Selecting
+differentially expressed genes from microarray
+experiments. <em>Biometrics. 2003 Mar;59(1):133-42.</em></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="rowpAUCs.html">rowpAUCs</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(Biobase)
+require(genefilter)
+data(sample.ExpressionSet)
+roc &lt;- rowpAUCs(sample.ExpressionSet, "sex", p=0.5)
+roc
+area(roc[1:3])
+
+if(interactive()) {
+par(ask=TRUE)
+plot(roc)
+plot(1-spec(roc[1]), sens(roc[2]))
+par(ask=FALSE)
+}
+
+pAUC(roc, 0.1)
+roc
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

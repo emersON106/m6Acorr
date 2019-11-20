@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Two-Color Targets Dataframe from One-Row-Per-Array to...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for targetsA2C {limma}"><tr><td>targetsA2C {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Two-Color Targets Dataframe from One-Row-Per-Array to One-Row-Per-Channel</h2>
+
+<h3>Description</h3>
+
+<p>Convert a two-color targets dataframe with one row per array to one with one row per channel.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+targetsA2C(targets, channel.codes = c(1,2), channel.columns = list(Target=c("Cy3","Cy5")),
+           grep = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>targets</code></td>
+<td>
+<p>data.frame with one row per array giving information about target samples associated covariates.</p>
+</td></tr>
+<tr valign="top"><td><code>channel.codes</code></td>
+<td>
+<p>numeric or character vector of length 2 giving codes for the channels</p>
+</td></tr>
+<tr valign="top"><td><code>channel.columns</code></td>
+<td>
+<p>named list of character vectors of length 2.
+Each entry gives a pair of names of columns in <code>targets</code> which contain channel-specific information.
+This pair of columns should be assembled into one column in the output.</p>
+</td></tr>
+<tr valign="top"><td><code>grep</code></td>
+<td>
+<p>logical, if <code>TRUE</code> then the channel column names are found by <code>grep</code>ing, i.e., the actual column names need only contain the names given by <code>channel.columns</code> as substrings</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>targets</code> dataframe holds information about the RNA samples used as targets in the microarray experiment.
+It is often read from a file using <code><a href="readTargets.html">readTargets</a></code>.
+This function is used to convert the dataframe from an array-orientated format with one row for each array and two columns for the two channels into a channel-orientated format with one row for each individual channel observations.
+In statistical terms, the first format treats the arrays as cases and treats the channels as repeated measurements.
+The second format treats the individual channel observations as cases.
+The second format may be more appropriate if the data is to be analyzed in terms of individual log-intensities.
+</p>
+
+
+<h3>Value</h3>
+
+<p>data.frame with twice as many rows as <code>targets</code>.
+Any pair of columns named by <code>channel.columns</code> will now be one column.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Smyth, GK, and Altman, NS (2013).
+Separate-channel analysis of two-channel microarrays: recovering inter-spot information.
+<em>BMC Bioinformatics</em> 14, 165.
+<a href="http://www.biomedcentral.com/1471-2105/14/165">http://www.biomedcentral.com/1471-2105/14/165</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>targetsA2C</code> is used by the <code>coerce</code> method from <code>RGList</code> to <code>ExpressionSet</code> in the convert package.
+</p>
+<p>An overview of methods for single channel analysis in limma is given by <a href="07SingleChannel.html">07.SingleChannel</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+targets &lt;- data.frame(FileName=c("file1.gpr","file2.gpr"),Cy3=c("WT","KO"),Cy5=c("KO","WT"))
+targetsA2C(targets)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

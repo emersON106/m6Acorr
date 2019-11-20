@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Competitive Gene Set Test Accounting for Inter-gene...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for camera {limma}"><tr><td>camera {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Competitive Gene Set Test Accounting for Inter-gene Correlation</h2>
+
+<h3>Description</h3>
+
+<p>Test whether a set of genes is highly ranked relative to other genes in terms of differential expression, accounting for inter-gene correlation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## Default S3 method:
+camera(y, index, design, contrast = ncol(design), weights = NULL,
+       use.ranks = FALSE, allow.neg.cor=FALSE, inter.gene.cor=0.01, trend.var = FALSE,
+       sort = TRUE, ...)
+## Default S3 method:
+cameraPR(statistic, index, use.ranks = FALSE, inter.gene.cor=0.01, sort = TRUE, ...)
+interGeneCorrelation(y, design)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a numeric matrix of log-expression values or log-ratios of expression values, or any data object containing such a matrix.
+Rows correspond to probes and columns to samples.
+Any type of object that can be processed by <code><a href="getEAWP.html">getEAWP</a></code> is acceptable.</p>
+</td></tr>
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>a numeric vector of genewise statistics. If <code>index</code> contains gene IDs, then <code>statistic</code> should be a named vector with the gene IDs as names.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>an index vector or a list of index vectors.  Can be any vector such that <code>y[index,]</code> of <code>statistic[index]</code> selects the rows corresponding to the test set.  The list can be made using <code><a href="ids2indices.html">ids2indices</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>contrast</code></td>
+<td>
+<p>contrast of the linear model coefficients for which the test is required. Can be an integer specifying a column of <code>design</code>, or else a numeric vector of same length as the number of columns of <code>design</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of precision weights. Can be a matrix of the same size as <code>y</code>, or a numeric vector of array weights with length equal to <code>ncol(y)</code>, or a numeric vector of gene weights with length equal to <code>nrow(y)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>use.ranks</code></td>
+<td>
+<p>do a rank-based test (<code>TRUE</code>) or a parametric test (<code>FALSE</code>)?</p>
+</td></tr>
+<tr valign="top"><td><code>allow.neg.cor</code></td>
+<td>
+<p>should reduced variance inflation factors be allowed for negative correlations?</p>
+</td></tr>
+<tr valign="top"><td><code>inter.gene.cor</code></td>
+<td>
+<p>numeric, optional preset value for the inter-gene correlation within tested sets.  If <code>NA</code> or <code>NULL</code>, then an inter-gene correlation will be estimated for each tested set.</p>
+</td></tr>
+<tr valign="top"><td><code>trend.var</code></td>
+<td>
+<p>logical, should an empirical Bayes trend be estimated?  See <code><a href="ebayes.html">eBayes</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>logical, should the results be sorted by p-value?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are not currently used</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>camera</code> and <code>interGeneCorrelation</code> implement methods proposed by Wu and Smyth (2012).
+<code>camera</code> performs a <em>competitive</em> test in the sense defined by Goeman and Buhlmann (2007).
+It tests whether the genes in the set are highly ranked in terms of differential expression relative to genes not in the set.
+It has similar aims to <code>geneSetTest</code> but accounts for inter-gene correlation.
+See <code><a href="roast.html">roast</a></code> for an analogous <em>self-contained</em> gene set test.
+</p>
+<p>The function can be used for any microarray experiment which can be represented by a linear model.
+The design matrix for the experiment is specified as for the <code><a href="lmFit.html">lmFit</a></code> function, and the contrast of interest is specified as for the <code><a href="contrasts.fit.html">contrasts.fit</a></code> function.
+This allows users to focus on differential expression for any coefficient or contrast in a linear model by giving the vector of test statistic values.
+</p>
+<p><code>camera</code> estimates p-values after adjusting the variance of test statistics by an estimated variance inflation factor.
+The inflation factor depends on estimated genewise correlation and the number of genes in the gene set.
+</p>
+<p>By default, <code>camera</code> uses <code>interGeneCorrelation</code> to estimate the mean pair-wise correlation within each set of genes.
+<code>camera</code> can alternatively be used with a preset correlation specified by <code>inter.gene.cor</code> that is shared by all sets.
+This usually works best with a small value, say <code>inter.gene.cor=0.01</code>.
+</p>
+<p>If <code>interGeneCorrelation=NA</code>, then <code>camera</code> will estimate the inter-gene correlation for each set.
+In this mode, <code>camera</code> gives rigorous error rate control for all sample sizes and all gene sets.
+However, in this mode, highly co-regulated gene sets that are biological interpretable may not always be ranked at the top of the list.
+</p>
+<p>With <code>interGeneCorrelation=0.01</code>, <code>camera</code> will rank biologically interpetable sets more highly.
+This gives a useful compromise between strict error rate control and interpretable gene set rankings.
+</p>
+<p><code>cameraPR</code> is a &quot;pre-ranked&quot; version of <code>camera</code> where the genes are pre-ranked according to a pre-computed statistic.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>camera</code> and <code>cameraPR</code> return a data.frame with a row for each set and the following columns:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>NGenes</code></td>
+<td>
+<p>number of genes in set.</p>
+</td></tr>
+<tr valign="top"><td><code>Correlation</code></td>
+<td>
+<p>inter-gene correlation (only included if the <code>inter.gene.cor</code> was not preset).</p>
+</td></tr>
+<tr valign="top"><td><code>Direction</code></td>
+<td>
+<p>direction of change (<code>"Up"</code> or <code>"Down"</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>PValue</code></td>
+<td>
+<p>two-tailed p-value.</p>
+</td></tr>
+<tr valign="top"><td><code>FDR</code></td>
+<td>
+<p>Benjamini and Hochberg FDR adjusted p-value.</p>
+</td></tr>
+</table>
+<p><code>interGeneCorrelation</code> returns a list with components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>vif</code></td>
+<td>
+<p>variance inflation factor.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>inter-gene correlation.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The default settings for <code>inter.gene.cor</code> and <code>allow.neg.cor</code> were changed to the current values in limma 3.29.6.
+Previously, the default was to estimate an inter-gene correlation for each set.
+To reproduce the earlier default, use <code>allow.neg.cor=TRUE</code> and <code>inter.gene.cor=NA</code>.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Di Wu and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Wu, D, and Smyth, GK (2012). Camera: a competitive gene set test accounting for inter-gene correlation.
+<em>Nucleic Acids Research</em> 40, e133.
+<a href="http://nar.oxfordjournals.org/content/40/17/e133">http://nar.oxfordjournals.org/content/40/17/e133</a>
+</p>
+<p>Goeman, JJ, and Buhlmann, P (2007).
+Analyzing gene expression data in terms of gene sets: methodological issues.
+<em>Bioinformatics</em> 23, 980-987. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="getEAWP.html">getEAWP</a></code>
+</p>
+<p><code><a href="rankSumTestwithCorrelation.html">rankSumTestWithCorrelation</a></code>,
+<code><a href="geneSetTest.html">geneSetTest</a></code>,
+<code><a href="roast.html">roast</a></code>,
+<code><a href="roast.html">fry</a></code>,
+<code><a href="romer.html">romer</a></code>,
+<code><a href="ids2indices.html">ids2indices</a></code>.
+</p>
+<p>There is a topic page on <a href="10GeneSetTests.html">10.GeneSetTests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnorm(1000*6),1000,6)
+design &lt;- cbind(Intercept=1,Group=c(0,0,0,1,1,1))
+
+# First set of 20 genes are genuinely differentially expressed
+index1 &lt;- 1:20
+y[index1,4:6] &lt;- y[index1,4:6]+1
+
+# Second set of 20 genes are not DE
+index2 &lt;- 21:40
+ 
+camera(y, index1, design)
+camera(y, index2, design)
+
+camera(y, list(set1=index1,set2=index2), design, inter.gene.cor=NA)
+camera(y, list(set1=index1,set2=index2), design, inter.gene.cor=0.01)
+
+# Pre-ranked version
+fit &lt;- eBayes(lmFit(y, design))
+cameraPR(fit$t[,2], list(set1=index1,set2=index2))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

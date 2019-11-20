@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Classes Defined by this Package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 02.Classes {limma}"><tr><td>02.Classes {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Classes Defined by this Package</h2>
+
+<h3>Description</h3>
+
+<p>This package defines the following data classes.
+</p>
+
+<dl>
+<dt> <code><a href="rglist.html">RGList</a></code> </dt><dd>
+<p>A class used to store raw intensities as they are read in from an image analysis output file,
+usually by <code>read.maimages</code>.</p>
+</dd>
+<dt> <code><a href="malist.html">MAList</a></code> </dt><dd>
+<p>Intensities converted to M-values and A-values, i.e., to with-spot and whole-spot contrasts on the log-scale.
+Usually created from an <code>RGList</code> using <code>MA.RG</code> or <code>normalizeWithinArrays</code>.
+Objects of this class contain one row for each spot.
+There may be more than one spot and therefore more than one row for each probe.</p>
+</dd>
+<dt> <code><a href="EList.html">EListRaw</a></code> </dt><dd>
+<p>A class to store raw intensities for one-channel microarray data.
+May or may not be background corrected.
+Usually created by <code>read.maimages</code>.</p>
+</dd>
+<dt> <code><a href="EList.html">EList</a></code> </dt><dd>
+<p>A class to store normalized log2 expression values for one-channel microarray data.
+Usually created by <code>normalizeBetweenArrays</code>.</p>
+</dd>
+<dt> <code><a href="marraylm.html">MArrayLM</a></code> </dt><dd>
+<p>Store the result of fitting gene-wise linear models to the normalized intensities or log-ratios.
+Usually created by <code>lmFit</code>.
+Objects of this class normally contain only one row for each unique probe.</p>
+</dd>
+<dt> <code><a href="TestResults.html">TestResults</a></code> </dt><dd>
+<p>Store the results of testing a set of contrasts equal to zero for each probe.
+Usually created by <code>decideTests</code>.
+Objects of this class normally contain one row for each unique probe.</p>
+</dd>
+</dl>
+
+<p>All these data classes obey many analogies with matrices.
+In the case of <code>RGList</code>, <code>MAList</code>, <code>EListRaw</code> and <code>EList</code>, rows correspond to spots or probes and columns to arrays.
+In the case of <code>MarrayLM</code>, rows correspond to unique probes and the columns to parameters or contrasts.
+The functions <code>summary</code>, <code>dim</code>, <code>length</code>, <code>ncol</code>, <code>nrow</code>, <code>dimnames</code>, <code>rownames</code>, <code>colnames</code> have methods for these classes.
+Objects of any of these classes may be <a href="subsetting.html">subsetted</a>.
+Multiple data objects may be <a href="cbind.html">combined</a> by rows (to add extra probes) or by columns (to add extra arrays).
+</p>
+<p>Furthermore all of these classes may be coerced to actually be of class <code>matrix</code> using <code>as.matrix</code>, although this entails loss of information.
+Fitted model objects of class <code>MArrayLM</code> can be coerced to class <code>data.frame</code> using <code><a href="asdataframe.html">as.data.frame</a></code>.
+</p>
+<p>The first three classes belong to the virtual class <code><a href="LargeDataObject.html">LargeDataObject</a></code>.
+A <code>show</code> method is defined for <code>LargeDataOject</code>s which uses the utility function <code><a href="printHead.html">printHead</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

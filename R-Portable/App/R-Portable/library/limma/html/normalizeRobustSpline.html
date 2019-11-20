@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normalize Single Microarray Using Shrunk Robust Splines</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeRobustSpline {limma}"><tr><td>normalizeRobustSpline {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Normalize Single Microarray Using Shrunk Robust Splines</h2>
+
+<h3>Description</h3>
+
+<p>Normalize the M-values for a single microarray using robustly fitted regression splines and empirical Bayes shrinkage.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeRobustSpline(M,A,layout=NULL,df=5,method="M")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>M</code></td>
+<td>
+<p>numeric vector of M-values</p>
+</td></tr>
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>numeric vector of A-values</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>list specifying the dimensions of the spot matrix and the grid matrix. Defaults to a single group for the whole array.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom for regression spline, i.e., the number of regression coefficients and the number of knots</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>choices are <code>"M"</code> for M-estimation or <code>"MM"</code> for high breakdown point regression</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements an idea similar to print-tip loess normalization but uses regression splines in place of the loess curves and uses empirical Bayes ideas to shrink the individual print-tip curves towards a common value.
+This allows the technique to introduce less noise into good quality arrays with little spatial variation while still giving good results on arrays with strong spatial variation.
+</p>
+<p>The original motivation for the robustspline method was to use whole-array information to moderate the normalization curves used for the individual print-tip groups.
+This was an important issue for academically printed spotted two-color microarrays, especially when some of the print-tip groups contained relatively few spots.
+In these situations, robust spline normalization ensures stable results even for print-tip groups with few spots.
+</p>
+<p>Modern commercial two colour arrays do not usually have print tips, so in effect the whole array is a single print-tip group, and so the need for moderating individual curves is gone.
+Robustspline normalization can still be used for data from these arrays, in which case a single normalization curve is estimated.
+In this situation, the method is closely analogous to global loess, with a regression spline replacing the loess curve and with robust
+regression replacing the loess robustifying weights.
+Robust spline normalization with <code>method="MM"</code> has potential advantages over global loess normalization when there a lot of differential expression or the differential expression is assymetric, because of the increased level of robustness.
+The potential advantages of this approach have not been fully explored in a refereed publication however.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector containing normalized M-values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015).
+limma powers differential expression analyses for RNA-sequencing and microarray studies.
+<em>Nucleic Acids Research</em> 43, e47.
+<a href="http://nar.oxfordjournals.org/content/43/7/e47">http://nar.oxfordjournals.org/content/43/7/e47</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>normalizeRobustSpline</code> uses <code>ns</code> in the splines package to specify regression splines and <code>rlm</code> in the MASS package for robust regression.
+</p>
+<p>This function is usually accessed through <code><a href="normalizeWithinArrays.html">normalizeWithinArrays</a></code>.
+An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+A &lt;- 1:100
+M &lt;- rnorm(100)
+normalized.M &lt;- normalizeRobustSpline(M,A)
+
+# Usual usage
+## Not run: MA &lt;- normalizeWithinArrays(RG, method="robustspline")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

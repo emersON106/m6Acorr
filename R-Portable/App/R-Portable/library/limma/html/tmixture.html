@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Estimate Scale Factor in Mixture of t-Distributions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tmixture {limma}"><tr><td>tmixture {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Estimate Scale Factor in Mixture of t-Distributions</h2>
+
+<h3>Description</h3>
+
+<p>These functions estimate the unscaled standard deviation of the true (unobserved) log fold changes for differentially expressed genes.
+They are used by the functions <code>ebayes</code> and <code>eBayes</code> and are not intended to be called directly by users.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tmixture.vector(tstat, stdev.unscaled, df, proportion, v0.lim = NULL)
+tmixture.matrix(tstat, stdev.unscaled, df, proportion, v0.lim = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>tstat</code></td>
+<td>
+<p>numeric vector or matrix of t-statistics.  <code>tmixture.vector</code> assumes a vector while <code>tmixture.matrix</code> assumes a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>stdev.unscaled</code></td>
+<td>
+<p>numeric vector or matrix, conformal with <code>tstat</code>, containing the unscaled standard deviations of the coefficients used to compute the t-statistics.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>numeric vector giving the degrees of freedom associated with <code>tstat</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>proportion</code></td>
+<td>
+<p>assumed proportion of genes that are differentially expressed.</p>
+</td></tr>
+<tr valign="top"><td><code>v0.lim</code></td>
+<td>
+<p>numeric vector of length 2 giving the lower and upper limits for the estimated unscaled standard deviations.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The values in each column of <code>tstat</code> are assumed to follow a mixture of an ordinary t-distribution, with mixing proportion <code>1-proportion</code>, and <code>(v0+v1)/v1</code> times a t-distribution, with mixing proportion <code>proportion</code>.
+Here <code>v1</code> is <code>stdev.unscaled^2</code> and <code>v0</code> is the value to be estimated.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector, of length equal to the number of columns of <code>tstat</code>, containing estimated <code>v0</code> values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ebayes.html">eBayes</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

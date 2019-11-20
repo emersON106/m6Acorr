@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normalize Within Arrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeWithinArrays {limma}"><tr><td>normalizeWithinArrays {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Normalize Within Arrays</h2>
+
+<h3>Description</h3>
+
+<p>Normalize the expression log-ratios for one or more two-colour spotted microarray experiments so that the log-ratios average to zero within each array or sub-array.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeWithinArrays(object, layout, method="printtiploess", weights=object$weights,
+                      span=0.3, iterations=4, controlspots=NULL, df=5, robust="M",
+                      bc.method="subtract", offset=0)
+MA.RG(object, bc.method="subtract", offset=0)
+RG.MA(object)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>object of class <code>list</code>, <code>RGList</code> or <code>MAList</code> containing red and green intensities constituting two-color microarray data.</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>list specifying the dimensions of the spot matrix and the grid matrix. For details see <code><a href="PrintLayout.html">PrintLayout-class</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying the normalization method.
+Choices are <code>"none"</code>, <code>"median"</code>, <code>"loess"</code>, <code>"printtiploess"</code>, <code>"composite"</code>, <code>"control"</code> and <code>"robustspline"</code>.
+A partial string sufficient to uniquely identify the choice is permitted.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix or vector of the same size and shape as the components of <code>object</code> containing spot quality weights.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>numeric scalar giving the smoothing parameter for the <code>loess</code> fit</p>
+</td></tr>
+<tr valign="top"><td><code>iterations</code></td>
+<td>
+<p>number of iterations used in loess fitting.  More iterations give a more robust fit.</p>
+</td></tr>
+<tr valign="top"><td><code>controlspots</code></td>
+<td>
+<p>numeric or logical vector specifying the subset of spots which are non-differentially-expressed control spots, for use with <code>method="composite"</code> or <code>method="control"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom for spline if <code>method="robustspline"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>robust</code></td>
+<td>
+<p>robust regression method if <code>method="robustspline"</code>.  Choices are <code>"M"</code> or <code>"MM"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>bc.method</code></td>
+<td>
+<p>character string specifying background correct method, see <code><a href="backgroundcorrect.html">backgroundCorrect</a></code> for options.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric value, intensity offset used when computing log-ratios, see <code><a href="backgroundcorrect.html">backgroundCorrect</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Normalization is intended to remove from the expression measures any systematic trends which arise from the microarray technology rather than from differences between the probes or between the target RNA samples hybridized to the arrays.
+</p>
+<p>This function normalizes M-values (log-ratios) for dye-bias within each array.
+Apart from <code>method="none"</code> and <code>method="median"</code>, all the normalization methods make use of the relationship between dye-bias and intensity.
+Method <code>"none"</code> computes M-values and A-values but does no normalization.
+Method <code>"median"</code> subtracts the weighted median from the M-values for each array.
+</p>
+<p>The loess normalization methods (<code>"loess"</code>, <code>"printtiploess"</code> and <code>"composite"</code>) were proposed by Yang et al (2001, 2002).
+Smyth and Speed (2003) review these methods and describe how the methods are implemented in the limma package, including choices of tuning parameters.
+More information on the loess control parameters <code>span</code> and <code>iterations</code> can be found under <code><a href="loessfit.html">loessFit</a></code>.
+The default values used here are equivalent to those for the older function <code>stat.ma</code> in the sma package.
+</p>
+<p>Oshlack et al (2004) consider the special issues that arise when a large proportion of probes are differentially expressed.
+They propose an improved version of composite loess normalization, which is implemented in the <code>"control"</code> method.
+This fits a global loess curve through a set of control spots, such as a whole-library titration series, and applies that curve to all the other spots.
+</p>
+<p>The <code>"robustspline"</code> method calls <code><a href="normalizeRobustSpline.html">normalizeRobustSpline</a></code>.
+See that function for more documentation.
+</p>
+<p><code>MA.RG</code> converts an unlogged <code>RGList</code> object into an <code>MAList</code> object.
+<code>MA.RG(object)</code> is equivalent to <code>normalizeWithinArrays(object,method="none")</code>.
+</p>
+<p><code>RG.MA(object)</code> converts back from an <code>MAList</code> object to a <code>RGList</code> object with unlogged intensities.
+</p>
+<p><code>weights</code> is normally a matrix giving a quality weight for every spot on every array.
+If <code>weights</code> is instead a vector or a matrix with only one column, then the weights will be assumed to be the same for every array, i.e., the weights will be probe-specific rather than spot-specific.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code><a href="malist.html">MAList</a></code>.
+Any components found in <code>object</code> will preserved except for <code>R</code>, <code>G</code>, <code>Rb</code>, <code>Gb</code> and <code>other</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Oshlack, A., Emslie, D., Corcoran, L., and Smyth, G. K. (2007). Normalization of boutique two-color microarrays with a high proportion of differentially expressed probes. <em>Genome Biology</em> <b>8</b>, R2. 
+</p>
+<p>Smyth, G. K., and Speed, T. P. (2003). Normalization of cDNA microarray data. <em>Methods</em> <b>31</b>, 265-273.
+</p>
+<p>Yang, Y. H., Dudoit, S., Luu, P., and Speed, T. P. (2001). Normalization for cDNA microarray data. In <em>Microarrays: Optical Technologies and Informatics</em>, M. L. Bittner, Y. Chen, A. N. Dorsel, and E. R. Dougherty (eds), Proceedings of SPIE, Vol. 4266, pp. 141-152. 
+</p>
+<p>Yang, Y. H., Dudoit, S., Luu, P., Lin, D. M., Peng, V., Ngai, J., and Speed, T. P. (2002). Normalization for cDNA microarray data: a robust composite method addressing single and multiple slide systematic variation. <em>Nucleic Acids Research</em> <b>30</b>(4):e15.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of limma functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+In particular, see <code><a href="normalizebetweenarrays.html">normalizeBetweenArrays</a></code> for between-array normalization.
+</p>
+<p>The original loess normalization function was the <code>statma</code> funtion in the sma package.
+<code>normalizeWithinArrays</code> is a direct generalization of that function, with more options and with support for quantitative spot quality weights.
+</p>
+<p>A different implementation of loess normalization methods, with potentially different behavior, is provided by the <code>maNorm</code> in the marray package.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot Expression Densities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotDensities {limma}"><tr><td>plotDensities {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot Expression Densities</h2>
+
+<h3>Description</h3>
+
+<p>Plot the density of expression values for multiple arrays on the same plot.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'RGList'
+plotDensities(object, log=TRUE, group=NULL, col=NULL, main="RG Densities",
+              bc.method="subtract", ...)
+## S3 method for class 'MAList'
+plotDensities(object, log=TRUE, group=NULL, col=NULL, main="RG Densities", ...)
+## S3 method for class 'EListRaw'
+plotDensities(object, log=TRUE, bc.method="subtract", ...)
+## S3 method for class 'EList'
+plotDensities(object, log=TRUE, ...)
+## Default S3 method:
+plotDensities(object, group=NULL, col=NULL, main=NULL, legend="topleft", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an <code>RGList</code>, <code>MAList</code>, <code>EListRaw</code> or <code>EList</code> object containing expression data.  Or any data object that can be coerced to a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>logical, should densities be plotted on the log2 scale?</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>optional vector or factor classifying the arrays into groups.  Should be same length as <code>ncol(object)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>optional vector of colors of the same length as the number of groups.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>the main title for the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>bc.method</code></td>
+<td>
+<p>background subtraction method passed to <code><a href="backgroundcorrect.html">backgroundCorrect</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+<p>character string giving position to place legend.
+See <code><a href="../../graphics/html/legend.html">legend</a></code> for possible values.
+Can also be logical, with <code>FALSE</code> meaning no legend.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>plotDensities.default</code> or <code><a href="../../stats/html/density.html">density</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is useful to display and contrast the distribution of expression values on different arrays.
+It can for example be used to display the effects of between-array normalization.
+See the section on between-array normalization in the LIMMA User's Guide.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Natalie Thorne and Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of diagnostic plots in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+There is a section using <code>plotDensities</code> in conjunction with between-array normalization
+in the <a href="limmaUsersGuide.html">LIMMA User's Guide</a>.
+</p>
+<p>This function uses <code><a href="../../stats/html/density.html">density</a></code> and <code><a href="../../graphics/html/matplot.html">matplot</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#  Default is to plot red channels in red and green channels in green
+plotDensities(MA)
+
+#  Alternatively colors
+plotDensities(MA, col=c("red","blue"))
+
+#  Color by group, with three groups:
+plotDensities(MA,group=group,col=c("blue","orange","green"))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

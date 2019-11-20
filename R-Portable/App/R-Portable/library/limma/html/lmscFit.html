@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fit Linear Model to Individual Channels of Two-Color Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lmscFit {limma}"><tr><td>lmscFit {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fit Linear Model to Individual Channels of Two-Color Data</h2>
+
+<h3>Description</h3>
+
+<p>Fit a linear model to the individual log-intensities for each gene given a series of two-color arrays</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lmscFit(object, design, correlation)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an <code><a href="malist.html">MAList</a></code> object or a list from which <code>M</code> and <code>A</code> values may be extracted</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>a numeric matrix containing the design matrix for linear model in terms of the individual channels.
+The number of rows should be twice the number of arrays.
+The number of columns will determine the number of coefficients estimated for each gene.</p>
+</td></tr>
+<tr valign="top"><td><code>correlation</code></td>
+<td>
+<p>numeric value giving the intra-spot correlation</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For two color arrays, the channels measured on the same set of arrays are correlated.
+The <code>M</code> and <code>A</code> however are uncorrelated for each gene.
+This function fits a linear model to the set of M and A-values for each gene after re-scaling the M and A-values to have equal variances.
+The input correlation determines the scaling required.
+The input correlation is usually estimated using <code><a href="intraspotCorrelation.html">intraspotCorrelation</a></code> before using <code>lmscFit</code>.
+</p>
+<p>Missing values in <code>M</code> or <code>A</code> are not allowed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code><a href="marraylm.html">MArrayLM</a></code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Smyth, GK (2005). Individual channel analysis of two-colour microarray data.
+<em>Proceedings of the 55th Session of the International Statistics Institute</em>, 5-12 April 2005, Sydney, Australia;
+Internatational Statistics Institute; Paper 116.
+<a href="http://www.statsci.org/smyth/pubs/ISI2005-116.pdf">http://www.statsci.org/smyth/pubs/ISI2005-116.pdf</a>
+</p>
+<p>Smyth, GK, and Altman, NS (2013).
+Separate-channel analysis of two-channel microarrays: recovering inter-spot information.
+<em>BMC Bioinformatics</em> 14, 165.
+<a href="http://www.biomedcentral.com/1471-2105/14/165">http://www.biomedcentral.com/1471-2105/14/165</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/lmfit.html">lm.fit</a></code>.
+</p>
+<p>An overview of methods for single channel analysis in limma is given by <a href="07SingleChannel.html">07.SingleChannel</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Subset of data from ApoAI case study in Limma User's Guide
+# Avoid non-positive intensities
+RG &lt;- backgroundCorrect(RG,method="normexp")
+MA &lt;- normalizeWithinArrays(RG)
+MA &lt;- normalizeBetweenArrays(MA,method="Aq")
+targets &lt;- data.frame(Cy3=I(rep("Pool",6)),Cy5=I(c("WT","WT","WT","KO","KO","KO")))
+targets.sc &lt;- targetsA2C(targets)
+targets.sc$Target &lt;- factor(targets.sc$Target,levels=c("Pool","WT","KO"))
+design &lt;- model.matrix(~Target,data=targets.sc)
+corfit &lt;- intraspotCorrelation(MA,design)
+fit &lt;- lmscFit(MA,design,correlation=corfit$consensus)
+cont.matrix &lt;- cbind(KOvsWT=c(0,-1,1))
+fit2 &lt;- contrasts.fit(fit,cont.matrix)
+fit2 &lt;- eBayes(fit2)
+topTable(fit2,adjust="fdr")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Squeeze Sample Variances</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for squeezeVar {limma}"><tr><td>squeezeVar {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Squeeze Sample Variances</h2>
+
+<h3>Description</h3>
+
+<p>Squeeze a set of sample variances together by computing empirical Bayes posterior means.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+squeezeVar(var, df, covariate=NULL, robust=FALSE, winsor.tail.p=c(0.05,0.1))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var</code></td>
+<td>
+<p>numeric vector of independent sample variances.</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>numeric vector of degrees of freedom for the sample variances.</p>
+</td></tr>
+<tr valign="top"><td><code>covariate</code></td>
+<td>
+<p>if non-<code>NULL</code>, <code>var.prior</code> will depend on this numeric covariate. Otherwise, <code>var.prior</code> is constant.</p>
+</td></tr>
+<tr valign="top"><td><code>robust</code></td>
+<td>
+<p>logical, should the estimation of <code>df.prior</code> and <code>var.prior</code> be robustified against outlier sample variances?</p>
+</td></tr>
+<tr valign="top"><td><code>winsor.tail.p</code></td>
+<td>
+<p>numeric vector of length 1 or 2, giving left and right tail proportions of <code>x</code> to Winsorize. Used only when <code>robust=TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements an empirical Bayes algorithm proposed by Smyth (2004).
+</p>
+<p>A conjugate Bayesian hierarchical model is assumed for a set of sample variances.
+The hyperparameters are estimated by fitting a scaled F-distribution to the sample variances.
+The function returns the posterior variances and the estimated hyperparameters.
+</p>
+<p>Specifically, the sample variances <code>var</code> are assumed to follow scaled chi-squared distributions, conditional on the true variances,
+and an scaled inverse chi-squared prior is assumed for the true variances.
+The scale and degrees of freedom of this prior distribution are estimated from the values of <code>var</code>.
+</p>
+<p>The effect of this function is to squeeze the variances towards a common value, or to a global trend if a <code>covariate</code> is provided.
+The squeezed variances have a smaller expected mean square error to the true variances than do the sample variances themselves.
+</p>
+<p>If <code>covariate</code> is non-null, then the scale parameter of the prior distribution is assumed to depend on the covariate.
+If the covariate is average log-expression, then the effect is an intensity-dependent trend similar to that in Sartor et al (2006).
+</p>
+<p><code>robust=TRUE</code> implements the robust empirical Bayes procedure of Phipson et al (2016) which allows some of the <code>var</code> values to be outliers.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>var.post</code></td>
+<td>
+<p>numeric vector of posterior variances.</p>
+</td></tr>
+<tr valign="top"><td><code>var.prior</code></td>
+<td>
+<p>location of prior distribution. A vector if <code>covariate</code> is non-<code>NULL</code>, otherwise a scalar.</p>
+</td></tr>
+<tr valign="top"><td><code>df.prior</code></td>
+<td>
+<p>degrees of freedom of prior distribution. A vector if <code>robust=TRUE</code>, otherwise a scalar.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This function is called by <code>eBayes</code>, but beware a possible confusion with the output from that function.
+The values <code>var.prior</code> and <code>var.post</code> output by <code>squeezeVar</code> correspond to the quantities <code>s2.prior</code> and <code>s2.post</code> output by <code>eBayes</code>, whereas <code>var.prior</code> output by <code>eBayes</code> relates to a different parameter.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Phipson, B, Lee, S, Majewski, IJ, Alexander, WS, and Smyth, GK (2016).
+Robust hyperparameter estimation protects against hypervariable genes and improves power to detect differential expression.
+<em>Annals of Applied Statistics</em> 10, 946-963.
+<a href="http://projecteuclid.org/euclid.aoas/1469199900">http://projecteuclid.org/euclid.aoas/1469199900</a>
+</p>
+<p>Sartor MA, Tomlinson CR, Wesselkamper SC, Sivaganesan S, Leikauf GD, Medvedovic M (2006).
+Intensity-based hierarchical Bayes method improves testing for differentially expressed genes in microarray experiments.
+BMC bioinformatics 7, 538.
+</p>
+<p>Smyth, G. K. (2004). Linear models and empirical Bayes methods for
+assessing differential expression in microarray experiments.
+<em>Statistical Applications in Genetics and Molecular Biology</em> 3, Article 3.
+<a href="http://www.statsci.org/smyth/pubs/ebayes.pdf">http://www.statsci.org/smyth/pubs/ebayes.pdf</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>This function is called by <code><a href="ebayes.html">eBayes</a></code>.
+</p>
+<p>This function calls <code><a href="fitfdist.html">fitFDist</a></code>.
+</p>
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+s2 &lt;- rchisq(20,df=5)/5
+squeezeVar(s2, df=5)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Resume computation with partial results</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bpok {BiocParallel}"><tr><td>bpok {BiocParallel}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Resume computation with partial results</h2>
+
+<h3>Description</h3>
+
+<p>Identifies unsuccessful results returned from <code>bplapply</code>,
+<code>bpmapply</code>, <code>bpvec</code>, <code>bpaggregate</code> or <code>bpvectorize</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+  bpok(x)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>Results returned from a call to <code>bp*apply</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<ul>
+<li><p>bpok
+Returns a <code>logical()</code> vector: FALSE for any jobs that resulted in
+an error. <code>x</code> is the result list output by <code>bplapply</code>,
+<code>bpmapply</code>, <code>bpvec</code>, <code>bpaggregate</code> or <code>bpvectorize</code>.
+
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Michel Lang, Martin Morgan and Valerie Obenchain</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## -----------------------------------------------------------------------
+## Catch errors: 
+## -----------------------------------------------------------------------
+
+## By default 'stop.on.error' is TRUE in BiocParallelParam objects.
+SnowParam(workers = 2)
+
+## If 'stop.on.error' is TRUE an ill-fated bplapply() simply stops,
+## displaying the error message.
+param &lt;- SnowParam(workers = 2, stop.on.error = TRUE)
+tryCatch({
+    bplapply(list(1, "two", 3), sqrt, BPPARAM = param)
+}, error=identity)
+
+## If 'stop.on.error' is FALSE then the computation continues. Errors
+## are signalled but the full evaluation can be retrieved
+param &lt;- SnowParam(workers = 2, stop.on.error = FALSE)
+X &lt;- list(1, "two", 3)
+result &lt;- bptry(bplapply(X, sqrt, BPPARAM = param))
+result
+
+## Check for errors:
+fail &lt;- !bpok(result)
+fail
+
+## Access the traceback with attr():
+tail(attr(result[[2]], "traceback"), 5)
+
+## -----------------------------------------------------------------------
+## Resume calculations: 
+## -----------------------------------------------------------------------
+
+## The 'resume' mechanism is triggered by supplying a list of partial
+## results as 'BPREDO'. Data elements that failed are rerun and merged
+## with previous results.
+
+## A call of sqrt() on the character "2" returns an error.
+param &lt;- SnowParam(workers = 2, stop.on.error = FALSE)
+X &lt;- list(1, "two", 3)
+result &lt;- bptry(bplapply(X, sqrt, BPPARAM = param))
+
+## Fix the input data by changing the character "2" to a numeric 2:
+X_mod &lt;- list(1, 2, 3)
+
+## Repeat the original call to bplapply() with the partial results as 'BPREDO':
+bplapply(X_mod, sqrt, BPPARAM = param , BPREDO = result)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>BiocParallel</em> version 1.18.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

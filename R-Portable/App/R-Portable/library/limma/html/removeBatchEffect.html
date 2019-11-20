@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Remove Batch Effect</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for removeBatchEffect {limma}"><tr><td>removeBatchEffect {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Remove Batch Effect</h2>
+
+<h3>Description</h3>
+
+<p>Remove batch effects from expression data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+removeBatchEffect(x, batch=NULL, batch2=NULL, covariates=NULL,
+                  design=matrix(1,ncol(x),1), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric matrix, or any data object that can be processed by <code><a href="getEAWP.html">getEAWP</a></code> containing log-expression values for a series of samples.
+Rows correspond to probes and columns to samples.</p>
+</td></tr>
+<tr valign="top"><td><code>batch</code></td>
+<td>
+<p>factor or vector indicating batches.</p>
+</td></tr>
+<tr valign="top"><td><code>batch2</code></td>
+<td>
+<p>optional factor or vector indicating a second series of batches.</p>
+</td></tr>
+<tr valign="top"><td><code>covariates</code></td>
+<td>
+<p>matrix or vector of numeric covariates to be adjusted for.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>optional design matrix relating to treatment conditions to be preserved</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code><a href="lmFit.html">lmFit</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is useful for removing batch effects, associated with hybridization time or other technical variables, prior to clustering or unsupervised analysis such as PCA, MDS or heatmaps.
+The design matrix is used to describe comparisons between the samples, for example treatment effects, which should not be removed.
+The function (in effect) fits a linear model to the data, including both batches and regular treatments, then removes the component due to the batch effects.
+</p>
+<p>In most applications, only the first <code>batch</code> argument will be needed.
+This covers the situation where the data has been collected in a series of separate batches.
+</p>
+<p>The <code>batch2</code> argument is used when there is a second series of batch effects, independent of the first series.
+For example, <code>batch</code> might correspond to time of data collection while <code>batch2</code> might correspond to operator or some other change in operating characteristics.
+If <code>batch2</code> is included, then the effects of <code>batch</code> and <code>batch2</code> are assumed to be additive.
+</p>
+<p>The <code>covariates</code> argument allows correction for one or more continuous numeric effects, similar to the analysis of covariance method in statistics.
+If <code>covariates</code> contains more than one column, then the columns are assumed to have additive effects.
+</p>
+<p>The data object <code>x</code> can be of any class for which <code>lmFit</code> works.
+If <code>x</code> contains weights, then these will be used in estimating the batch effects.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric matrix of log-expression values with batch and covariate effects removed.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is not intended to be used prior to linear modelling.
+For linear modelling, it is better to include the batch factors in the linear model.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Carolyn de Graaf</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="05Normalization.html">05.Normalization</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+y &lt;- matrix(rnorm(10*9),10,9)
+y[,1:3] &lt;- y[,1:3] + 5
+batch &lt;- c("A","A","A","B","B","B","C","C","C")
+y2 &lt;- removeBatchEffect(y, batch)
+par(mfrow=c(1,2))
+boxplot(as.data.frame(y),main="Original")
+boxplot(as.data.frame(y2),main="Batch corrected")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

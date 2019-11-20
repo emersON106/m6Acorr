@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Image Plot of Microarray Statistics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for imageplot {limma}"><tr><td>imageplot {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Image Plot of Microarray Statistics</h2>
+
+<h3>Description</h3>
+
+<p>Creates an image of colors or shades of gray that represent the values of a
+statistic for each spot on a spotted microarray.
+This function can be used to explore any spatial effects across the microarray.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+imageplot(z, layout, low = NULL, high = NULL, ncolors = 123, zerocenter = NULL, 
+zlim = NULL, mar=c(2,1,1,1), legend=TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>numeric vector or array. This vector can contain any spot 
+statistics, such
+as log intensity ratios, spot sizes or shapes, or t-statistics. Missing values 
+are allowed and will result in blank spots on the image.
+Infinite values are not allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>a list specifying the dimensions of the spot matrix
+and the grid matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>low</code></td>
+<td>
+<p>color associated with low values of <code>z</code>. May be specified as a character string 
+such as <code>"green"</code>, <code>"white"</code> etc, or as a rgb vector in which <code>c(1,0,0)</code> is red, 
+<code>c(0,1,0)</code> is green and <code>c(0,0,1)</code> is blue. The default value is <code>"green"</code> if <code>zerocenter=T</code> or <code>"white"</code> if <code>zerocenter=F</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>high</code></td>
+<td>
+<p>color associated with high values of <code>z</code>. The default value is <code>"red"</code> if <code>zerocenter=T</code> or <code>"blue"</code> if <code>zerocenter=F</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ncolors</code></td>
+<td>
+<p>number of color shades used in the image including low and high.</p>
+</td></tr>
+<tr valign="top"><td><code>zerocenter</code></td>
+<td>
+<p>should zero values of <code>z</code> correspond to a shade exactly halfway between the colors 
+low and high? The default is TRUE if <code>z</code> takes positive and negative values, 
+otherwise FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>zlim</code></td>
+<td>
+<p>numerical vector of length 2 giving the extreme values of <code>z</code> to associate with 
+colors <code>low</code> and <code>high</code>. By default <code>zlim</code> is the range of <code>z</code>. Any values of <code>z</code> outside 
+the interval <code>zlim</code> will be truncated to the relevant limit.</p>
+</td></tr>
+<tr valign="top"><td><code>mar</code></td>
+<td>
+<p>numeric vector of length 4 specifying the width of the margin around the plot.
+This argument is passed to <code><a href="../../graphics/html/par.html">par</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>legend</code></td>
+<td>
+<p>logical, if <code>TRUE</code> the range of <code>z</code> and <code>zlim</code> is shown in the bottom margin</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments will be passed to the function image</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function may be used to plot the values of any spot-specific statistic, such as the log intensity ratio, background intensity or a quality
+measure such as spot size or shape.
+The image follows the layout of an actual microarray slide with the bottom left corner representing the spot (1,1,1,1).
+The color range is used to represent the range of values for the statistic.
+When this function is used to plot the red/green log-ratios, it is intended to be an in silico version of the classic false-colored red-yellow-green image of a scanned two-color microarray.
+</p>
+<p>This function is related to the earlier <code>plot.spatial</code> function in the <code>sma</code> package and to the later <code>maImage</code> function in the <code>marray</code> package.
+It differs from <code>plot.spatial</code> most noticeably in that all the spots are plotted and the image is plotted from bottom left rather than from top left.
+It is intended to display spatial patterns and artefacts rather than to highlight only the extreme values as does <code>plot.spatial</code>.
+It differs from <code>maImage</code> in that any statistic may be plotted and in its use of a red-yellow-green color scheme for log-ratios, similar to the classic false-colored jpeg image, rather than the red-black-green color scheme associated with heat maps.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code>maImage</code> in the marray package, <code><a href="../../graphics/html/image.html">image</a></code> in the graphics package.
+</p>
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+M &lt;- rnorm(8*4*16*16)
+imageplot(M,layout=list(ngrid.r=8,ngrid.c=4,nspot.r=16,nspot.c=16))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

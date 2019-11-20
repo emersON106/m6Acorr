@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Predictive log fold change for microarrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for predFCm {limma}"><tr><td>predFCm {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Predictive log fold change for microarrays</h2>
+
+<h3>Description</h3>
+
+<p>Calculate the predictive log fold change for a particular coefficient from a fit object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+predFCm(fit, coef=2, var.indep.of.fc=TRUE, all.de=TRUE, prop.true.null.method="lfdr")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> fitted model object produced by <code>lmFit</code> and <code>eBayes</code></p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>integer vector indicating which columns in the fit object are to be shrunk</p>
+</td></tr>
+<tr valign="top"><td><code>var.indep.of.fc</code></td>
+<td>
+<p>assume the genewise variances are independent of genewise fold changes?</p>
+</td></tr>
+<tr valign="top"><td><code>all.de</code></td>
+<td>
+<p>assume all genes are have a non-zero true fold change (<code>TRUE</code>)?
+If <code>FALSE</code>, then the proportion of truly non-differentially (non-DE) genes expressed will be estimated.</p>
+</td></tr>
+<tr valign="top"><td><code>prop.true.null.method</code></td>
+<td>
+<p>method used to estimate proportion of truly non-DE genes. See <code><a href="propTrueNull.html">propTrueNull</a></code> for possible values.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The predictive log fold changes are calculated as the posterior mean log fold changes in the empirical Bayes hierarchical model.
+We call them predictive log fold changes because they are the best prediction of what the log fold change will be for each gene in a comparable future experiment.
+</p>
+<p>The log fold changes are shrunk towards zero depending on how variable they are.
+The <code>var.indep.of.fc</code> argument specifies whether the prior belief is that the log fold changes are independent of the variability of the genes or whether the log fold changes increase with increasing variability of the genes.
+</p>
+<p>If <code>all.de=TRUE</code>, then all genes are assumed to have a non-zero log fold change, even if quite small.
+If <code>all.de=FALSE</code>, then some genes are assumed to have log fold changes exactly zero.
+The proportion of non-DE genes is estimated and taken into account in the calculation.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric vector of predictive (shrunk) log fold changes</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Belinda Phipson and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Phipson, B. (2013).
+<em>Empirical Bayes modelling of expression profiles and their associations</em>.
+PhD Thesis. University of Melbourne, Australia.
+<a href="http://repository.unimelb.edu.au/10187/17614">http://repository.unimelb.edu.au/10187/17614</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="lmFit.html">lmFit</a></code>, <code><a href="ebayes.html">eBayes</a></code>, <code><a href="contrasts.fit.html">contrasts.fit</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Simulate gene expression data,
+#  6 microarrays with 1000 genes on each array 
+set.seed(2004)
+y &lt;- matrix(rnorm(6000),ncol=4)
+
+# two experimental groups and one control group with two replicates each
+group &lt;- factor(c("A","A","B","B"))
+design &lt;- model.matrix(~group)
+
+# fit a linear model
+fit &lt;- lmFit(y,design)
+fit &lt;- eBayes(fit)
+
+# output predictive log fold changes for first 5 genes
+pfc &lt;- predFCm(fit,coef=2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

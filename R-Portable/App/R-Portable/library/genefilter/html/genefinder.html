@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Finds genes that have similar patterns of expression.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for genefinder {genefilter}"><tr><td>genefinder {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Finds genes that have similar patterns of expression.</h2>
+
+<h3>Description</h3>
+
+<p>Given an <code>ExpressionSet</code> or a <code>matrix</code> of gene expressions, and the
+indices of the genes of interest, <code>genefinder</code> returns a <code>list</code> of the
+<code>numResults</code> closest genes.
+The user can specify one of the standard distance measures listed
+below.
+The number of values to return can be specified. The return value is a
+<code>list</code> with two components:
+genes (measured through the desired distance method) to the genes
+of interest (where X is the number of desired results returned) and
+their distances.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+genefinder(X, ilist, numResults=25, scale="none", weights, method="euclidean")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>A numeric <code>matrix</code> where columns represent patients and rows
+represent genes.</p>
+</td></tr>
+<tr valign="top"><td><code>ilist</code></td>
+<td>
+<p>A <code>vector</code> of genes of interest. Contains indices of genes
+in matrix X.</p>
+</td></tr>
+<tr valign="top"><td><code>numResults</code></td>
+<td>
+<p>Number of results to display, starting from the least
+distance to the greatest.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>One of &quot;none&quot;, &quot;range&quot;, or &quot;zscore&quot;. Scaling
+is carried out separately on each row.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>A vector of weights applied across the columns of
+<code>X</code>. If no weights are supplied, no weights are applied.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>One of &quot;euclidean&quot;, &quot;maximum&quot;, &quot;manhattan&quot;, &quot;canberra&quot;, 
+&quot;correlation&quot;, &quot;binary&quot;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If the <code>scale</code> option is &quot;range&quot;, then the input matrix is scaled using
+<code>genescale()</code>. If it is &quot;zscore&quot;, then the input matrix is scaled using
+the <code>scale</code> builtin with no arguments.
+</p>
+<p>The method option specifies the metric used for gene comparisons. The
+metric is applied, row by row, for each gene specified in <code>ilist</code>.
+</p>
+<p>The &quot;correlation&quot; option for the distance method will return a value
+equal to 1-correlation(x).
+</p>
+<p>See <code><a href="../../stats/html/dist.html">dist</a></code> for a more detailed description of the distances.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The returned value is a <code>list</code> containing an entry for each gene
+specified in <code>ilist</code>. Each <code>list</code> entry contains an array of
+distances for that gene of interest.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>J. Gentry and M. Kajen</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="genescale.html">genescale</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(12345)
+
+#create some fake expression profiles
+m1 &lt;- matrix (1:12, 4, 3)
+v1 &lt;- 1
+nr &lt;- 2
+
+#find the 2 rows of m1 that are closest to row 1
+genefinder (m1, v1, nr, method="euc")
+
+v2 &lt;- c(1,3)
+genefinder (m1, v2, nr)
+
+genefinder (m1, v2, nr, scale="range")
+
+genefinder (m1, v2, nr, method="manhattan")
+
+m2 &lt;- matrix (rnorm(100), 10, 10)
+v3 &lt;- c(2, 5, 6, 8)
+nr2 &lt;- 6
+genefinder (m2, v3, nr2, scale="zscore")
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

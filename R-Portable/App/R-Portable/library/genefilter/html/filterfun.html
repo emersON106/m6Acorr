@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Creates a first FALSE exiting function from the list of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for filterfun {genefilter}"><tr><td>filterfun {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Creates a first FALSE exiting function from the list of
+filter functions it is given. </h2>
+
+<h3>Description</h3>
+
+<p>This function creates a function that takes a single argument. The
+filtering functions are bound in the environment of the returned
+function and are applied sequentially to the argument of the returned
+function. When the first filter function evaluates to <code>FALSE</code> the
+function returns <code>FALSE</code> otherwise it returns <code>TRUE</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+filterfun(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Filtering functions. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>filterfun</code> returns a function that takes a single argument. It
+binds the filter functions given to it in the environment of the
+returned function. These functions are applied sequentially (in the
+order they were given to <code>filterfun</code>). The function returns
+<code>FALSE</code> (and exits) when the first filter function returns
+<code>FALSE</code> otherwise it returns <code>TRUE</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="genefilter.html">genefilter</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ set.seed(333)
+ x &lt;- matrix(rnorm(100,2,1),nc=10)
+ cvfun &lt;- cv(.5,2.5)
+ ffun &lt;- filterfun(cvfun)
+ which &lt;- genefilter(x, ffun)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

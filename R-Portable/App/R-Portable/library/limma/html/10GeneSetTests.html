@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Gene Set Tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 10.GeneSetTests {limma}"><tr><td>10.GeneSetTests {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Gene Set Tests</h2>
+
+<h3>Description</h3>
+
+<p>This page gives an overview of the LIMMA functions for gene set testing and pathway analysis.
+</p>
+
+<dl>
+<dt> <code><a href="roast.html">roast</a></code> </dt><dd>
+<p>Self-contained gene set testing for one set. Uses <code><a href="zscoreT.html">zscoreT</a></code> to normalize t-statistics.</p>
+</dd>
+<dt> <code><a href="roast.html">mroast</a></code> </dt><dd>
+<p>Self-contained gene set testing for many sets. Uses <code><a href="zscoreT.html">zscoreT</a></code> to normalize t-statistics.</p>
+</dd>
+<dt> <code><a href="roast.html">fry</a></code> </dt><dd>
+<p>Fast approximation to <code>mroast</code>, especially useful when heteroscedasticity of genes can be ignored.</p>
+</dd>
+<dt> <code><a href="camera.html">camera</a></code> </dt><dd>
+<p>Competitive gene set testing.</p>
+</dd>
+<dt> <code><a href="romer.html">romer</a></code> and <code><a href="topRomer.html">topRomer</a></code> </dt><dd>
+<p>Gene set enrichment analysis.</p>
+</dd>
+<dt> <code><a href="ids2indices.html">ids2indices</a></code> </dt><dd>
+<p>Convert gene sets consisting of vectors of gene identifiers into a list of indices suitable for use in the above functions.</p>
+</dd>
+<dt> <code><a href="alias2Symbol.html">alias2Symbol</a></code>, <code><a href="alias2Symbol.html">alias2SymbolTable</a></code> and <code><a href="alias2Symbol.html">alias2SymbolUsingNCBI</a></code> </dt><dd>
+<p>Convert gene symbols or aliases to current official symbols.</p>
+</dd>
+<dt> <code><a href="geneSetTest.html">geneSetTest</a></code> or <code><a href="geneSetTest.html">wilcoxGST</a></code> </dt><dd>
+<p>Simple gene set testing based on gene or probe permutation.</p>
+</dd>
+<dt> <code><a href="barcodeplot.html">barcodeplot</a></code> </dt><dd>
+<p>Enrichment plot of a gene set.</p>
+</dd>
+<dt> <code><a href="goana.html">goana</a></code> and <code><a href="topGO.html">topGO</a></code></dt><dd>
+<p>Gene ontology over-representation analysis of gene lists using Entrez Gene IDs.
+<code>goana</code> can work directly on a fitted model object or on one or more lists of genes.</p>
+</dd>
+<dt> <code><a href="goana.html">kegga</a></code> and <code><a href="topGO.html">topKEGG</a></code></dt><dd>
+<p>KEGG pathway over-representation analysis of gene lists using Entrez Gene IDs.
+<code>kegga</code> can work directly on a fitted model object or on one or more lists of genes.</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

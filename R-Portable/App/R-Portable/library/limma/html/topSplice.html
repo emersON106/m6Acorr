@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Top table of differentially spliced genes or exons</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for topSplice {limma}"><tr><td>topSplice {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Top table of differentially spliced genes or exons</h2>
+
+<h3>Description</h3>
+
+<p>Top table ranking the most differentially spliced genes or exons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+topSplice(fit, coef = ncol(fit), test = "simes", number = 10, FDR=1, sort.by = "p")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p><code>MArrayLM</code> fit object produced by <code>diffSplice</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>the coefficient (column) of fit for which differentially splicing is assessed.</p>
+</td></tr>
+<tr valign="top"><td><code>test</code></td>
+<td>
+<p>character string specifying which statistical test to apply.
+Possible values are <code>"simes"</code>, <code>"F"</code> or <code>"t"</code>.
+<code>"F"</code> gives F-tests for each gene.
+<code>"t"</code> gives t-tests for each exon.
+<code>"simes"</code> gives genewise p-values derived from the t-tests after Simes adjustment for each gene.
+</p>
+</td></tr>
+<tr valign="top"><td><code>number</code></td>
+<td>
+<p>integer, maximum number of rows to output.</p>
+</td></tr>
+<tr valign="top"><td><code>FDR</code></td>
+<td>
+<p>numeric, only show exons or genes with false discovery rate less than this cutoff.</p>
+</td></tr>
+<tr valign="top"><td><code>sort.by</code></td>
+<td>
+<p>character string specifying which column to sort results by.
+Possible values for <code>"p"</code>, <code>"logFC"</code>, <code>"NExons"</code> or <code>"none"</code>.
+<code>"logFC"</code> is only available if <code>test="t"</code> and <code>"NExons"</code> is only available if <code>test="simes"</code> or <code>test="F"</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Ranks genes or exons by evidence for differential splicing.
+The F-statistic tests for any differences in exon usage between experimental conditions.
+The exon-level t-statistics test for differences between each exon and all other exons for the same gene.
+</p>
+<p>The Simes processes the exon-level p-values to give an overall call of differential splicing for each gene.
+It returns the minimum Simes-adjusted p-values for each gene.
+</p>
+<p>The F-tests are likely to be powerful for genes in which several exons are differentially splices.
+The Simes p-values is likely to be more powerful when only a minority of the exons for a gene are differentially spliced.
+The exon-level t-tests are not recommended for formal error rate control.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data.frame with any annotation columns found in <code>fit</code> plus the following columns
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>logFC</code></td>
+<td>
+<p>log2-fold change of exon vs other exons for the same gene (if <code>level="exon"</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>moderated t-statistic (if <code>level="exon"</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>F</code></td>
+<td>
+<p>moderated F-statistic (if <code>level="gene"</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>P.Value</code></td>
+<td>
+<p>p-value</p>
+</td></tr>
+<tr valign="top"><td><code>FDR</code></td>
+<td>
+<p>false discovery rate</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="diffSplice.html">diffSplice</a></code>, <code><a href="plotSplice.html">plotSplice</a></code>
+</p>
+<p>A summary of functions available in LIMMA for RNA-seq analysis is given in <a href="11RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre># See diffSplice</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gene Ontology or KEGG Pathway Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for goana {limma}"><tr><td>goana {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gene Ontology or KEGG Pathway Analysis</h2>
+
+<h3>Description</h3>
+
+<p>Test for over-representation of gene ontology (GO) terms or KEGG pathways in one or more sets of genes, optionally adjusting for abundance or gene length bias.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'MArrayLM'
+goana(de, coef = ncol(de), geneid = rownames(de), FDR = 0.05, trend = FALSE, ...)
+## S3 method for class 'MArrayLM'
+kegga(de, coef = ncol(de), geneid = rownames(de), FDR = 0.05, trend = FALSE, ...)
+## Default S3 method:
+goana(de, universe = NULL, species = "Hs", prior.prob = NULL, covariate=NULL,
+      plot=FALSE, ...)
+## Default S3 method:
+kegga(de, universe = NULL, restrict.universe = FALSE, species = "Hs", species.KEGG = NULL,
+      convert = FALSE, gene.pathway = NULL, pathway.names = NULL,
+      prior.prob = NULL, covariate=NULL, plot=FALSE, ...)
+getGeneKEGGLinks(species.KEGG = "hsa", convert = FALSE)
+getKEGGPathwayNames(species.KEGG = NULL, remove.qualifier = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>de</code></td>
+<td>
+<p>a character vector of Entrez Gene IDs, or a list of such vectors, or an <code>MArrayLM</code> fit object.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>column number or column name specifying for which coefficient or contrast differential expression should be assessed.</p>
+</td></tr>
+<tr valign="top"><td><code>geneid</code></td>
+<td>
+<p>Entrez Gene identifiers. Either a vector of length <code>nrow(de)</code> or the name of the column of <code>de$genes</code> containing the Entrez Gene IDs.</p>
+</td></tr>
+<tr valign="top"><td><code>FDR</code></td>
+<td>
+<p>false discovery rate cutoff for differentially expressed genes. Numeric value between 0 and 1.</p>
+</td></tr>
+<tr valign="top"><td><code>species</code></td>
+<td>
+<p>character string specifying the species.
+Possible values include <code>"Hs"</code> (human), <code>"Mm"</code> (mouse), <code>"Rn"</code> (rat), <code>"Dm"</code> (fly) or <code>"Pt"</code> (chimpanzee), but other values are possible if the corresponding organism package is available.
+See <code><a href="alias2Symbol.html">alias2Symbol</a></code> for other possible values.
+Ignored if <code>species.KEGG</code> or is not <code>NULL</code> or if <code>gene.pathway</code> and <code>pathway.names</code> are not <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>species.KEGG</code></td>
+<td>
+<p>three-letter KEGG species identifier. See <a href="http://www.kegg.jp/kegg/catalog/org_list.html">http://www.kegg.jp/kegg/catalog/org_list.html</a> or <a href="http://rest.kegg.jp/list/organism">http://rest.kegg.jp/list/organism</a> for possible values.
+Alternatively, if <code>de</code> contains KEGG ortholog Ids (<code>"k00001"</code> etc) instead of gene Ids, then set <code>species.KEGG="ko"</code>.
+This argument is ignored if <code>gene.pathway</code> and <code>pathway.names</code> are both not <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>convert</code></td>
+<td>
+<p>if <code>TRUE</code> then KEGG gene identifiers will be converted to NCBI Entrez Gene identifiers.  Note that KEGG IDs are the same as Entrez Gene IDs for most species anyway.</p>
+</td></tr>
+<tr valign="top"><td><code>gene.pathway</code></td>
+<td>
+<p>data.frame linking genes to pathways.  First column gives gene IDs, second column gives pathway IDs. By default this is obtained automatically by <code>getGeneKEGGLinks(species.KEGG)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>remove.qualifier</code></td>
+<td>
+<p>if <code>TRUE</code>, the species qualifier will be removed from the pathway names.</p>
+</td></tr>
+<tr valign="top"><td><code>pathway.names</code></td>
+<td>
+<p>data.frame giving full names of pathways. First column gives pathway IDs, second column gives pathway names. By default this is obtained automatically using <code>getKEGGPathwayNames(species.KEGG, remove=TRUE)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>trend</code></td>
+<td>
+<p>adjust analysis for gene length or abundance?
+Can be logical, or a numeric vector of covariate values, or the name of the column of <code>de$genes</code> containing the covariate values.
+If <code>TRUE</code>, then <code>de$Amean</code> is used as the covariate.</p>
+</td></tr>
+<tr valign="top"><td><code>universe</code></td>
+<td>
+<p>vector specifying the set of Entrez Gene identifiers to be the background universe.
+If <code>NULL</code> then all Entrez Gene IDs associated with any gene ontology term will be used as the universe.</p>
+</td></tr>
+<tr valign="top"><td><code>restrict.universe</code></td>
+<td>
+<p>logical, should the <code>universe</code> be restricted to gene identifiers found in at least one pathway in <code>gene.pathway</code>?</p>
+</td></tr>
+<tr valign="top"><td><code>prior.prob</code></td>
+<td>
+<p>optional numeric vector of the same length as <code>universe</code> giving the prior probability that each gene in the universe appears in a gene set.
+Will be computed from <code>covariate</code> if the latter is provided.
+Ignored if <code>universe</code> is <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>covariate</code></td>
+<td>
+<p>optional numeric vector of the same length as <code>universe</code> giving a covariate against which <code>prior.prob</code> should be computed.
+Ignored if <code>universe</code> is <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical, should the <code>prior.prob</code> vs <code>covariate</code> trend be plotted?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments in a call to the <code>MArrayLM</code> methods are passed to the corresponding default method.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions perform over-representation analyses for Gene Ontology terms or KEGG pathways.
+The default methods accept a gene set as a vector of Entrez Gene IDs or multiple gene sets as a list of such vectors.
+An over-represention analysis is then done for each set.
+The <code>MArrayLM</code> method extracts the gene sets automatically from a linear model fit object.
+</p>
+<p>The p-values returned by <code>goana</code> and <code>kegga</code> are unadjusted for multiple testing.
+The authors have chosen not to correct automatically for multiple testing because GO terms and KEGG pathways are often overlapping, so standard methods of p-value adjustment may be very conservative.
+Users should be aware though that p-values are unadjusted, meaning that only very small p-values should be used for published results.
+</p>
+<p><code>goana</code> uses annotation from the appropriate Bioconductor organism package.
+The <code>species</code> can be any character string XX for which an organism package org.XX.eg.db is installed.
+Examples are <code>"Hs"</code> for human for &quot;Mm&quot; for mouse.
+See <code><a href="alias2Symbol.html">alias2Symbol</a></code> for other possible values for <code>species</code>.
+</p>
+<p><code>kegga</code> reads KEGG pathway annotation from the KEGG website.
+For <code>kegga</code>, the species name can be provided in either Bioconductor or KEGG format.
+Examples of KEGG format are <code>"hsa"</code> for human, <code>"mmu"</code> for mouse of <code>"dme"</code> for fly.
+<code>kegga</code> can be used for any species supported by KEGG, of which there are more than 14,000 possibilities.
+By default, <code>kegga</code> obtains the KEGG annotation for the specified species from the <a href="http://rest.kegg.jp">http://rest.kegg.jp</a> website.
+Alternatively one can supply the required pathway annotation to <code>kegga</code> in the form of two data.frames.
+If this is done, then an internet connection is not required.
+</p>
+<p>The gene ID system used by <code>kegga</code> for each species is determined by KEGG.
+For human and mouse, the default (and only choice) is Entrez Gene ID.
+For Drosophila, the default is FlyBase CG annotation symbol.
+The format of the IDs can be seen by typing <code>head(getGeneKEGGLinks(species))</code>, for example<code>head(getGeneKEGGLinks("hsa"))</code> or <code>head(getGeneKEGGLinks("dme"))</code>.
+Entrez Gene IDs can always be used.
+If Entrez Gene IDs are not the default, then conversion can be done by specifying <code>"convert=TRUE"</code>.
+</p>
+<p>Another possibility is to use KEGG orthology IDs as the gene IDs, and these can be used for any species.
+In that case, set <code>species.KEGG="ko"</code>.
+</p>
+<p>The ability to supply data.frame annotation to <code>kegga</code> means that <code>kegga</code> can in principle be used in conjunction with any user-supplied set of annotation terms.
+</p>
+<p>The default <code>goana</code> and <code>kegga</code> methods accept a vector <code>prior.prob</code> giving the prior probability that each gene in the universe appears in a gene set.
+This vector can be used to correct for unwanted trends in the differential expression analysis associated with gene length, gene abundance or any other covariate (Young et al, 2010).
+The <code>MArrayLM</code> object computes the <code>prior.prob</code> vector automatically when <code>trend</code> is non-<code>NULL</code>.
+</p>
+<p>If <code>prior.prob=NULL</code>, the function computes one-sided hypergeometric tests equivalent to Fisher's exact test.
+If prior probabilities are specified, then a test based on the Wallenius' noncentral hypergeometric distribution is used to adjust for the relative probability that each gene will appear in a gene set, following the approach of Young et al (2010).
+</p>
+<p>The <code>MArrayLM</code> methods performs over-representation analyses for the up and down differentially expressed genes from a linear model analysis.
+In this case, the universe is all the genes found in the fit object.
+</p>
+<p><code>trend=FALSE</code> is equivalent to <code>prior.prob=NULL</code>.
+If <code>trend=TRUE</code> or a covariate is supplied, then a trend is fitted to the differential expression results and this is used to set <code>prior.prob</code>.
+</p>
+<p>The statistical approach provided here is the same as that provided by the goseq package, with one methodological difference and a few restrictions.
+Unlike the goseq package, the gene identifiers here must be Entrez Gene IDs and the user is assumed to be able to supply gene lengths if necessary.
+The goseq package has additional functionality to convert gene identifiers and to provide gene lengths.
+The only methodological difference is that <code>goana</code> and <code>kegga</code> computes gene length or abundance bias using <code><a href="tricubeMovingAverage.html">tricubeMovingAverage</a></code> instead of monotonic regression.
+While <code><a href="tricubeMovingAverage.html">tricubeMovingAverage</a></code> does not enforce monotonicity, it has the advantage of numerical stability when <code>de</code> contains only a small number of genes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <code>goana</code> default method produces a data frame with a row for each GO term and the following columns:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>Term</code></td>
+<td>
+<p>GO term.</p>
+</td></tr>
+<tr valign="top"><td><code>Ont</code></td>
+<td>
+<p>ontology that the GO term belongs to.  Possible values are <code>"BP"</code>, <code>"CC"</code> and <code>"MF"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>number of genes in the GO term.</p>
+</td></tr>
+<tr valign="top"><td><code>DE</code></td>
+<td>
+<p>number of genes in the <code>DE</code> set.</p>
+</td></tr>
+<tr valign="top"><td><code>P.DE</code></td>
+<td>
+<p>p-value for over-representation of the GO term in the set.</p>
+</td></tr>
+</table>
+<p>The last two column names above assume one gene set with the name <code>DE</code>.
+In general, there will be a pair of such columns for each gene set and the name of the set will appear in place of <code>"DE"</code>.
+</p>
+<p>The <code>goana</code> method for <code>MArrayLM</code> objects produces a data frame with a row for each GO term and the following columns:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>Term</code></td>
+<td>
+<p>GO term.</p>
+</td></tr>
+<tr valign="top"><td><code>Ont</code></td>
+<td>
+<p>ontology that the GO term belongs to.  Possible values are <code>"BP"</code>, <code>"CC"</code> and <code>"MF"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>number of genes in the GO term.</p>
+</td></tr>
+<tr valign="top"><td><code>Up</code></td>
+<td>
+<p>number of up-regulated differentially expressed genes.</p>
+</td></tr>
+<tr valign="top"><td><code>Down</code></td>
+<td>
+<p>number of down-regulated differentially expressed genes.</p>
+</td></tr>
+<tr valign="top"><td><code>P.Up</code></td>
+<td>
+<p>p-value for over-representation of GO term in up-regulated genes.</p>
+</td></tr>
+<tr valign="top"><td><code>P.Down</code></td>
+<td>
+<p>p-value for over-representation of GO term in down-regulated genes.</p>
+</td></tr>
+</table>
+<p>The row names of the data frame give the GO term IDs.
+</p>
+<p>The output from <code>kegga</code> is the same except that row names become KEGG pathway IDs, <code>Term</code> becomes <code>Pathway</code> and there is no <code>Ont</code> column.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>kegga</code> requires an internet connection unless <code>gene.pathway</code> and <code>pathway.names</code> are both supplied.
+</p>
+<p>The default for <code>kegga</code> with <code>species="Dm"</code> changed from <code>convert=TRUE</code> to <code>convert=FALSE</code> in limma 3.27.8.
+Users wanting to use Entrez Gene IDs for Drosophila should set <code>convert=TRUE</code>, otherwise fly-base CG annotation symbol IDs are assumed (for example &quot;Dme1_CG4637&quot;).
+</p>
+<p>The default for <code>restrict.universe=TRUE</code> in <code>kegga</code> changed from <code>TRUE</code> to <code>FALSE</code> in limma 3.33.4.
+</p>
+<p>Bug fix: results from <code>kegga</code> with <code>trend=TRUE</code> or with non-NULL <code>covariate</code> were incorrect prior to limma 3.32.3.
+The results were biased towards significant Down p-values and against significant Up p-values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>References</h3>
+
+<p>Young, M. D., Wakefield, M. J., Smyth, G. K., Oshlack, A. (2010).
+Gene ontology analysis for RNA-seq: accounting for selection bias.
+<em>Genome Biology</em> 11, R14.
+<a href="http://genomebiology.com/2010/11/2/R14">http://genomebiology.com/2010/11/2/R14</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="topGO.html">topGO</a></code>, <code><a href="topGO.html">topKEGG</a></code>
+</p>
+<p>The goseq package provides an alternative implementation of methods from Young et al (2010).
+Unlike the limma functions documented here, goseq will work with a variety of gene identifiers and includes a database of gene length information for various species.
+</p>
+<p>The gostats package also does GO analyses without adjustment for bias but with some other options.
+</p>
+<p>See <a href="10GeneSetTests.html">10.GeneSetTests</a> for a description of other functions used for gene set testing.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Linear model usage:
+
+fit &lt;- lmFit(y, design)
+fit &lt;- eBayes(fit)
+
+# Standard GO analysis
+
+go.fisher &lt;- goana(fit, species="Hs")
+topGO(go.fisher, sort = "up")
+topGO(go.fisher, sort = "down")
+
+# GO analysis adjusting for gene abundance
+
+go.abund &lt;- goana(fit, geneid = "GeneID", trend = TRUE)
+topGO(go.abund, sort = "up")
+topGO(go.abund, sort = "down")
+
+# GO analysis adjusting for gene length bias
+# (assuming that y$genes$Length contains gene lengths)
+
+go.len &lt;- goana(fit, geneid = "GeneID", trend = "Length")
+topGO(go.len, sort = "up")
+topGO(go.len, sort = "down")
+
+## Default usage with a list of gene sets:
+
+go.de &lt;- goana(list(DE1 = EG.DE1, DE2 = EG.DE2, DE3 = EG.DE3))
+topGO(go.de, sort = "DE1")
+topGO(go.de, sort = "DE2")
+topGO(go.de, ontology = "BP", sort = "DE3")
+topGO(go.de, ontology = "CC", sort = "DE3")
+topGO(go.de, ontology = "MF", sort = "DE3")
+
+## Standard KEGG analysis
+
+k &lt;- kegga(fit, species="Hs")
+k &lt;- kegga(fit, species.KEGG="hsa") # equivalent to previous
+topKEGG(k, sort = "up")
+topKEGG(k, sort = "down")
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

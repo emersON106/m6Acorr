@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Row variance and standard deviation of a numeric array</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rowSds {genefilter}"><tr><td>rowSds {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Row variance and standard deviation of a numeric array</h2>
+
+<h3>Description</h3>
+
+<p>Row  variance and standard deviation of a numeric array
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rowVars(x, ...)
+rowSds(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An array of two or more dimensions, containing numeric,
+complex, integer or logical values, or a numeric data frame.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments that get passed on to
+<code><a href="../../Matrix/html/colSums.html">rowMeans</a></code> and <code><a href="../../Matrix/html/colSums.html">rowSums</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These are very simple convenience functions, the main work is done in
+<code><a href="../../Matrix/html/colSums.html">rowMeans</a></code> and <code><a href="../../Matrix/html/colSums.html">rowSums</a></code>. See the function
+definition of <code>rowVars</code>, it is very simple.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric or complex array of suitable size, or a vector if the
+result is one-dimensional.  The &lsquo;dimnames&rsquo; (or &lsquo;names&rsquo; for a
+vector result) are taken from the original array.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wolfgang Huber <a href="http://www.ebi.ac.uk/huber">http://www.ebi.ac.uk/huber</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../Matrix/html/colSums.html">rowMeans</a></code> and <code><a href="../../Matrix/html/colSums.html">rowSums</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+   a = matrix(rnorm(1e4), nrow=10)
+   rowSds(a)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

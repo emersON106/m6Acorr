@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Individual Channel Analysis of Two-Color Microarrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 07.SingleChannel {limma}"><tr><td>07.SingleChannel {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Individual Channel Analysis of Two-Color Microarrays</h2>
+
+<h3>Description</h3>
+
+<p>This page gives an overview of the LIMMA functions fit linear models to two-color microarray data in terms of the log-intensities rather than log-ratios.
+</p>
+<p>The function <code><a href="intraspotCorrelation.html">intraspotCorrelation</a></code> estimates the intra-spot correlation between the two channels.
+The regression function <code><a href="lmscFit.html">lmscFit</a></code> takes the correlation as an argument and fits linear models to the two-color data in terms of the individual log-intensities.
+The output of <code>lmscFit</code> is an <code>MArrayLM</code> object just the same as from <code>lmFit</code>, so inference proceeds in the same way as for log-ratios once the linear model is fitted.
+See <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+<p>The function <code><a href="targetsA2C.html">targetsA2C</a></code> converts two-color format target data frames to single channel format, i.e, converts from array-per-line to channel-per-line, to facilitate the formulation of the design matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

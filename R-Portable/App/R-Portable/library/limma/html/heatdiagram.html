@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Stemmed Heat Diagram</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for heatdiagram {limma}"><tr><td>heatdiagram {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Stemmed Heat Diagram</h2>
+
+<h3>Description</h3>
+
+<p>Creates a heat diagram showing the co-regulation of genes under one condition with a range of other conditions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+heatDiagram(results, coef, primary=1, names=NULL, treatments=colnames(coef), limit=NULL,
+            orientation="landscape", low="green", high="red", cex=1, mar=NULL,
+            ncolors=123, ...)
+heatdiagram(stat, coef, primary=1, names=NULL, treatments=colnames(stat),
+            critical.primary=4, critical.other=3, limit=NULL, orientation="landscape",
+            low="green", high="red", cex=1, mar=NULL, ncolors=123, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>results</code></td>
+<td>
+<p><code>TestResults</code> matrix, containing elements -1, 0 or 1, from <code><a href="decideTests.html">decideTests</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>stat</code></td>
+<td>
+<p>numeric matrix of test statistics. Rows correspond to genes and columns to treatments or contrasts between treatments.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>numeric matrix of the same size as <code>stat</code>. Holds the coefficients to be displayed in the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>primary</code></td>
+<td>
+<p>number or name of the column to be compared to the others. Genes are included in the diagram according to this column of <code>stat</code> and are sorted according to this column of <code>coef</code>. If <code>primary</code> is a name, then <code>stat</code> and <code>coef</code> must have the same column names.</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>optional character vector of gene names</p>
+</td></tr>
+<tr valign="top"><td><code>treatments</code></td>
+<td>
+<p>optional character vector of treatment names</p>
+</td></tr>
+<tr valign="top"><td><code>critical.primary</code></td>
+<td>
+<p>critical value above which the test statistics for the primary column are considered significant and included in the plot</p>
+</td></tr>
+<tr valign="top"><td><code>critical.other</code></td>
+<td>
+<p>critical value above which the other test statistics are considered significant. Should usually be no larger than <code>critical.primary</code> although larger values are permitted.</p>
+</td></tr>
+<tr valign="top"><td><code>limit</code></td>
+<td>
+<p>optional value for <code>coef</code> above which values will be plotted in extreme color. Defaults to <code>max(abs(coef))</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>orientation</code></td>
+<td>
+<p><code>"portrait"</code> for upright plot or <code>"landscape"</code> for plot orientated to be wider than high. <code>"portrait"</code> is likely to be appropriate for inclusion in printed document while <code>"landscape"</code> may be appropriate for a presentation on a computer screen.</p>
+</td></tr>
+<tr valign="top"><td><code>low</code></td>
+<td>
+<p>color associated with repressed gene regulation</p>
+</td></tr>
+<tr valign="top"><td><code>high</code></td>
+<td>
+<p>color associated with induced gene regulation</p>
+</td></tr>
+<tr valign="top"><td><code>ncolors</code></td>
+<td>
+<p>number of distinct colors used for each of up and down regulation</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>factor to increase or decrease size of column and row text</p>
+</td></tr>
+<tr valign="top"><td><code>mar</code></td>
+<td>
+<p>numeric vector of length four giving the size of the margin widths.
+Default is <code>cex*c(5,6,1,1)</code> for landscape and <code>cex*c(1,1,4,3)</code> for portrait.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments will be passed to the <code>image</code> function</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Users are encouraged to use <code>heatDiagram</code> rather than <code>heatdiagram</code> as the later function may be removed in future versions of limma.
+</p>
+<p>This function plots an image of gene expression profiles in which rows (or columns for portrait orientation) correspond to treatment conditions and columns (or rows) correspond to genes.
+Only genes which are significantly differentially expressed in the primary condition are included.
+Genes are sorted by differential expression under the primary condition.
+</p>
+<p>Note: the plot produced by this function is unique to the limma package.
+It should not be confused with &quot;heatmaps&quot; often used to display results from cluster analyses.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An image is created on the current graphics device.
+A matrix with named rows containing the coefficients used in the plot is also invisibly returned.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../graphics/html/image.html">image</a></code>.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+MA &lt;- normalizeWithinArrays(RG)
+design &lt;- cbind(c(1,1,1,0,0,0),c(0,0,0,1,1,1))
+fit &lt;- lmFit(MA,design=design)
+contrasts.mouse &lt;- cbind(Control=c(1,0),Mutant=c(0,1),Difference=c(-1,1))
+fit &lt;- eBayes(contrasts.fit(fit,contrasts=contrasts.mouse))
+results &lt;- decideTests(fit,method="global",p=0.1)
+heatDiagram(results,fit$coef,primary="Difference")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

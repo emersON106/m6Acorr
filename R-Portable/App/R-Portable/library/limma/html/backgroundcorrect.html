@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Correct Intensities for Background</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for backgroundCorrect {limma}"><tr><td>backgroundCorrect {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Correct Intensities for Background</h2>
+
+<h3>Description</h3>
+
+<p>Background correct microarray expression intensities.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+backgroundCorrect(RG, method="auto", offset=0, printer=RG$printer,
+                  normexp.method="saddle", verbose=TRUE)
+backgroundCorrect.matrix(E, Eb=NULL, method="auto", offset=0, printer=NULL,
+                  normexp.method="saddle", verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>RG</code></td>
+<td>
+<p>a numeric matrix, <code><a href="EList.html">EListRaw</a></code> or <code><a href="rglist.html">RGList</a></code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>E</code></td>
+<td>
+<p>numeric matrix containing foreground intensities.</p>
+</td></tr>
+<tr valign="top"><td><code>Eb</code></td>
+<td>
+<p>numeric matrix containing background intensities.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>character string specifying correction method.  Possible values are <code>"auto"</code>, <code>"none"</code>, <code>"subtract"</code>, <code>"half"</code>, <code>"minimum"</code>, <code>"movingmin"</code>, <code>"edwards"</code> or <code>"normexp"</code>.
+If <code>RG</code> is a matrix, possible values are restricted to <code>"none"</code> or <code>"normexp"</code>.
+The default <code>"auto"</code> is interpreted as <code>"subtract"</code> if background intensities are available or <code>"normexp"</code> if they are not.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric value to add to intensities</p>
+</td></tr>
+<tr valign="top"><td><code>printer</code></td>
+<td>
+<p>a list containing printer layout information, see <code><a href="PrintLayout.html">PrintLayout-class</a></code>. Ignored if <code>RG</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>normexp.method</code></td>
+<td>
+<p>character string specifying parameter estimation strategy used by normexp, ignored for other methods. Possible values are <code>"saddle"</code>, <code>"mle"</code>, <code>"rma"</code> or <code>"rma75"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, progress messages are sent to standard output</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements the background correction methods reviewed or developed in Ritchie et al (2007) and Silver at al (2009).
+Ritchie et al (2007) recommend <code>method="normexp"</code> whenever <code>RG</code> contains local background estimates.
+Silver et al (2009) shows that either <code>normexp.method="mle"</code> or <code>normexp.method="saddle"</code> are excellent options for normexp.
+If <code>RG</code> contains morphological background estimates instead (available from SPOT or GenePix image analysis software), then <code>method="subtract"</code> performs well.
+</p>
+<p>If <code>method="none"</code> then no correction is done, i.e., the background intensities are treated as zero.
+If <code>method="subtract"</code> then the background intensities are subtracted from the foreground intensities.
+This is the traditional background correction method, but is not necessarily recommended.
+If <code>method="movingmin"</code> then the background estimates are replaced with the minimums of the backgrounds of the spot and its eight neighbors, i.e., the background is replaced by a moving minimum of 3x3 grids of spots.
+</p>
+<p>The remaining methods are all designed to produce positive corrected intensities.
+If <code>method="half"</code> then any intensity which is less than 0.5 after background subtraction is reset to be equal to 0.5.
+If <code>method="minimum"</code> then any intensity which is zero or negative after background subtraction is set equal to half the minimum of the positive corrected intensities for that array.
+If <code>method="edwards"</code> a log-linear interpolation method is used to adjust lower intensities as in Edwards (2003).
+If <code>method="normexp"</code> a convolution of normal and exponential distributions is fitted to the foreground intensities using the background intensities as a covariate, and the expected signal given the observed foreground becomes the corrected intensity.
+This results in a smooth monotonic transformation of the background subtracted intensities such that all the corrected intensities are positive.
+</p>
+<p>The normexp method is available in a number of variants depending on how the model parameters are estimated, and these are selected by <code>normexp.method</code>.
+Here <code>"saddle"</code> gives the saddle-point approximation to maximum likelihood from Ritchie et al (2007) and improved by Silver et al (2009), <code>"mle"</code> gives exact maximum likelihood from Silver at al (2009), <code>"rma"</code> gives the background correction algorithm from the RMA-algorithm for Affymetrix microarray data as implemented in the affy package, and <code>"rma75"</code> gives the RMA-75 method from McGee and Chen (2006).
+In practice <code>"mle"</code> performs well and is nearly as fast as <code>"saddle"</code>, but <code>"saddle"</code> is the default for backward compatibility.
+See <code><a href="normexpfit.html">normexp.fit</a></code> for more details.
+</p>
+<p>The <code>offset</code> can be used to add a constant to the intensities before log-transforming, so that the log-ratios are shrunk towards zero at the lower intensities.
+This may eliminate or reverse the usual 'fanning' of log-ratios at low intensities associated with local background subtraction.
+</p>
+<p>Background correction (background subtraction) is also performed by the <code><a href="normalizeWithinArrays.html">normalizeWithinArrays</a></code> method for <code>RGList</code> objects, so it is not necessary to call <code>backgroundCorrect</code> directly unless one wants to use a method other than simple subtraction.
+Calling <code>backgroundCorrect</code> before <code>normalizeWithinArrays</code> will over-ride the default background correction.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix, <code>EListRaw</code> or <code>RGList</code> object in which foreground intensities have been background corrected and any components containing background intensities have been removed.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Edwards, D. E. (2003). Non-linear normalization and background correction in one-channel cDNA microarray studies
+<em>Bioinformatics</em> 19, 825-833. 
+</p>
+<p>McGee, M., and Chen, Z. (2006).
+Parameter estimation for the exponential-normal convolution model for background correction of Affymetrix GeneChip data.
+<em>Stat Appl Genet Mol Biol</em>, Volume 5, Article 24.
+</p>
+<p>Ritchie, M. E., Silver, J., Oshlack, A., Silver, J., Holmes, M., Diyagama, D., Holloway, A., and Smyth, G. K. (2007).
+A comparison of background correction methods for two-colour microarrays.
+<em>Bioinformatics</em> 23, 2700-2707.
+<a href="http://bioinformatics.oxfordjournals.org/content/23/20/2700">http://bioinformatics.oxfordjournals.org/content/23/20/2700</a>
+</p>
+<p>Silver, J., Ritchie, M. E., and Smyth, G. K. (2009).
+Microarray background correction: maximum likelihood estimation for the normal-exponential convolution model.
+<em>Biostatistics</em> 10, 352-363.
+<a href="http://biostatistics.oxfordjournals.org/content/10/2/352">http://biostatistics.oxfordjournals.org/content/10/2/352</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="kooperberg.html">kooperberg</a></code>, <code><a href="nec.html">neqc</a></code>.
+</p>
+<p>An overview of background correction functions is given in <code><a href="04Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+RG &lt;- new("RGList", list(R=c(1,2,3,4),G=c(1,2,3,4),Rb=c(2,2,2,2),Gb=c(2,2,2,2)))
+backgroundCorrect(RG)
+backgroundCorrect(RG, method="half")
+backgroundCorrect(RG, method="minimum")
+backgroundCorrect(RG, offset=5)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

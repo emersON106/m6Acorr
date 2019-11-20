@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Weighted Surrogate Variable Analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wsva {limma}"><tr><td>wsva {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Weighted Surrogate Variable Analysis</h2>
+
+<h3>Description</h3>
+
+<p>Calculate surrogate variables from the singular vectors of the linear model residual space.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wsva(y, design, n.sv = 1L, weight.by.sd = FALSE, plot = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>numeric matrix giving log-expression or log-ratio values for a series of microarrays, or any object that can coerced to a matrix including <code>ExpressionSet</code>, <code>MAList</code>, <code>EList</code> or <code>PLMSet</code> objects.
+Rows correspond to genes and columns to samples.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix</p>
+</td></tr>
+<tr valign="top"><td><code>n.sv</code></td>
+<td>
+<p>number of surrogate variables required.</p>
+</td></tr>
+<tr valign="top"><td><code>weight.by.sd</code></td>
+<td>
+<p>logical, should the surrogate variables be especially tuned to the more variable genes?</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, plots the proportion of variance explained by each surrogate variable.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments can be included that would be suitable for <code>lmFit</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function constructs surrogate variables that explain a high proportion of the residual variability for many of the genes.
+The surrogate variables can be included in the design matrix to remove unwanted variation.
+The surrogate variables are constructed from the singular vectors of a representation of the linear model residual space.
+</p>
+<p>If <code>weight.by.sd=FALSE</code>, then the method is a simplification of the approach by Leek and Storey (2007).
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric matrix with <code>ncol(y)</code> rows and <code>n.sv</code> columns containing the surrogate variables.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>References</h3>
+
+<p>Leek, JT, Storey, JD (2007).
+Capturing heterogeneity in gene expression studies by surrogate variable analysis.
+<em>PLoS Genetics</em> 3, 1724-1735.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

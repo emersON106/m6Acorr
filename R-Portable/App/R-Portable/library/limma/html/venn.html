@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Venn Diagrams</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for venn {limma}"><tr><td>venn {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Venn Diagrams</h2>
+
+<h3>Description</h3>
+
+<p>Compute classification counts and draw a Venn diagram.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vennCounts(x, include="both")
+vennDiagram(object, include="both", names=NULL, mar=rep(1,4), cex=c(1.5,1,0.7), lwd=1,
+            circle.col=NULL, counts.col=NULL, show.include=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a <code>TestResults</code> matrix.
+This is numeric matrix of 0's, 1's and -1's indicating significance of a test or membership of a set.
+Each row corresponds to a gene and each column to a contrast or set.
+Usually created by <code><a href="decideTests.html">decideTests</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>either a <code>TestResults</code> matrix or a <code>VennCounts</code> object produced by <code>vennCounts</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>character vector specifying whether all differentially expressed genes should be counted, or whether the counts should be restricted to genes changing in a certain direction.  Choices are <code>"both"</code> for all differentially expressed genes, <code>"up"</code> for up-regulated genes only or <code>"down"</code> for down-regulated genes only. If <code>include=c("up","down")</code> then both the up and down counts will be shown. This argument is ignored if <code>object</code> if <code>object</code> is already a <code>vennCounts</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>character vector giving names for the sets or contrasts</p>
+</td></tr>
+<tr valign="top"><td><code>mar</code></td>
+<td>
+<p>numeric vector of length 4 specifying the width of the margins around the plot. This argument is passed to <code>par</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>numerical vector of length 3 giving scaling factors for large, medium and small text on the plot.</p>
+</td></tr>
+<tr valign="top"><td><code>lwd</code></td>
+<td>
+<p>numerical value giving the amount by which the circles should be scaled on the plot. See <code>par</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>circle.col</code></td>
+<td>
+<p>vector of colors for the circles. See <code>par</code> for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>counts.col</code></td>
+<td>
+<p>vector of colors for the counts. Of same length as <code>include</code>. See <code>par</code> for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>show.include</code></td>
+<td>
+<p>logical value whether the value of <code>include</code> should be printed on the plot. Defaults to <code>FALSE</code> if <code>include</code> is a single value and <code>TRUE</code> otherwise</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>plot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Each column of <code>x</code> corresponds to a contrast or set, and the entries of <code>x</code> indicate membership of each row in each set or alternatively the significance of each row for each contrast.
+In the latter case, the entries can be negative as well as positive to indicate the direction of change.
+</p>
+<p><code>vennCounts</code> can collate intersection counts for any number of sets.
+<code>vennDiagram</code> can plot up to five sets.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>vennCounts</code> produces an object of class <code>"VennCounts"</code>.
+This contains only one slot, which is numerical matrix with <code>2^ncol{x}</code> rows and <code>ncol(x)+1</code> columns.
+Each row corresponds to a particular combination of set memberships.
+The first <code>ncol{x}</code> columns of output contain 1 or 0 indicating membership or not in each set.
+The last column called <code>"Counts"</code> gives the number of rows of <code>x</code> corresponding to that combination of memberships.
+</p>
+<p><code>vennDiagram</code> produces no output but causes a plot to be produced on the current graphical device.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth, James Wettenhall, Francois Pepin, Steffen Moeller and Yifang Hu</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of linear model functions in limma is given by <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+Y &lt;- matrix(rnorm(100*6),100,6)
+Y[1:10,3:4] &lt;- Y[1:10,3:4]+3
+Y[1:20,5:6] &lt;- Y[1:20,5:6]+3
+design &lt;- cbind(1,c(0,0,1,1,0,0),c(0,0,0,0,1,1))
+fit &lt;- eBayes(lmFit(Y,design))
+results &lt;- decideTests(fit)
+a &lt;- vennCounts(results)
+print(a)
+mfrow.old &lt;- par()$mfrow
+par(mfrow=c(1,2))
+vennDiagram(a)
+vennDiagram(results, 
+    include=c("up", "down"),
+    counts.col=c("red", "blue"),
+    circle.col = c("red", "blue", "green3"))
+par(mfrow=mfrow.old)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

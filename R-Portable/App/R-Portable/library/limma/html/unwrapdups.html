@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Unwrap Duplicate Spot Values from Rows into Columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for unwrapdups {limma}"><tr><td>unwrapdups {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Unwrap Duplicate Spot Values from Rows into Columns</h2>
+
+<h3>Description</h3>
+
+<p>Reshape a matrix so that a set of consecutive rows becomes a single row in the output.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+unwrapdups(M,ndups=2,spacing=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>M</code></td>
+<td>
+<p>a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>number of duplicate spots. The number of rows of M must be divisible by <code>ndups</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>the spacing between the rows of <code>M</code> corresponding to duplicate spots, <code>spacing=1</code> for consecutive spots</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used on matrices corresponding to a series of microarray experiments.
+Rows corresponding to duplicate spots are re-arranged to that all values corresponding to a single gene are on the same row.
+This facilitates fitting models or computing statistics for each gene.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix containing the same values as <code>M</code> but with fewer rows and more columns by a factor of <code>ndups</code>.
+Each set of <code>ndups</code> rows in <code>M</code> is strung out to a single row so that duplicate values originally in consecutive rows in the same column are in consecutive columns in the output.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+M &lt;- matrix(1:12,6,2)
+unwrapdups(M,ndups=2)
+unwrapdups(M,ndups=3)
+unwrapdups(M,ndups=2,spacing=3)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

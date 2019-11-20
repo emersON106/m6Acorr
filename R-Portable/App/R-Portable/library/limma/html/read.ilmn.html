@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read Illumina Expression Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for read.ilmn {limma}"><tr><td>read.ilmn {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read Illumina Expression Data</h2>
+
+<h3>Description</h3>
+
+<p>Read Illumina summary probe profile files and summary control probe profile files</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.ilmn(files=NULL, ctrlfiles=NULL, path=NULL, ctrlpath=NULL, probeid="Probe",
+          annotation=c("TargetID", "SYMBOL"), expr="AVG_Signal",
+          other.columns="Detection", sep="\t", quote="\"", verbose=TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>files</code></td>
+<td>
+<p>character vector giving the names of the summary probe profile files.</p>
+</td></tr>
+<tr valign="top"><td><code>ctrlfiles</code></td>
+<td>
+<p>character vector giving the names of the summary control probe profile files.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character string giving the directory containing the summary probe profile files. Default is the current working directory.</p>
+</td></tr>
+<tr valign="top"><td><code>ctrlpath</code></td>
+<td>
+<p>character string giving the directory containing the summary control probe profile files. Default is the same directory as for the probe profile files.</p>
+</td></tr>
+<tr valign="top"><td><code>probeid</code></td>
+<td>
+<p>character string giving the name of the probe identifier column.</p>
+</td></tr>
+<tr valign="top"><td><code>annotation</code></td>
+<td>
+<p>character vector giving possible column names for probe annotation.</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>character string giving a keyword identifying the expression intensity columns. Any input column with column name containing this key will be read as containing intensity values.</p>
+</td></tr>
+<tr valign="top"><td><code>other.columns</code></td>
+<td>
+<p>character vector giving keywords sufficient to identify any extra data columns that should be read in, such as &quot;Detection&quot;, &quot;Avg_NBEADS&quot;, &quot;BEAD_STDEV&quot; etc. The default of <code>Detection</code> is usually sufficient to identify the columns containing detection p-values.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the field separator character.</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>character string of characters to be treated as quote marks.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical, <code>TRUE</code> to report names of profile files being read.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other parameters are passed on to <code><a href="read.columns.html">read.columns</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Illumina BeadStudio ouputs probe intensities (regular probe intensities) and control probe intensities to summary probe profile files (containing regular probes) and summary control probe profile files, respectively.
+If both <code>files</code> and <code>ctrlfiles</code> are not <code>NULL</code>, this function will combine the data read from the two file types and save them to an <code><a href="EList.html">EListRaw-class</a></code> object.
+If one of them is <code>NULL</code>, then only the required data are read in.
+</p>
+<p>Probe types are indicated in the <code>Status</code> column of <code>genes</code>, a component of the returned <code><a href="EList.html">EListRaw-class</a></code> object.
+There are totally seven types of control probes including <code>negative</code>, <code>biotin</code>, <code>labeling</code>, <code>cy3_hyb</code>, <code>housekeeping</code>, <code>high_stringency_hyb</code> or <code>low_stringency_hyb</code>.
+Regular probes have the probe type <code>regular</code>.
+The <code>Status</code> column will not be created if <code>ctrlfiles</code> is <code>NULL</code>.
+</p>
+<p>To read in columns other than <code>probeid</code>, <code>annotation</code> and <code>expr</code>, users needs to specify keywords in <code>other.columns</code>.
+One keyword corresponds to one type of columns.
+Examples of keywords are &quot;Detection&quot;, &quot;Avg_NBEADS&quot;, &quot;BEAD_STDEV&quot; etc.
+</p>
+
+
+<h3>Value</h3>
+
+ 
+<p>An <code><a href="EList.html">EListRaw-class</a></code> object with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>E</code></td>
+<td>
+<p>numeric matrix of intensities.</p>
+</td></tr>
+<tr valign="top"><td><code>genes</code></td>
+<td>
+<p>data.frame of probe annotation. Contains any columns specified by <code>annotation</code> that are found in the input files.</p>
+</td></tr>
+<tr valign="top"><td><code>other</code></td>
+<td>
+<p>a list of matrices corresponding to any <code>other.columns</code> found in the input files.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei Shi and Gordon K Smyth</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p><code><a href="read.ilmn.targets.html">read.ilmn.targets</a></code> reads in Illumina expression data using the file information extracted from a target data frame which is often created by the <code><a href="readTargets.html">readTargets</a></code> function.
+</p>
+<p><code><a href="nec.html">neqc</a></code> performs normexp by control background correction, log transformation and quantile between-array normalization for Illumina expression data.
+</p>
+<p><code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> estimates the parameters of the normal+exponential convolution model with the help of negative control probes.
+</p>
+<p><code><a href="propexpr.html">propexpr</a></code> estimates the proportion of expressed probes in a microarray.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+x &lt;- read.ilmn(files="sample probe profile.txt",
+               ctrlfiles="control probe profile.txt")
+
+## End(Not run)
+# See neqc and beadCountWeights for other examples using read.ilmn
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

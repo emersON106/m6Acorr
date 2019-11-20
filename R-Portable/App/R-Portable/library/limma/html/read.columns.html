@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read specified columns from a file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for read.columns {limma}"><tr><td>read.columns {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read specified columns from a file</h2>
+
+<h3>Description</h3>
+
+<p>Reads specified columns from a file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.columns(file, required.col=NULL, text.to.search="", sep="\t", quote="\"", skip=0,
+             fill=TRUE, blank.lines.skip=TRUE, comment.char="", allowEscapes=FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>the name of the file which the data are to be read from.</p>
+</td></tr>
+<tr valign="top"><td><code>required.col</code></td>
+<td>
+<p>character vector of names of the required columns</p>
+</td></tr>
+<tr valign="top"><td><code>text.to.search</code></td>
+<td>
+<p>character string. If any column names can be found in this string, those columns will also be read.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the field separator character</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>character string of characters to be treated as quote marks</p>
+</td></tr>
+<tr valign="top"><td><code>skip</code></td>
+<td>
+<p>the number of lines of the data file to skip before beginning to read data.</p>
+</td></tr> 
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>logical: if <code>TRUE</code> then in case the rows have unequal length, blank fields are implicitly added.</p>
+</td></tr> 
+<tr valign="top"><td><code>blank.lines.skip</code></td>
+<td>
+<p>logical: if <code>TRUE</code> blank lines in the input are ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>comment.char</code></td>
+<td>
+<p>character: a character vector of length one containing a single character or an empty string.</p>
+</td></tr>
+<tr valign="top"><td><code>allowEscapes</code></td>
+<td>
+<p>logical. Should C-style escapes such as <span class="samp">\n</span> be processed or read verbatim (the default)?</p>
+</td></tr> 
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>read.table</code>, excluding the following
+which are reserved and cannot be set by the user:
+<code>header</code>, <code>col.names</code>, <code>check.names</code> and <code>colClasses</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is an interface to <code>read.table</code> in the base package.
+It uses <code>required.col</code> and <code>text.to.search</code> to set up the <code>colClasses</code> argument of <code>read.table</code>.
+</p>
+<p>Note the following arguments of <code>read.table</code> are used by <code>read.columns</code>
+and therefore cannot be set by the user:
+<code>header</code>, <code>col.names</code>, <code>check.names</code> and <code>colClasses</code>.
+</p>
+<p>This function is used by <code><a href="read.maimages.html">read.maimages</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data frame (data.frame) containing a representation of the data in the file. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="read.maimages.html">read.maimages</a></code>, <code><a href="../../utils/html/read.table.html">read.table</a></code>.
+</p>
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

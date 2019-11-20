@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transform RNA-Seq Data Ready for Linear Modelling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for voom {limma}"><tr><td>voom {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transform RNA-Seq Data Ready for Linear Modelling</h2>
+
+<h3>Description</h3>
+
+<p>Transform count data to log2-counts per million (logCPM), estimate the mean-variance relationship and use this to compute appropriate observation-level weights.
+The data are then ready for linear modelling.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+voom(counts, design = NULL, lib.size = NULL, normalize.method = "none",
+     span = 0.5, plot = FALSE, save.plot = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>counts</code></td>
+<td>
+<p>a numeric <code>matrix</code> containing raw counts, or an <code>ExpressionSet</code> containing raw counts, or a <code>DGEList</code> object. Counts must be non-negative and NAs are not permitted.</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix with rows corresponding to samples and columns to coefficients to be estimated.  Defaults to the unit vector meaning that samples are treated as replicates.</p>
+</td></tr>
+<tr valign="top"><td><code>lib.size</code></td>
+<td>
+<p>numeric vector containing total library sizes for each sample.
+Defaults to the normalized (effective) library sizes in <code>counts</code> if <code>counts</code> is a <code>DGEList</code> or
+to the columnwise count totals if <code>counts</code> is a matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>normalize.method</code></td>
+<td>
+<p>the microarray-style normalization method to be applied to the logCPM values (if any).
+Choices are as for the <code>method</code> argument of <code>normalizeBetweenArrays</code> when the data is single-channel.
+Any normalization factors found in <code>counts</code> will still be used even if <code>normalize.method="none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>width of the lowess smoothing window as a proportion.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical, should a plot of the mean-variance trend be displayed?</p>
+</td></tr>
+<tr valign="top"><td><code>save.plot</code></td>
+<td>
+<p>logical, should the coordinates and line of the plot be saved in the output?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>lmFit</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is intended to process RNA-Seq or ChIP-Seq data prior to linear modelling in limma.
+</p>
+<p><code>voom</code> is an acronym for mean-variance modelling at the observational level.
+The idea is to estimate the mean-variance relationship in the data, then use this to compute an appropriate precision weight for each observation.
+Count data always show marked mean-variance relationships.
+Raw counts show increasing variance with increasing count size, while log-counts typically show a decreasing mean-variance trend.
+This function estimates the mean-variance trend for log-counts, then assigns a weight to each observation based on its predicted variance.
+The weights are then used in the linear modelling process to adjust for heteroscedasticity. 
+</p>
+<p><code>voom</code> performs the following specific calculations.
+First, the counts are converted to logCPM values, adding 0.5 to all the counts to avoid taking the logarithm of zero.
+The matrix of logCPM values is then optionally normalized.
+The <code>lmFit</code> function is used to fit row-wise linear models.
+The <code>lowess</code> function is then used to fit a trend to the square-root-standard-deviations as a function of an average log-count measure.
+The trend line is then used to predict the variance of each logCPM value as a function of its fitted value on the count scale, and the inverse variances become the estimated precision weights.
+</p>
+<p>For good results, the <code>counts</code> matrix should be filtered to remove remove rows with very low counts before running voom().
+The <code>filterByExpr</code> function in the edgeR package can be used for that purpose.
+</p>
+<p>If <code>counts</code> is a <code>DGEList</code> object from the edgeR package, then voom will use the normalization factors found in the object when computing the logCPM values.
+In other words, the logCPM values are computed from the effective library sizes rather than the raw library sizes.
+If the <code>DGEList</code> object has been scale-normalized in edgeR, then it is usual to leave <code>normalize.method="none"</code> in voom, i.e., the logCPM values should not usually be re-normalized in the <code>voom</code> call.
+</p>
+<p>The <code>voom</code> method is similar in purpose to the limma-trend method, which uses <code><a href="ebayes.html">eBayes</a></code> or <code><a href="ebayes.html">treat</a></code> with <code>trend=TRUE</code>.
+The voom method incorporates the mean-variance trend into the precision weights, whereas limma-trend incorporates the trend into the empirical Bayes moderation.
+The voom method takes into account the sequencing depths (library sizes) of the individual columns of <code>counts</code> and applies the mean-variance trend on an individual observation basis.
+limma-trend, on the other hand, assumes that the library sizes are not wildly different and applies the mean-variance trend on a genewise basis.
+As noted by Law et al (2014), voom should be more powerful than limma-trend if the library sizes are very different but, otherwise, the two methods should give similar results.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An <code><a href="EList.html">EList</a></code> object with the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>E</code></td>
+<td>
+<p>numeric matrix of normalized expression values on the log2 scale</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of inverse variance weights</p>
+</td></tr>
+<tr valign="top"><td><code>design</code></td>
+<td>
+<p>design matrix</p>
+</td></tr>
+<tr valign="top"><td><code>lib.size</code></td>
+<td>
+<p>numeric vector of total normalized library sizes</p>
+</td></tr>
+<tr valign="top"><td><code>genes</code></td>
+<td>
+<p>dataframe of gene annotation extracted from <code>counts</code></p>
+</td></tr>
+<tr valign="top"><td><code>voom.xy</code></td>
+<td>
+<p>if <code>save.plot</code>, list containing x and y coordinates for points in mean-variance plot</p>
+</td></tr>
+<tr valign="top"><td><code>voom.line</code></td>
+<td>
+<p>if <code>save.plot</code>, list containing coordinates of loess line in the mean-variance plot</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Charity Law and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Law, CW, Chen, Y, Shi, W, Smyth, GK (2014).
+Voom: precision weights unlock linear model analysis tools for RNA-seq read counts.
+<em>Genome Biology</em> 15, R29.
+See also the Preprint Version at <a href="http://www.statsci.org/smyth/pubs/VoomPreprint.pdf">http://www.statsci.org/smyth/pubs/VoomPreprint.pdf</a> incorporating some notational corrections.
+</p>
+<p>Law, CW, Alhamdoosh, M, Su, S, Smyth, GK, Ritchie, ME (2016).
+RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR.
+<em>F1000Research</em> 5, 1408.
+<a href="https://f1000research.com/articles/5-1408">https://f1000research.com/articles/5-1408</a>
+</p>
+<p>Law, CW, Alhamdoosh, M, Su, S, Dong, X, Tian, L, Smyth, GK, Ritchie, ME (2018).
+RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR.
+<em>Bioconductor Workflow Package</em>.
+<a href="https://www.bioconductor.org/packages/RNAseq123/">https://www.bioconductor.org/packages/RNAseq123/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ebayes.html">eBayes</a></code>,
+<code><a href="voomWithQualityWeights.html">voomWithQualityWeights</a></code>.
+<code><a href="vooma.html">vooma</a></code> is similar to <code>voom</code> but for microarrays instead of RNA-seq.
+</p>
+<p>A summary of functions for RNA-seq analysis is given in <a href="11RNAseq.html">11.RNAseq</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+keep &lt;- filterByExpr(counts, design)
+v &lt;- voom(counts[keep,], design, plot=TRUE)
+fit &lt;- lmFit(v, design)
+fit &lt;- eBayes(fit, robust=TRUE)
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

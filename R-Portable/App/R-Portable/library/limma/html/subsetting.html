@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Subset RGList, MAList, EListRaw, EList or MArrayLM Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for subsetting {limma}"><tr><td>subsetting {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Subset RGList, MAList, EListRaw, EList or MArrayLM Objects</h2>
+
+<h3>Description</h3>
+
+<p>Return an <code>RGList</code>, <code>MAList</code>, <code>EListRaw</code>, <code>EList</code> or <code>MArrayLM</code> object with only selected rows and columns of the original object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'RGList'
+object[i, j]
+subsetListOfArrays(object, i, j, IJ, IX, I, JX)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>object of class <code>RGList</code>, <code>MAList</code>, <code>EListRaw</code>, <code>EList</code> or <code>MArrayLM</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>i,j</code></td>
+<td>
+<p>elements to extract. <code>i</code> subsets the probes or spots while <code>j</code> subsets the arrays.</p>
+</td></tr>
+<tr valign="top"><td><code>IJ</code></td>
+<td>
+<p>character vector giving names of components that should be subsetted by <code>i</code> and <code>j</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>IX</code></td>
+<td>
+<p>character vector giving names of 2-dimensional components that should be subsetted by <code>i</code> only.</p>
+</td></tr>
+<tr valign="top"><td><code>I</code></td>
+<td>
+<p>character vector giving names of vector components that should be subsetted by <code>i</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>JX</code></td>
+<td>
+<p>character vector giving names of 2-dimensional components whose row dimension corresponds to <code>j</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>i,j</code> may take any values acceptable for the matrix components of <code>object</code>.
+Either or both can be missing.
+See the <a href="../../base/html/Extract.html">Extract</a> help entry for more details on subsetting matrices.
+</p>
+<p><code>object[]</code> will return the whole object unchanged.
+A single index <code>object[i]</code> will be taken to subset rows, so <code>object[i]</code> and <code>object[i,]</code> are equivalent.
+</p>
+<p><code>subsetListOfArrays</code> is used internally as a utility function by the subsetting operations.
+It is not intended to be called directly by users.
+Values must be supplied for all arguments other than <code>i</code> and <code>j</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object the same as <code>object</code> but containing data from the specified subset of rows and columns only.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Extract.html">Extract</a></code> in the base package.
+</p>
+<p><a href="02classes.html">02.Classes</a> for a summary of the different data classes.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+M &lt;- A &lt;- matrix(11:14,4,2)
+rownames(M) &lt;- rownames(A) &lt;- c("a","b","c","d")
+colnames(M) &lt;- colnames(A) &lt;- c("A","B")
+MA &lt;- new("MAList",list(M=M,A=A))
+MA[1:2,]
+MA[c("a","b"),]
+MA[1:2,2]
+MA[,2]
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

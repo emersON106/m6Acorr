@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read a GAL file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for readGAL {limma}"><tr><td>readGAL {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read a GAL file</h2>
+
+<h3>Description</h3>
+
+<p>Read a GenePix Array List (GAL) file into a dataframe.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+readGAL(galfile=NULL,path=NULL,header=TRUE,sep="\t",quote="\"",skip=NULL,as.is=TRUE,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>galfile</code></td>
+<td>
+<p>character string giving the name of the GAL file.  If <code>NULL</code> then a file with extension <code>.gal</code> is found in the directory specified by <code>path</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character string giving the directory containing the files.  If <code>NULL</code> then assumed to be the current working directory.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>logical variable, if <code>TRUE</code> then the first line after <code>skip</code> is assumed to contain column headings.  If <code>FALSE</code> then a value should specified for <code>skip</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>the field separator character</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>the set of quoting characters</p>
+</td></tr>
+<tr valign="top"><td><code>skip</code></td>
+<td>
+<p>number of lines of the GAL file to skip before reading data.  If <code>NULL</code> then this number is determined by searching the file for column headings.</p>
+</td></tr>
+<tr valign="top"><td><code>as.is</code></td>
+<td>
+<p>logical variable, if <code>TRUE</code> then read in character columns as vectors rather than factors.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>read.table</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A GAL file is a list of genes IDs and associated information produced by an Axon microarray scanner.
+Apart from header information, the file must contain data columns labeled <code>Block</code>, <code>Column</code>, <code>Row</code> and <code>ID</code>.
+A <code>Name</code> column is usually included as well.
+Other columns are optional.
+See the Axon URL below for a detaile description of the GAL file format.
+</p>
+<p>This function reads in the data columns with a minimum of user information.
+In most cases the function can be used without specifying any of the arguments.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data frame with columns
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>Block</code></td>
+<td>
+<p>numeric vector containing the print tip indices</p>
+</td></tr>
+<tr valign="top"><td><code>Column</code></td>
+<td>
+<p>numeric vector containing the spot columns</p>
+</td></tr>
+<tr valign="top"><td><code>Row</code></td>
+<td>
+<p>numeric vector containing the spot rows</p>
+</td></tr>
+<tr valign="top"><td><code>ID</code></td>
+<td>
+<p>character vector, for factor if <code>as.is=FALSE</code>, containing gene library identifiers</p>
+</td></tr>
+<tr valign="top"><td><code>Name</code></td>
+<td>
+<p>character vector, for factor if <code>as.is=FALSE</code>, containing gene names</p>
+</td></tr>
+</table>
+<p>The data frame will be sorted so that <code>Column</code> is the fastest moving index, then <code>Row</code>, then <code>Block</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.cryer.co.uk/file-types/a/atf/genepix_file_formats.htm">http://www.cryer.co.uk/file-types/a/atf/genepix_file_formats.htm</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code>read.Galfile</code> in the marray package.
+</p>
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# readGAL()
+# will read in the first GAL file (with suffix ".gal")
+# found in the current working directory
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

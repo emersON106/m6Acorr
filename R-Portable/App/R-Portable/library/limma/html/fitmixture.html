@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fit Mixture Model by Non-Linear Least Squares</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fitmixture {limma}"><tr><td>fitmixture {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fit Mixture Model by Non-Linear Least Squares</h2>
+
+<h3>Description</h3>
+
+<p>Fit Mixture Model by Non-Linear Least Squares</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fitmixture(log2e, mixprop, niter = 4, trace = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>log2e</code></td>
+<td>
+<p>a numeric matrix containing log2 expression values. Rows correspond to probes for genes and columns to RNA samples.</p>
+</td></tr>
+<tr valign="top"><td><code>mixprop</code></td>
+<td>
+<p>a vector of length <code>ncol(log2e)</code> giving the mixing proportion (between 0 and 1) for each sample.</p>
+</td></tr>
+<tr valign="top"><td><code>niter</code></td>
+<td>
+<p>integer number of iterations.</p>
+</td></tr>
+<tr valign="top"><td><code>trace</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, summary working estimates are output from each iteration.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A mixture experiment is one in which two reference RNA sources are mixed in different proportions to create experimental samples.
+Mixture experiments have been used to evaluate genomic technologies and analysis methods (Holloway et al, 2006).
+This function uses all the data for each gene to estimate the expression level of the gene in each of two pure samples.
+</p>
+<p>The function fits a nonlinear mixture model to the log2 expression values for each gene.
+The expected values of <code>log2e</code> for each gene are assumed to be of the form
+<code>log2( mixprop*Y1 + (1-mixprop)*Y2 )</code>
+where <code>Y1</code> and <code>Y2</code> are the expression levels of the gene in the two reference samples being mixed.
+The <code>mixprop</code> values are the same for each gene but <code>Y1</code> and <code>Y2</code> are specific to the gene.
+The function returns the estimated values <code>A=0.5*log2(Y1*Y2)</code> and <code>M=log2(Y2/Y1)</code> for each gene.
+</p>
+<p>The nonlinear estimation algorithm implemented in <code>fitmixture</code> uses a nested Gauss-Newton iteration (Smyth, 1996).
+It is fully vectorized so that the estimation is done for all genes simultaneously.
+</p>
+
+
+<h3>Value</h3>
+
+<p>List with three components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>numeric vector giving the estimated average log2 expression of the two reference samples for each gene</p>
+</td></tr>
+<tr valign="top"><td><code>M</code></td>
+<td>
+<p>numeric vector giving estimated log-ratio of expression between the two reference samples for each gene</p>
+</td></tr>
+<tr valign="top"><td><code>stdev</code></td>
+<td>
+<p>standard deviation of the residual term in the mixture model for each gene</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon K Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Holloway, A. J., Oshlack, A., Diyagama, D. S., Bowtell, D. D. L., and Smyth, G. K. (2006).
+Statistical analysis of an RNA titration series evaluates microarray precision and sensitivity on a whole-array basis.
+<em>BMC Bioinformatics</em> 7, Article 511.
+<a href="http://www.biomedcentral.com/1471-2105/7/511">http://www.biomedcentral.com/1471-2105/7/511</a>
+</p>
+<p>Smyth, G. K. (1996).
+Partitioned algorithms for maximum likelihood and other nonlinear estimation.
+<em>Statistics and Computing</em>, 6, 201-216. 
+<a href="http://www.statsci.org/smyth/pubs/partitio.pdf">http://www.statsci.org/smyth/pubs/partitio.pdf</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ngenes &lt;- 100
+TrueY1 &lt;- rexp(ngenes)
+TrueY2 &lt;- rexp(ngenes)
+mixprop &lt;- matrix(c(0,0.25,0.75,1),1,4)
+TrueExpr &lt;- TrueY1 
+
+log2e &lt;- log2(TrueExpr) + matrix(rnorm(ngenes*4),ngenes,4)*0.1
+out &lt;- fitmixture(log2e,mixprop)
+
+# Plot true vs estimated log-ratios
+plot(log2(TrueY1/TrueY2), out$M)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

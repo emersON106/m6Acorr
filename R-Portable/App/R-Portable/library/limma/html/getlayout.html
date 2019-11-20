@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract the Print Layout of an Array from the GAL File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getLayout {limma}"><tr><td>getLayout {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract the Print Layout of an Array from the GAL File</h2>
+
+<h3>Description</h3>
+
+<p>From the Block, Row and Column information in a genelist, determine the number of grid rows and columns on the array and the number of spot rows and columns within each grid.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getLayout(gal, guessdups=FALSE)
+getLayout2(galfile)
+getDupSpacing(ID)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gal</code></td>
+<td>
+<p>data.frame containing the GAL, i.e., giving the position and gene identifier of each spot</p>
+</td></tr>
+<tr valign="top"><td><code>galfile</code></td>
+<td>
+<p>name or path of GAL file</p>
+</td></tr>
+<tr valign="top"><td><code>guessdups</code></td>
+<td>
+<p>logical, if <code>TRUE</code> then try to determine number and spacing of duplicate spots, i.e., within-array replicates</p>
+</td></tr>
+<tr valign="top"><td><code>ID</code></td>
+<td>
+<p>vector or factor of gene IDs</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A GenePix Array List (GAL) file is a list of genes and associated information produced by an Axon microarray scanner.
+The function <code>getLayout</code> determines the print layout from a data frame created from a GAL file or gene list.
+The data.frame must contain columns <code>Block</code>, <code>Column</code> and <code>Row</code>.
+(The number of tip columns is assumed to be either one or four.)
+</p>
+<p>On some arrays, each probe may be duplicated a number of times (<code>ndups</code>) at regular intervals (<code>spacing</code>) in the GAL file.
+<code>getDupSpacing</code> determines valid values for <code>ndups</code> and <code>spacing</code> from a vector of IDs.
+If <code>guessdups=TRUE</code>, then <code>getLayout</code> calls <code>getDupSpacing</code>.
+</p>
+<p>The function <code>getLayout2</code> attempts to determine the print layout from the header information of an actual GAL file.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>printlayout</code> object, which is a list with the following components.
+The last two components are present only if <code>guessdups=TRUE</code>.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>ngrid.r</code></td>
+<td>
+<p>integer, number of grid rows on the arrays</p>
+</td></tr>
+<tr valign="top"><td><code>ngrid.c</code></td>
+<td>
+<p>integer, number of grid columns on the arrays</p>
+</td></tr>
+<tr valign="top"><td><code>nspot.r</code></td>
+<td>
+<p>integer, number of rows of spots in each grid</p>
+</td></tr>
+<tr valign="top"><td><code>nspot.c</code></td>
+<td>
+<p>integer, number of columns of spots in each grid</p>
+</td></tr>
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>integer, number of times each probe is printed on the array</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>integer, spacing between multiple printings of each probe</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and James Wettenhall</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# gal &lt;- readGAL()
+# layout &lt;- getLayout(gal)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

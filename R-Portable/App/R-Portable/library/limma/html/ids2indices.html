@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Gene Identifiers to Indices for Gene Sets</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ids2indices {limma}"><tr><td>ids2indices {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Gene Identifiers to Indices for Gene Sets</h2>
+
+<h3>Description</h3>
+
+<p>Make a list of gene identifiers into a list of indices for gene sets.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ids2indices(gene.sets, identifiers, remove.empty=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gene.sets</code></td>
+<td>
+<p>list of character vectors, each vector containing the gene identifiers for a set of genes.</p>
+</td></tr>
+<tr valign="top"><td><code>identifiers</code></td>
+<td>
+<p>character vector of gene identifiers.</p>
+</td></tr>
+<tr valign="top"><td><code>remove.empty</code></td>
+<td>
+<p>logical, should sets of size zero be removed from the output?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function used to create input for <code>romer</code>, <code>mroast</code> and <code>camera</code> function.
+Typically, <code>identifiers</code> is the vector of Entrez Gene IDs, and <code>gene.sets</code> is obtained constructed from a database of gene sets, 
+for example a representation of the Molecular Signatures Database (MSigDB) downloaded from <a href="http://bioinf.wehi.edu.au/software/MSigDB">http://bioinf.wehi.edu.au/software/MSigDB</a>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>list of integer vectors, each vector containing the indices of a gene set in the vector <code>identifiers</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Yifang Hu</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="romer.html">romer</a></code>, <code><a href="roast.html">mroast</a></code>, <code><a href="camera.html">camera</a></code>
+</p>
+<p>There is a topic page on <a href="10GeneSetTests.html">10.GeneSetTests</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+download.file("http://bioinf.wehi.edu.au/software/MSigDB/human_c2_v5p2.rdata", 
+	      "human_c2_v5p2.rdata", mode = "wb")
+
+load("human_c2_v5p2.rdata")
+c2.indices &lt;- ids2indices(Hs.c2, y$genes$GeneID)
+camera(y, c2.indices, design)
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

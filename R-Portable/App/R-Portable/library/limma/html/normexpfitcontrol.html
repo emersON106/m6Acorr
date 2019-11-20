@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Normexp Model Parameter Estimation Aided by Negative Controls</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normexp.fit.control {limma}"><tr><td>normexp.fit.control {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Normexp Model Parameter Estimation Aided by Negative Controls</h2>
+
+<h3>Description</h3>
+
+<p>The mean and log-standard-deviation of the background-normal part of the normexp+exponential convolution model is estimated as the mean and log-standard deviation of intensities from negative control probes. The log-mean of the signal-exponential part is estimated as the log of the difference between signal mean and background mean.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normexp.fit.control(x, status=NULL, negctrl="negative", regular="regular", robust=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class <code>EListRaw-class</code> or <code>matrix</code> containing raw intensities for regular and control probes for a series of microarrays</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>character vector giving probe types.</p>
+</td></tr>
+<tr valign="top"><td><code>negctrl</code></td>
+<td>
+<p>character string identifier for negative control probes.</p>
+</td></tr>
+<tr valign="top"><td><code>regular</code></td>
+<td>
+<p>character string identifier for regular probes.</p>
+</td></tr>
+<tr valign="top"><td><code>robust</code></td>
+<td>
+<p>logical. Should robust estimators be used for the background mean and standard deviation?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>x</code> has to contain raw expression intensities from both regular probes and negative control probes.
+</p>
+<p>The probe type information for an object of <code><a href="EList.html">EListRaw-class</a></code> is normally saved in the <code>Status</code> column of its <code>genes</code> component.
+However, it will be overriden by the <code>status</code> parameter if it is explicitly provided to this function.
+If <code>x</code> is a <code>matrix</code> object, the probe type information has to be provided through the <code>status</code> parameter of this function.
+Regular probes have the status <code>regular</code>.
+Negative control probes have the status indicated by <code>negctrl</code>, which is <code>negative</code> by default.
+</p>
+<p>This function estimates parameters of the normal+exponential convolution model with the help of negative control probes.
+The mean and log-standard-deviation of the background-normal part of the normexp+exponential(normexp) convolution model are estimated as the mean and log-standard deviation of intensities from negative control probes respectively.
+The log-mean of the signal-exponential part is estimated as the log of the difference between signal mean and background mean.
+The signal mean is simply the mean of intensities from regular probes.
+</p>
+<p>When negative control probes are not available, the <code><a href="normexpfitdetectionp.html">normexp.fit.detection.p</a></code> function can be used to estimate the normexp model parameters which infers the negative control probe intensities from regular probes by taking advantage of their detection p value information.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix containing estimated parameters with rows being arrays and with columns being parameters.
+Column names are <code>mu</code>, <code>logsigma</code> and <code>logalpha</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei Shi and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Shi W, Oshlack A and Smyth GK (2010). Optimizing the noise versus bias trade-off for Illumina Whole Genome Expression BeadChips. Nucleic Acids Research, 38(22):e204. Epub 2010 Oct 6. PMID: 20929874 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="nec.html">nec</a></code> calls this function to get the parameters of the normal+exponential convolution model and then calls <code><a href="normexpsignal.html">normexp.signal</a></code> to perform the background correction.
+</p>
+<p><code><a href="normexpfitdetectionp.html">normexp.fit.detection.p</a></code> estimates the parameters in the normal+exponential convolution model using negative control probe intensities inferred from regular probes by using their detection p values information.
+</p>
+<p><code><a href="normexpfit.html">normexp.fit</a></code> estimates normexp parameters using a saddle-point approximation or other mothods.
+</p>
+<p>An overview of background correction functions is given in <code><a href="04Background.html">04.Background</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# read in BeadChip probe profile file and control profile file
+x &lt;- read.ilmn(files="sample probe profile", ctrlfiles="control probe profile")
+# estimated normexp parameters
+normexp.fit.control(x)
+# normalization using control data
+y &lt;- neqc(x)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

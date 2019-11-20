@@ -1,0 +1,2 @@
+::SET ROPTS=--no-save --no-environ --no-init-file --no-restore --no-Rconsole
+R-Portable\App\R-Portable\bin\Rscript.exe %ROPTS% rscript\\m6acorr.r sampleData\\sample.txt human result\\result.txt 1> aodmodel.log 2>&1

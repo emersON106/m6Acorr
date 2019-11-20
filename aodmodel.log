@@ -1,0 +1,12 @@
+载入需要的程辑包：mgcv
+载入需要的程辑包：nlme
+This is mgcv 1.8-28. For overview type 'help("mgcv-package")'.
+载入需要的程辑包：genefilter
+载入需要的程辑包：BiocParallel
+Found10batches
+Adjusting for0covariate(s) or covariate level(s)
+Standardizing Data across genes
+Fitting L/S model and finding priors
+Finding parametric adjustments
+Adjusting the Data
+

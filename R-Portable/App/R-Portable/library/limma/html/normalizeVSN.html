@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Variance Stabilizing Normalization (vsn)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeVSN {limma}"><tr><td>normalizeVSN {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Variance Stabilizing Normalization (vsn)</h2>
+
+<h3>Description</h3>
+
+<p>Apply variance stabilizing normalization (vsn) to limma data objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeVSN(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a numeric <code>matrix</code>, <code>EListRaw</code> or <code><a href="rglist.html">RGList</a></code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>vsn</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is an interface to the <code>vsnMatrix</code> function from the vsn package.
+The input <code>x</code> should contain raw intensities.
+If <code>x</code> contains background and well as foreground intensities, these will be subtracted from the foreground intensities before <code>vsnMatrix</code> is called.
+</p>
+<p>Note that the vsn algorithm performs background correction and normalization simultaneously.
+If the data are from two-color microarrays, then the red and green intensities are treated as if they were single channel data, i.e., red and green channels from the same array are treated as unpaired.
+This algorithm is therefore separate from the backgroundCorrection, normalizeWithinArrays, then normalizeBetweenArrays paradigm used elsewhere in the limma package.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The class of the output depends on the input.
+If <code>x</code> is a matrix, then the result is a matrix of the same size.
+If <code>x</code> is an <code>EListRaw</code> object, then an <code>EList</code> object with expression values on the log2 scale is produced.
+For <code>x</code> is an <code>RGList</code>, then an <code><a href="malist.html">MAList</a></code> object with M and A-values on the log2 scale is produced.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Huber, W, von Heydebreck, A, Sueltmann, H, Poustka, A, Vingron, M (2002).
+Variance stabilization applied to microarray data calibration and to the quantification of differential expression.
+Bioinformatics 18 Supplement 1, S96-S104.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+<p>See also <code><a href="../../vsn/html/vsn2.html">vsnMatrix</a></code> in the vsn package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ngenes &lt;- 100
+narrays &lt;- 4
+x &lt;- matrix(rnorm(ngenes*narrays),100,4)
+y &lt;- normalizeVSN(x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

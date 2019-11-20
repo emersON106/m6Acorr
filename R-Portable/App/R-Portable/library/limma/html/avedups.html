@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Average Over Duplicate Spots</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for avedups {limma}"><tr><td>avedups {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Average Over Duplicate Spots</h2>
+
+<h3>Description</h3>
+
+<p>Condense a microarray data object so that values for within-array replicate spots are replaced with their average.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## Default S3 method:
+avedups(x, ndups=2, spacing=1, weights=NULL)
+## S3 method for class 'MAList'
+avedups(x, ndups=x$printer$ndups, spacing=x$printer$spacing, weights=x$weights)
+## S3 method for class 'EList'
+avedups(x, ndups=x$printer$ndups, spacing=x$printer$spacing, weights=x$weights)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a matrix-like object, usually a matrix, <code>MAList</code> or <code>EList</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>ndups</code></td>
+<td>
+<p>number of within-array replicates for each probe.</p>
+</td></tr>
+<tr valign="top"><td><code>spacing</code></td>
+<td>
+<p>number of spots to step from a probe to its duplicate.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of spot weights.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A new data object is computed in which each probe is represented by the (weighted) average of its duplicate spots.
+For an <code>MAList</code> object, the components <code>M</code> and <code>A</code> are both averaged in this way.
+For an <code>EList</code> object, the component <code>E</code> is averaged in this way.
+</p>
+<p>If <code>x</code> is of mode <code>"character"</code>, then the duplicate values are assumed to be equal and the first is taken as the average.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data object of the same class as <code>x</code> with <code>1/ndups</code> as many rows.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="avereps.html">avereps</a></code>.
+</p>
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

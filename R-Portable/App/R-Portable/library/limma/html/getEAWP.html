@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract Basic Data from Expression Data Objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getEAWP {limma}"><tr><td>getEAWP {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract Basic Data from Expression Data Objects</h2>
+
+<h3>Description</h3>
+
+<p>Given an expression data object of any known class, get the expression values, weights, probe annotation and A-values that are needed for linear modelling.
+This function is called by the linear modelling functions in LIMMA.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getEAWP(object)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>any matrix-like object containing log-expression values.
+Can be an object of class <code>MAList</code>, <code>EList</code>, <code>marrayNorm</code>, <code>PLMset</code>, <code>vsn</code>, or any class inheriting from <code>ExpressionSet</code>, or any object that can be coerced to a numeric matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Rows correspond to probes and columns to RNA samples.
+</p>
+<p>In the case of two-color microarray data objects (<code>MAList</code> or <code>marrayNorm</code>), <code>Amean</code> is the vector of row means of the matrix of A-values.
+For other data objects, <code>Amean</code> is the vector of row means of the matrix of expression values.
+</p>
+<p>From April 2013, the rownames of the output <code>exprs</code> matrix are required to be unique.
+If <code>object</code> has no row names, then the output rownames of <code>exprs</code> are <code>1:nrow(object)</code>.
+If <code>object</code> has row names but with duplicated names, then the rownames of <code>exprs</code> are set to <code>1:nrow(object)</code> and the original row names are preserved in the <code>ID</code> column of <code>probes</code>.
+</p>
+<p><code>object</code> should be a normalized data object.
+<code>getEAWP</code> will return an error if <code>object</code> is a non-normalized data object such as <code>RGList</code> or <code>EListRaw</code>, because these do not contain log-expression values.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>exprs</code></td>
+<td>
+<p>numeric matrix of log-ratios, log-intensities or log-expression values</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of weights</p>
+</td></tr>
+<tr valign="top"><td><code>probes</code></td>
+<td>
+<p>data.frame of probe-annotation</p>
+</td></tr>
+<tr valign="top"><td><code>Amean</code></td>
+<td>
+<p>numeric vector of average log-expression for each probe</p>
+</td></tr>
+</table>
+<p><code>exprs</code> is the only required component.
+The other components will be <code>NULL</code> if not found in the input object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

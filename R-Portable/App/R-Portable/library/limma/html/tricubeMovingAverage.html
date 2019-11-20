@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Moving Average Smoother With Tricube Weights</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tricubeMovingAverage {limma}"><tr><td>tricubeMovingAverage {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Moving Average Smoother With Tricube Weights</h2>
+
+<h3>Description</h3>
+
+<p>Apply a moving average smoother with tricube distance weights to a numeric vector.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tricubeMovingAverage(x, span=0.5, power=3)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>numeric vector</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>the smoother span. This gives the proportion of <code>x</code> values that contribute to each moving average. Larger values give more smoothness. Should be positive but not greater than 1.</p>
+</td></tr>
+<tr valign="top"><td><code>power</code></td>
+<td>
+<p>a positive exponent used to compute the tricube weights. <code>power=3</code> gives the usual tricube weights.  Smaller values give more even weighting.  Should be greater than 0.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function smooths a vector (considered as a time series) using a moving average with tricube weights.
+Specifically, the function computes running weighted means of <code>w</code> consecutive values of <code>x</code>, where the window width <code>w</code> is equal to <code>2*h+1</code> with <code>h = 2*floor(span*length(x)/2)</code>.
+The window width <code>w</code> is always odd so that each window has one of the original <code>x</code> values at its center.
+Each weighted mean uses a set of tricube weights so that values near the ends of the window receive less weight.
+</p>
+<p>The smoother returns a vector of the same length as input.
+At the start and end of the vector, the series is considered to be extended by missing values, and the weighted average is computed only over the observed values.
+In other words, the window width is reduced to <code>h+1</code> at the boundaries with asymmetric weights.
+</p>
+<p>The result of this function is similar to a least squares loess curve of degree zero, with a couple of differences.
+First, a continuity correction is applied when computing the distance to neighbouring points, so that exactly <code>w</code> points are included with positive weights in each average.
+Second, the span halves at the end points so that the smoother is more sensitive to trends at the ends.
+</p>
+<p>The <code>filter</code> function in the stats package is called to do the low-level calculations.
+</p>
+<p>This function is used by <code><a href="barcodeplot.html">barcodeplot</a></code> to compute enrichment worms.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector of same length as <code>x</code> containing smoothed values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/filter.html">filter</a></code>, <code><a href="barcodeplot.html">barcodeplot</a></code>, <code><a href="../../edgeR/html/loessByCol.html">loessByCol</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- rbinom(100,size=1,prob=0.5)
+plot(1:100,tricubeMovingAverage(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

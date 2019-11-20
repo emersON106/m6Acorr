@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compute proportionality constant for fold change bound.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for kappa_p {genefilter}"><tr><td>kappa_p {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Compute proportionality constant for fold change bound.
+</h2>
+
+<h3>Description</h3>
+
+<p>Filtering on overall variance induces a lower bound on fold
+change. This bound depends on the significance of the evidence against
+the null hypothesis, an is a multiple of the cutoff used for an
+overall variance filter. It also depends on sample size in both of the
+groups being compared. These functions compute the multiplier for the
+supplied p-values or t-statistics.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+kappa_p(p, n1, n2 = n1)
+kappa_t(t, n1, n2 = n1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>The p-values at which to compute the multiplier.</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>The t-statistics at which to compute the multiplier.</p>
+</td></tr>
+<tr valign="top"><td><code>n1</code></td>
+<td>
+<p>Sample size for class 1.</p>
+</td></tr>
+<tr valign="top"><td><code>n2</code></td>
+<td>
+<p>Sample size for class 2.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector of multipliers: one per p-value or t-static in
+<code>p</code> or <code>t</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Richard Bourgon &lt;bourgon@ebi.ac.uk&gt;</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# See the vignette: Diagnostic plots for independent filtering
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

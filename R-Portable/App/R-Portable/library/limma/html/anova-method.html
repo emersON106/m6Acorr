@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: ANOVA Table - method</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for anova.MAList-method {limma}"><tr><td>anova.MAList-method {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>ANOVA Table - method</h2>
+
+<h3>Description</h3>
+
+<p>Analysis of variance method for objects of class <code>MAList</code>.
+Produces an ANOVA table useful for quality assessment by decomposing between and within gene sums of squares for a series of replicate arrays.
+This method produces a single ANOVA Table rather than one for each gene and is not used to identify differentially expressed genes.
+</p>
+
+
+<h3>Usage</h3>
+
+<p><code>anova(object,design=NULL,ndups=2,...)</code>
+</p>
+
+
+<h3>Arguments</h3>
+
+
+<dl>
+<dt><code>object</code></dt><dd><p>object of class <code>MAList</code>. Missing values in the M-values are not allowed.</p>
+</dd>
+<dt><code>design</code></dt><dd><p>numeric vector or single-column matrix containing the design matrix for linear model. The length of the vector or the number of rows of the matrix should agree with the number of columns of M.</p>
+</dd>
+<dt><code>ndups</code></dt><dd><p>number of duplicate spots. Each gene is printed ndups times in adjacent spots on each array.</p>
+</dd>
+<dt><code>...</code></dt><dd><p>other arguments are not used</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>This function aids in quality assessment of microarray data and in the comparison of normalization methodologies.
+It applies only to replicated two-color experiments in which all the arrays are hybridized with the same RNA targets, possibly with dye-swaps, so the design matrix should have only one column.
+The function has not been heavily used and is somewhat experimental.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>anova</code> containing rows for between genes, between arrays, gene x array interaction, and between duplicate with array sums of squares.
+Variance components are estimated for each source of variation.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function does not give valid results in the presence of missing M-values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="malist.html">MAList-class</a></code>, <code><a href="bwss.matrix.html">bwss.matrix</a></code>, <code><a href="../../stats/html/anova.html">anova</a></code>.
+</p>
+<p>An overview of quality assessment and diagnostic functions in LIMMA is given by <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

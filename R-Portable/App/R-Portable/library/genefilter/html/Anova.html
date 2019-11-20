@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A filter function for Analysis of Variance</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Anova {genefilter}"><tr><td>Anova {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A filter function for Analysis of Variance </h2>
+
+<h3>Description</h3>
+
+<p><code>Anova</code> returns a function of one argument with bindings for
+<code>cov</code> and <code>p</code>.
+The function, when evaluated, performs an ANOVA using <code>cov</code> as
+the covariate. It returns <code>TRUE</code> if the p value for a difference
+in means is less than <code>p</code>. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Anova(cov, p=0.05, na.rm=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cov</code></td>
+<td>
+<p>The covariate. It must have length equal to the number of
+columns of the array that <code>Anova</code> will be applied to. </p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p> The p-value for the test. </p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>If set to <code>TRUE</code> any <code>NA</code>'s will be removed. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function returned by <code>Anova</code> uses <code>lm</code> to fit a linear
+model of the form
+<code>lm(x ~ cov)</code>, where <code>x</code> is the set of gene expressions.
+The F statistic for an overall effect is computed and if it has a
+<em>p</em>-value less than <code>p</code> the function returns <code>TRUE</code>,
+otherwise it returns <code>FALSE</code> for that gene.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>Anova</code> returns a function with bindings for <code>cov</code> and
+<code>p</code> that will perform a one-way ANOVA.
+</p>
+<p>The covariate can be continuous, in which case the test is for a linear 
+effect for the covariate.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="kOverA.html">kOverA</a></code>, <code><a href="../../stats/html/lm.html">lm</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  set.seed(123)
+  af &lt;- Anova(c(rep(1,5),rep(2,5)), .01)
+  af(rnorm(10))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

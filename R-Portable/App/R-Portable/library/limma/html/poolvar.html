@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pool Sample Variances with Unequal Variances</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for poolVar {limma}"><tr><td>poolVar {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pool Sample Variances with Unequal Variances</h2>
+
+<h3>Description</h3>
+
+<p>Compute the Satterthwaite (1946) approximation to the distribution of a weighted sum of sample variances.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+poolVar(var, df=n-1, multiplier=1/n, n)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var</code></td>
+<td>
+<p>numeric vector of independent sample variances</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>numeric vector of degrees of freedom for the sample variances</p>
+</td></tr>
+<tr valign="top"><td><code>multiplier</code></td>
+<td>
+<p>numeric vector giving multipliers for the sample variances</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>numeric vector of sample sizes</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The sample variances <code>var</code> are assumed to follow scaled chi-square distributions.
+A scaled chi-square approximation is found for the distribution of <code>sum(multiplier * var)</code> by equating first and second moments.
+On output the sum to be approximated is equal to <code>multiplier * var</code> which follows approximately a scaled chisquare distribution on <code>df</code> degrees of freedom.
+The approximation was proposed by Satterthwaite (1946).
+</p>
+<p>If there are only two groups and the degrees of freedom are one less than the sample sizes then this gives the denominator of Welch's t-test for unequal variances.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with components
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>var</code></td>
+<td>
+<p>effective pooled sample variance</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>effective pooled degrees of freedom</p>
+</td></tr>
+<tr valign="top"><td><code>multiplier</code></td>
+<td>
+<p>pooled multiplier</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Welch, B. L. (1938). The significance of the difference between two means when the population variances are unequal.
+<em>Biometrika</em> <b>29</b>, 350-362.
+</p>
+<p>Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components.
+<em>Biometrics Bulletin</em> <b>2</b>, 110-114.
+</p>
+<p>Welch, B. L. (1947). The generalization of 'Student's' problem when several different population variances are involved.
+<em>Biometrika</em> <b>34</b>, 28-35.
+</p>
+<p>Welch, B. L. (1949). Further note on Mrs. Aspin's tables and on certain approximations to the tabled function. <em>Biometrika</em> <b>36</b>, 293-296.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  Welch's t-test with unequal variances
+x &lt;- rnorm(10,mean=1,sd=2)
+y &lt;- rnorm(20,mean=2,sd=1)
+s2 &lt;- c(var(x),var(y))
+n &lt;- c(10,20)
+out &lt;- poolVar(var=s2,n=n)
+tstat &lt;- (mean(x)-mean(y)) / sqrt(out$var*out$multiplier)
+pvalue &lt;- 2*pt(-abs(tstat),df=out$df)
+#  Equivalent to t.test(x,y)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

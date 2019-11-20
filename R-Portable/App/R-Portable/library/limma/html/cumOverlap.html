@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cumulative Overlap Analysis of Ordered Lists</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cumOverlap {limma}"><tr><td>cumOverlap {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Cumulative Overlap Analysis of Ordered Lists</h2>
+
+<h3>Description</h3>
+
+<p>Test whether the leading members of ordered lists significantly overlap.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cumOverlap(ol1, ol2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ol1</code></td>
+<td>
+<p>vector containing first ordered list. Duplicate values not allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>ol2</code></td>
+<td>
+<p>vector containing second ordered list. Should contain the same values as found in <code>ol1</code> but in a possibly different order. Duplicate values not allowed.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function compares the top <code>n</code> members of each list, for every possible <code>n</code>, and conducts an hypergeometric test for overlap.
+The function returns the value of <code>n</code> giving the smallest p-value.
+</p>
+<p>The p-values are adjusted for multiple testing in a similar way to Bonferroni's method, but starting from the top of th e ranked list instead of from the smallest p-values.
+This approach is designed to be sensitive to contexts where the number of Ids involved in the significant overlap are a small proportion of the total.
+</p>
+<p>The vectors <code>ol1</code> and <code>ol2</code> do not need to be of the same length, but only values in common between the two vectors will be used in the calculation.
+</p>
+<p>This method was described in Chapter 4 of Wu (2011).
+</p>
+
+
+<h3>Value</h3>
+
+<p>List containing the following components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>n.total</code></td>
+<td>
+<p>integer, total number of values in common between <code>ol1</code> and <code>ol2</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>n.min</code></td>
+<td>
+<p>integer, top table length leading to smallest adjusted p-value.</p>
+</td></tr>
+<tr valign="top"><td><code>p.min</code></td>
+<td>
+<p>smallest adjusted p-value.</p>
+</td></tr>
+<tr valign="top"><td><code>n.overlap</code></td>
+<td>
+<p>integer, number of overlapping IDs in first <code>n.min</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>id.overlap</code></td>
+<td>
+<p>vector giving the overlapping IDs in first <code>n.min</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>p.value</code></td>
+<td>
+<p>numeric, vector of p-values for each possible top table length.</p>
+</td></tr>
+<tr valign="top"><td><code>adj.p.value</code></td>
+<td>
+<p>numeric, vector of Bonferroni adjusted p-values for each possible top table length.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth and Di Wu</p>
+
+
+<h3>References</h3>
+
+<p>Wu, D (2011).
+Finding hidden relationships between gene expression profiles with application to breast cancer biology.
+PhD thesis, University of Melbourne.
+<a href="http://hdl.handle.net/11343/36278">http://hdl.handle.net/11343/36278</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+GeneIds &lt;- paste0("Gene",1:50)
+ol1 &lt;- GeneIds
+ol2 &lt;- c(sample(GeneIds[1:5]), sample(GeneIds[6:50]))
+coa &lt;- cumOverlap(ol1, ol2)
+coa$p.min
+coa$id.overlap
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

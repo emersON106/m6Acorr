@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Estimate Proportion of Expressed Probes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for propexpr {limma}"><tr><td>propexpr {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Estimate Proportion of Expressed Probes</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the proportion of microarray probes which are expressed in each array.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+propexpr(x, neg.x=NULL, status=x$genes$Status, labels=c("negative","regular"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>matrix or similar object containing raw intensities for a set of arrays.</p>
+</td></tr>
+<tr valign="top"><td><code>neg.x</code></td>
+<td>
+<p>matrix or similar object containing raw intensities for negative control probes for the same arrays. If <code>NULL</code>, then negative controls must be provided in <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>character vector specifying control type of each probe. Only used if <code>neg.x</code> is <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>character vector giving the <code>status</code> values for negative control probes and regular (non-control) probes respectively. If of length 1, then all probes other than the negative controls are assumed to be regular. Only used if <code>neg.x</code> is <code>NULL</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function estimates the overall proportion of probes on each microarray that are correspond to expressed genes using the method of Shi et al (2010).
+The function is especially useful for Illumina BeadChips arrays, although it can in principle be applied to any platform with good quality negative controls.
+</p>
+<p>The negative controls can be supplied either as rows of <code>x</code> or as a separate matrix.
+If supplied as rows of <code>x</code>, then the negative controls are identified by the <code>status</code> vector.
+<code>x</code> might also include other types of control probes, but these will be ignored in the calculation.
+</p>
+<p>Illumina BeadChip arrays contain 750~1600 negative control probes.
+If <code>read.idat</code> is used to read Illumina expression IDAT files, then the control probes will be populated as rows of the output <code>EListRaw</code> object, and the vector <code>x$genes$Status</code> will be set to identify control probes.
+</p>
+<p>Alternatively, expression values can be exported from Illumina's GenomeStudio software as tab-delimited text files.
+In this case, the control probes are usually written to a separate file from the regular probes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric vector giving the proportions of expressed probes in each array.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei Shi and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Shi, W, de Graaf, C, Kinkel, S, Achtman, A, Baldwin, T, Schofield, L, Scott, H, Hilton, D, Smyth, GK (2010).
+Estimating the proportion of microarray probes expressed in an RNA sample.
+<em>Nucleic Acids Research</em> 38(7), 2168-2176.
+<a href="https://www.ncbi.nlm.nih.gov/pubmed/20056656">https://www.ncbi.nlm.nih.gov/pubmed/20056656</a>
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p>Description to the control probes in Illumina BeadChips can be found in <code><a href="read.ilmn.html">read.ilmn</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Read Illumina binary IDAT files
+x &lt;- read.idat(idat, bgx)
+propexpr(x)
+
+# Read text files exported from GenomeStudio
+x &lt;- read.ilmn(files = "sample probe profile.txt",
+               ctrlfiles = "control probe profile.txt")
+propexpr(x)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

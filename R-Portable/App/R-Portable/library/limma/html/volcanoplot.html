@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Volcano Plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for volcanoplot {limma}"><tr><td>volcanoplot {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Volcano Plot</h2>
+
+<h3>Description</h3>
+
+<p>Creates a volcano plot for a specified coefficient of a linear model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+volcanoplot(fit, coef = 1, style = "p-value", highlight = 0, names = fit$genes$ID, hl.col="blue",
+            xlab = "Log2 Fold Change", ylab = NULL, pch=16, cex=0.35, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>an <code>MArrayLM</code> fitted linear model object.</p>
+</td></tr>
+<tr valign="top"><td><code>coef</code></td>
+<td>
+<p>index indicating which coefficient of the linear model is to be plotted.</p>
+</td></tr>
+<tr valign="top"><td><code>style</code></td>
+<td>
+<p>character string indicating which significance statistic to plot on the y-axis. Possibilities are <code>"p-value"</code> or <code>"B-statistic"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>highlight</code></td>
+<td>
+<p>number of top genes to be highlighted by name.</p>
+</td></tr>
+<tr valign="top"><td><code>names</code></td>
+<td>
+<p>character vector of length <code>nrow(fit)</code> giving gene names. Only used if <code>highlight &gt; 0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>hl.col</code></td>
+<td>
+<p>color for the gene names. Only used if <code>highlight &gt; 0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>character string giving label for x-axis</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>character string giving label for y-axis</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>vector or list of plotting characters.</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>numeric vector of plot symbol expansions.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>plot</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A volcano plot displays log fold changes on the x-axis versus a measure of statistical significance on the y-axis.
+Here the significance measure can be -log(p-value) or the B-statistics, which give the posterior log-odds of differential expression.
+</p>
+<p>The plot is optionally annotated with the names of the most significant genes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>No value is returned but a plot is created on the current graphics device.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of presentation plots following the fitting of a linear model in LIMMA is given in <a href="06linearmodels.html">06.LinearModels</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#  See lmFit examples
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

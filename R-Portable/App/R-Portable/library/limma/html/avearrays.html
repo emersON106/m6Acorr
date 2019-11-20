@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Average Over Replicate Arrays</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for avearrays {limma}"><tr><td>avearrays {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Average Over Replicate Arrays</h2>
+
+<h3>Description</h3>
+
+<p>Condense a microarray data object so that technical replicate arrays are replaced with (weighted) averages.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## Default S3 method:
+avearrays(x, ID=colnames(x), weights=NULL)
+## S3 method for class 'MAList'
+avearrays(x, ID=colnames(x), weights=x$weights)
+## S3 method for class 'EList'
+avearrays(x, ID=colnames(x), weights=x$weights)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a matrix-like object, usually a matrix, <code>MAList</code> or <code>EList</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>ID</code></td>
+<td>
+<p>sample identifier.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>numeric matrix of non-negative weights</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A new data object is computed in which technical replicate arrays are replaced by their (weighted) averages.
+</p>
+<p>For an <code>MAList</code> object, the components <code>M</code> and <code>A</code> are both averaged in this way, as are <code>weights</code> and any matrices found in <code>object$other</code>.
+</p>
+<p><code>EList</code> objects are similar, except that the <code>E</code> component is averaged instead of <code>M</code> and <code>A</code>.
+</p>
+<p>If <code>x</code> is of mode <code>"character"</code>, then the replicate values are assumed to be equal and the first is taken as the average.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data object of the same class as <code>x</code> with a column for each unique value of <code>ID</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="avereps.html">avereps</a></code>.
+</p>
+<p><a href="02classes.html">02.Classes</a> gives an overview of data classes used in LIMMA.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- matrix(rnorm(8*3),8,3)
+colnames(x) &lt;- c("a","a","b")
+avearrays(x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

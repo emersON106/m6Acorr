@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write MA-Plots to Files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotMA3by2 {limma}"><tr><td>plotMA3by2 {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write MA-Plots to Files</h2>
+
+<h3>Description</h3>
+
+<p>Write MA-plots to files in PNG format, six plots to a file in a 3 by 2 grid arrangement.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotMA3by2(object, prefix="MA", path=NULL, main=colnames(object),
+           zero.weights=FALSE, common.lim=TRUE, device="png", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an <code>MAList</code>, <code>RGList</code>, <code>EListRaw</code> or <code>EList</code> object, or a matrix containing log-intensities.</p>
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+<p>character string giving prefix to attach to file names</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>character string specifying directory for output files</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>character vector giving titles for plots</p>
+</td></tr>
+<tr valign="top"><td><code>zero.weights</code></td>
+<td>
+<p>logical, should points with non-positive weights be plotted</p>
+</td></tr>
+<tr valign="top"><td><code>common.lim</code></td>
+<td>
+<p>logical, should all plots on a page use the same axis limits</p>
+</td></tr>
+<tr valign="top"><td><code>device</code></td>
+<td>
+<p>device driver for the plot. Choices are <code>"png"</code>, <code>"jpeg"</code>, <code>"pdf"</code>, <code>"postscript"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>plotMA</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function writes a series of graphic files to disk.
+Each file contains six MA-plots in three rows and two columns.
+The layout is optimized for A4-sized paper.
+</p>
+<p>The graph format can be <code>"png"</code> or <code>"jpeg"</code>, which are screen-resolution formats, or <code>"pdf"</code> or <code>"postscript"</code>, which are loss-less formats.
+<code>"png"</code> is not available on every R platform.
+Note that <code>"pdf"</code> or <code>"postscript"</code> may produce very large files.
+</p>
+
+
+<h3>Value</h3>
+
+<p>No value is returned, but one or more files are written to the working directory.
+The number of files is determined by the number of columns of <code>object</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotma.html">plotMA</a></code>
+</p>
+<p>An overview of diagnostic functions available in LIMMA is given in <a href="09Diagnostics.html">09.Diagnostics</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

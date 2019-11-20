@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: NormExp Background Correction and Normalization Using Control...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for nec {limma}"><tr><td>nec {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>NormExp Background Correction and Normalization Using Control Probes</h2>
+
+<h3>Description</h3>
+
+<p>Perform normexp background correction using negative control probes and quantile normalization using negative and positive control probes.
+Particularly useful for Illumina BeadChips.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+nec(x, status=NULL, negctrl="negative", regular="regular", offset=16,
+    robust=FALSE, detection.p="Detection")
+neqc(x, status=NULL, negctrl="negative", regular="regular", offset=16,
+    robust=FALSE, detection.p="Detection", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class <code>EListRaw</code> or <code>matrix</code> containing raw intensities for regular and control probes from a series of microarrays.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>character vector giving probe types.  Defaults to <code>x$genes$Status</code> if <code>x</code> is an <code>EListRaw</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>negctrl</code></td>
+<td>
+<p>character string identifier for negative control probes.</p>
+</td></tr>
+<tr valign="top"><td><code>regular</code></td>
+<td>
+<p>character string identifier for regular probes, i.e., all probes other than control probes.</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>numeric value added to the intensities after background correction.</p>
+</td></tr>
+<tr valign="top"><td><code>robust</code></td>
+<td>
+<p>logical. Should robust estimators be used for the background mean and standard deviation?</p>
+</td></tr>
+<tr valign="top"><td><code>detection.p</code></td>
+<td>
+<p>dection p-values.  Only used when no negative control probes can be found in the data.  Can be a numeric matrix or a character string giving the name of the component of <code>x$other</code> containing the matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>any other arguments are passed to <code>normalizeBetweenArrays.</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>neqc</code> performs background correction followed by quantile normalization, using negative control probes for background correction and both negative and positive controls for normalization (Shi et al, 2010).
+<code>nec</code> is similar but performs background correction only.
+These methods are particularly designed for Illumina BeadChip microarrays, but could be useful for other platforms for which good quality negative control probes or detection p-values are available.
+</p>
+<p>When control data are available, these function call <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> to estimate the parameters required by normal+exponential(normexp) convolution model with the help of negative control probes, followed by <code><a href="normexpsignal.html">normexp.signal</a></code> to perform the background correction.
+If <code>x</code> contains background intensities <code>x$Eb</code>, then these are first subtracted from the foreground intensities, prior to normexp background correction.
+After background correction, an <code>offset</code> is added to the data.
+</p>
+<p>When expression values for negative controls are not available, the <code>detection.p</code> argument is used instead,
+In that case, these functions call <code><a href="normexpfitdetectionp.html">normexp.fit.detection.p</a></code>, which infers the negative control probe intensities from the detection p-values associated with the regular probes.
+The function outputs a message if this is done.
+</p>
+<p>For more detailed descriptions of the arguments <code>x</code>, <code>status</code>, <code>negctrl</code>, <code>regular</code> and <code>detection.p</code>, please refer to functions <code><a href="normexpfitcontrol.html">normexp.fit.control</a></code>, <code><a href="normexpfitdetectionp.html">normexp.fit.detection.p</a></code> and <code><a href="read.ilmn.html">read.ilmn</a></code>.
+</p>
+<p>Both <code>nec</code> and <code>neqc</code> perform the above steps.
+<code>neqc</code> continues on to quantile normalize the background-corrected intensities, including control probes.
+After normalization, the intensities are log2 transformed and the control probes are removed.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>nec</code> produces a <code><a href="EList.html">EListRaw-class</a></code> or matrix object of the same dimensions as <code>x</code> containing background-corrected intensities, on the raw scale.
+<code>neqc</code> produces a <code><a href="EList.html">EList-class</a></code> or matrix object containing normalized log2 intensities, with rows corresponding to control probes removed.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei Shi and Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Shi W, Oshlack A and Smyth GK (2010).
+Optimizing the noise versus bias trade-off for Illumina Whole Genome Expression BeadChips.
+<em>Nucleic Acids Research</em> 38, e204.
+<a href="http://nar.oxfordjournals.org/content/38/22/e204">http://nar.oxfordjournals.org/content/38/22/e204</a>
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p>An overview of background correction functions is given in <a href="04Background.html">04.Background</a>.
+</p>
+<p>An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+<p><code><a href="normexpfitcontrol.html">normexp.fit.control</a></code> estimates the parameters in the normal+exponential convolution model using the negative control probes.
+</p>
+<p><code><a href="normexpfitdetectionp.html">normexp.fit.detection.p</a></code> estimates the parameters in the normal+exponential convolution model using negative control probe intensities inferred from regular probes by using their detection p values information.
+</p>
+<p><code><a href="normexpfit.html">normexp.fit</a></code> estimates parameters in the normal+exponential convolution model using a saddle-point approximation or other methods.
+</p>
+<p><code><a href="nec.html">neqc</a></code> performs normexp background correction and quantile normalization aided by control probes.  
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# neqc normalization for data which include control probes
+x &lt;- read.ilmn(files="sample probe profile.txt", ctrlfiles="control probe profile.txt")
+y &lt;- neqc(x)
+fit &lt;- lmFit(y,design)
+
+# Same thing but in separate steps:
+x.b &lt;- nec(x)
+y &lt;- normalizeBetweenArrays(x.b,method="quantile")
+y &lt;- y[y$genes$Status=="regular",]
+
+# neqc normalization for data without control probes
+# neqc can process detection p-values in lieu of control probes
+xr &lt;- read.ilmn(files="sample probe profile.txt")
+yr &lt;- neqc(xr)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

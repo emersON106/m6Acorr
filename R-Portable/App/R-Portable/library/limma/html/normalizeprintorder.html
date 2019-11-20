@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print-Order Normalization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeForPrintorder {limma}"><tr><td>normalizeForPrintorder {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print-Order Normalization</h2>
+
+<h3>Description</h3>
+
+<p>Normalize intensity values on one or more spotted microarrays to adjust for print-order effects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeForPrintorder(object, layout, start="topleft", method = "loess",
+                       separate.channels = FALSE, span = 0.1, plate.size = 32)
+normalizeForPrintorder.rg(R, G, printorder, method = "loess", separate.channels = FALSE,
+                          span = 0.1, plate.size = 32, plot = FALSE)
+plotPrintorder(object, layout, start="topleft", slide = 1, method = "loess",
+               separate.channels = FALSE, span = 0.1, plate.size = 32)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an <code>RGList</code> or <code>list</code> object containing components <code>R</code> and <code>G</code> which are matrices containing the red and green channel intensities for a series of arrays</p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>numeric vector containing red channel intensities for a single microarray</p>
+</td></tr>
+<tr valign="top"><td><code>G</code></td>
+<td>
+<p>numeric vector containing the green channel intensities for a single microarray</p>
+</td></tr>
+<tr valign="top"><td><code>layout</code></td>
+<td>
+<p>list specifying the printer layout, see <code><a href="PrintLayout.html">PrintLayout-class</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>start</code></td>
+<td>
+<p>character string specifying where printing starts in each pin group.  Choices are <code>"topleft"</code> or <code>"topright"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>printorder</code></td>
+<td>
+<p>numeric vector specifying order in which spots are printed.
+Can be computed from <code>printorder(layout,start=start)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>slide</code></td>
+<td>
+<p>positive integer giving the column number of the array for which a plot is required</p>
+</td></tr>
+<tr valign="top"><td><code>method </code></td>
+<td>
+<p>character string, &quot;loess&quot; if a smooth loess curve should be fitted through the print-order trend or &quot;plate&quot; if plate effects are to be estimated</p>
+</td></tr>
+<tr valign="top"><td><code>separate.channels</code></td>
+<td>
+<p>logical, <code>TRUE</code> if normalization should be done separately for the red and green channel and <code>FALSE</code> if the normalization should be proportional for the two channels</p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>numerical constant between 0 and 1 giving the smoothing span for the loess the curve.  Ignored if <code>method="plate"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plate.size</code></td>
+<td>
+<p>positive integer giving the number of consecutive spots corresponding to one plate or plate pack.  Ignored if <code>method="loess"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical. If <code>TRUE</code> then a scatter plot of the print order effect is sent to the current graphics device.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Print-order is associated with the 384-well plates used in the printing of spotted microarrays.
+There may be variations in DNA concentration or quality between the different plates.
+The may be variations in ambient conditions during the time the array is printed.
+</p>
+<p>This function is intended to pre-process the intensities before other normalization methods are applied to adjust for variations in DNA quality or concentration and other print-order effects.
+</p>
+<p>Printorder means the order in which spots are printed on a microarray.
+Spotted arrays are printed using a print head with an array of print-tips.
+Spots in the various tip-groups are printed in parallel.
+Printing is assumed to start in the top left hand corner of each tip-groups and to proceed right and down by rows, or else to start in the top right hand and to proceed left and down by rows.
+See <code><a href="printorder.html">printorder</a></code> for more details.
+(WARNING: this is not always the case.)
+This is true for microarrays printed at the Australian Genome Research Facility but might not be true for arrays from other sources.
+</p>
+<p>If <code>object</code> is an <code>RGList</code> then printorder is performed for each intensity in each array.
+</p>
+<p><code>plotPrintorder</code> is a non-generic function which calls <code>normalizeForPrintorder</code> with <code>plot=TRUE</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>normalizeForPrintorder</code> produces an <code>RGList</code> containing normalized intensities.
+</p>
+<p>The function <code>plotPrintorder</code> or <code>normalizeForPrintorder.rg</code> with <code>plot=TRUE</code> returns no value but produces a plot as a side-effect.
+</p>
+<p><code>normalizeForPrintorder.rg</code> with <code>plot=FALSE</code> returns a list with the following components: 
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>numeric vector containing the normalized red channel intensities</p>
+</td></tr>
+<tr valign="top"><td><code>G</code></td>
+<td>
+<p>numeric vector containing the normalized red channel intensites</p>
+</td></tr>
+<tr valign="top"><td><code>R.trend</code></td>
+<td>
+<p>numeric vector containing the fitted printorder trend for the red channel</p>
+</td></tr>
+<tr valign="top"><td><code>G.trend</code></td>
+<td>
+<p>numeric vector containing the fitted printorder trend for the green channe</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Smyth, G. K. Print-order normalization of cDNA microarrays. March 2002.  <a href="http://www.statsci.org/smyth/pubs/porder/porder.html">http://www.statsci.org/smyth/pubs/porder/porder.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="printorder.html">printorder</a></code>.
+</p>
+<p>An overview of LIMMA functions for normalization is given in <a href="05Normalization.html">05.Normalization</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+plotPrintorder(RG,layout,slide=1,separate=TRUE)
+RG &lt;- normalizeForPrintorder(mouse.data,mouse.setup)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Detection P-Values from Negative Controls</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for detectionPValues {limma}"><tr><td>detectionPValues {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Detection P-Values from Negative Controls</h2>
+
+<h3>Description</h3>
+
+<p>Compute the proportion of negative controls greater than each observed expression value.
+Particularly useful for Illumina BeadChips.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'EListRaw'
+detectionPValues(x, status = NULL, ...)
+## Default S3 method:
+detectionPValues(x, status, negctrl = "negative", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object of class <code>EListRaw</code> or a numeric <code>matrix</code> containing raw intensities for regular and control probes from a series of microarrays.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>character vector giving probe types.  Defaults to <code>x$genes$Status</code> if <code>x</code> is an <code>EListRaw</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>negctrl</code></td>
+<td>
+<p>character string identifier for negative control probes.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are not currently used.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The rows of <code>x</code> for which <code>status == negctrl</code> are assumed to correspond to negative control probes.
+</p>
+<p>For each column of <code>x</code>, the detection p-values are defined as <code>(N.eq/2 + N.gt) / N.neg</code>, where <code>N.gt</code> is the number of negative controls with expression greater than the observed value, <code>N.eq</code> is the number of negative controls with expression equal to the observed value, and <code>N.neg</code> is the total number of negative controls.
+</p>
+<p>When used on Illumina BeadChip data, this function produces essentially the same detection p-values as returned by Illumina's GenomeStudio software.
+</p>
+
+
+<h3>Value</h3>
+
+<p>numeric matrix of same dimensions as <code>x</code> containing detection p-values.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>References</h3>
+
+<p>Shi, W, de Graaf, C, Kinkel, S, Achtman, A, Baldwin, T, Schofield, L, Scott, H, Hilton, D, Smyth, GK (2010).
+Estimating the proportion of microarray probes expressed in an RNA sample.
+<em>Nucleic Acids Research</em> 38(7), 2168-2176.
+<a href="https://www.ncbi.nlm.nih.gov/pubmed/20056656">https://www.ncbi.nlm.nih.gov/pubmed/20056656</a>
+</p>
+
+
+<h3>See Also</h3>
+
+ 
+<p>An overview of LIMMA functions to read expression data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+<p><code><a href="read.idat.html">read.idat</a></code> reads Illumina BeadChip expression data from binary IDAT files.
+</p>
+<p><code><a href="nec.html">neqc</a></code> performs normexp background correction and quantile normalization aided by control probes.  
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Read Illumina binary IDAT files
+x &lt;- read.idat(idat, bgx)
+x$genes$DectionPValue &lt;- detectionPValues(x)
+y &lt;- neqc(x)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

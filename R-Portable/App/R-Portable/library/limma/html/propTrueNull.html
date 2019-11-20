@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Estimate Proportion of True Null Hypotheses</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for propTrueNull {limma}"><tr><td>propTrueNull {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Estimate Proportion of True Null Hypotheses</h2>
+
+<h3>Description</h3>
+
+<p>Estimate the proportion of true null hypotheses from a vector of p-values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+propTrueNull(p, method="lfdr", nbins=20, ...)
+convest(p, niter=100, plot=FALSE, report=FALSE, file="", tol=1e-6)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>numeric vector of p-values.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>estimation method. Choices are <code>"lfdr"</code>, <code>"mean"</code>, <code>"hist"</code> or <code>"convest"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>nbins</code></td>
+<td>
+<p>number of histogram bins (if <code>method="hist"</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>niter</code></td>
+<td>
+<p>number of iterations to be used in fitting the convex, decreasing density for the p-values.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>logical, should updated plots of fitted convex decreasing p-value density be produced at each iteration?</p>
+</td></tr>
+<tr valign="top"><td><code>report</code></td>
+<td>
+<p>logical, should the estimated proportion be printed at each iteration?</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>name of file to which to write the report. Defaults to standard output.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>accuracy of the bisectional search for finding a new convex combination of the current iterate and the mixing density</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are passed to <code>convest</code> if <code>method="convest"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The proportion of true null hypotheses in a collection of hypothesis tests is often denoted pi0.
+This function estimates pi0 from a vector of p-values.
+</p>
+<p><code>method="lfdr"</code> implements the method of Phipson (2013) based on averaging local false discovery rates across the p-values.
+</p>
+<p><code>method="mean"</code> is a very simple method based on averaging the p-values.  It gives a slightly smaller estimate than <code>2*mean(p)</code>.
+</p>
+<p><code>method="hist"</code> implements the histogram method of Mosig et al (2001) and Nettleton et al (2006).
+</p>
+<p><code>method="convest"</code> calls <code>convest</code>, which implements the method of Langaas et al (2005) based on a convex decreasing density estimate.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric value in the interval [0,1] representing the estimated proportion of true null hypotheses.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Belinda Phipson and Gordon Smyth for <code>propTrueNull</code>. Egil Ferkingstad, Mette Langaas and Marcus Davy for <code>convest</code>.</p>
+
+
+<h3>References</h3>
+
+<p>Langaas, M, Ferkingstad, E, and Lindqvist, B (2005).
+Estimating the proportion of true null hypotheses, with application to DNA microarray data.
+<em>Journal of the Royal Statistical Society Series</em> B 67, 555-572.
+</p>
+<p>Mosig MO, Lipkin E, Khutoreskaya G, Tchourzyna E, Soller M, Friedmann A (2001).
+A whole genome scan for quantitative trait loci affecting milk protein percentage in Israeli-Holstein cattle, by means of selective milk DNA pooling in a daughter design, using an adjusted false discovery rate criterion.
+<em>Genetics</em> 157, 1683-1698.
+</p>
+<p>Nettleton D, Hwang JTG, Caldo RA, Wise RP (2006).
+Estimating the number of true null hypotheses from a histogram of p values.
+<em>Journal of Agricultural, Biological, and Environmental Statistics</em> 11, 337-356.
+</p>
+<p>Phipson, B (2013).
+Empirical Bayes Modelling of Expression Profiles and Their Associations.
+PhD Thesis, University of Melbourne, Australia.
+<a href="http://repository.unimelb.edu.au/10187/17614">http://repository.unimelb.edu.au/10187/17614</a>
+</p>
+<p>Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015).
+limma powers differential expression analyses for RNA-sequencing and microarray studies.
+<em>Nucleic Acids Research</em> 43, e47.
+<a href="http://nar.oxfordjournals.org/content/43/7/e47">http://nar.oxfordjournals.org/content/43/7/e47</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See <a href="08Tests.html">08.Tests</a> for other functions for producing or interpreting p-values.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Test statistics
+z &lt;- rnorm(200)
+
+# First 40 are have non-zero means
+z[1:40] &lt;- z[1:40]+2
+
+# True pi0
+160/200
+
+# Two-sided p-values
+p &lt;- 2*pnorm(-abs(z))
+
+# Estimate pi0
+propTrueNull(p, method="lfdr")
+propTrueNull(p, method="hist")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

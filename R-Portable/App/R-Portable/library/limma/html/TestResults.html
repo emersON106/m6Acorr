@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Matrix of Test Results - class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for TestResults-class {limma}"><tr><td>TestResults-class {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Matrix of Test Results - class</h2>
+
+<h3>Description</h3>
+
+<p>A matrix-based class for storing the results of simultanous tests.
+<code>TestResults</code> objects are usually created by <code><a href="decideTests.html">decideTests</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'TestResults'
+summary(object, ...)
+## S3 method for class 'TestResults'
+labels(object, ...)
+## S3 method for class 'TestResults'
+levels(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object, x</code></td>
+<td>
+<p>object of class <code>TestResults</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments are not used</p>
+</td></tr>
+</table>
+
+
+<h3>Slots/List Components</h3>
+
+<p>A <code>TestResults</code> object is essentially a numeric matrix with elements equal to <code>0</code>, <code>1</code> or <code>-1</code>.
+Zero represents acceptance of the null hypothesis, <code>1</code> indicates rejection in favor of the right tail alternative and <code>-1</code> indicates rejection in favor of the left tail alternative.
+</p>
+<p><code>TestResults</code> objects can be created by <code>new("TestResults",results)</code> where <code>results</code> is a matrix.
+Objects of this class contain no slots (other than <code>.Data</code>), although the attributes <code>dim</code> and <code>dimnames</code> may be treated as slots.
+</p>
+
+
+<h3>Methods</h3>
+
+<p>This class inherits directly from class <code>matrix</code> so any operation appropriate for matrices will work on objects of this class.
+<code><a href="../../methods/html/show.html">show</a></code> and <code>summary</code> methods are also implemented.
+</p>
+<p>Functions in LIMMA which operate on <code>TestResults</code> objects include
+<code><a href="heatdiagram.html">heatDiagram</a></code>,
+<code><a href="venn.html">vennCounts</a></code>,
+<code><a href="venn.html">vennDiagram</a></code>,
+<code><a href="writefit.html">write.fit</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="02classes.html">02.Classes</a> gives an overview of all the classes defined by this package.
+<a href="08Tests.html">08.Tests</a> gives an overview of multiple testing.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>## Not run: 
+#  Assume a data object y and a design matrix
+fit &lt;- lmFit(y, design)
+fit &lt;- eBayes(fit)
+results &lt;- decideTests(fit)
+summary(results)
+
+## End(Not run)</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

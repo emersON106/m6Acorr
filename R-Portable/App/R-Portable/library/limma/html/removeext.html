@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Remove Common Extension from File Names</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for removeExt {limma}"><tr><td>removeExt {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Remove Common Extension from File Names</h2>
+
+<h3>Description</h3>
+
+<p>Finds and removes any common extension from a vector of file names.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+removeExt(x, sep=".")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>character vector</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>character string that separates the body of each character string from the extension.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is used for simplifying file names, or any vector of character strings, when the strings all finish with the same suffix or extension.
+If the same extension is not shared by every element of <code>x</code>, then it is not removed from any element.
+</p>
+<p>Note that <code>sep</code> is interpreted as a literal character string: it is not a regular expression.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character vector of the same length as <code>x</code> in which any common extension has been stripped off.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p>An overview of LIMMA functions for reading data is given in <a href="03reading.html">03.ReadingData</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c("slide1.spot","slide2.spot","slide3.spot")
+removeExt(x)
+
+x &lt;- c("Harry - a name from Harry Potter","Hermione - a name from Harry Potter")
+removeExt(x, sep=" - ")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

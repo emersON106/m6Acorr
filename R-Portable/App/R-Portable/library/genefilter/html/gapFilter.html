@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A filter to select genes based on there being a gap.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gapFilter {genefilter}"><tr><td>gapFilter {genefilter}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> A filter to select genes based on there being a gap. </h2>
+
+<h3>Description</h3>
+
+<p>The <code>gapFilter</code> looks for genes that might usefully discriminate
+between two groups (possibly unknown at the time of filtering).
+To do this we look for a gap in the ordered expression values. The gap
+must come in the central portion (we exclude jumps in the initial
+<code>Prop</code> values or the final <code>Prop</code> values).
+Alternatively, if the IQR for the gene is large that will also pass
+our test and the gene will be selected.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gapFilter(Gap, IQR, Prop, na.rm=TRUE, neg.rm=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Gap</code></td>
+<td>
+<p>The size of the gap required to pass the test. </p>
+</td></tr>
+<tr valign="top"><td><code>IQR</code></td>
+<td>
+<p>The size of the IQR required to pass the test. </p>
+</td></tr>
+<tr valign="top"><td><code>Prop</code></td>
+<td>
+<p>The proportion (or number) of samples to exclude at either
+end.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>If <code>TRUE</code> then <code>NA</code>'s will be removed before
+processing. </p>
+</td></tr>
+<tr valign="top"><td><code>neg.rm</code></td>
+<td>
+<p> If <code>TRUE</code> then negative values in <code>x</code> will be
+removed before processing.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>As stated above we are interested in 
+</p>
+
+
+<h3>Value</h3>
+
+<p>A function that returns either <code>TRUE</code> or <code>FALSE</code> depending on
+whether the vector supplied has a gap larger than <code>Gap</code> or an IQR
+(inter quartile range) larger than <code>IQR</code>. For computing the gap we
+want to exclude a proportion, <code>Prop</code> from either end of the sorted
+values. The reason for this requirement is that genes which differ in
+expression levels only for a few samples are not likely to be interesting.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>R. Gentleman </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ttest.html">ttest</a></code>, <code><a href="genefilter.html">genefilter</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ set.seed(256)
+ x &lt;- c(rnorm(10,100,3), rnorm(10, 100, 10))
+ y &lt;- x + c(rep(0,10), rep(100,10))
+ tmp &lt;- rbind(x,y) 
+ Gfilter &lt;- gapFilter(200, 100, 5)
+ ffun &lt;- filterfun(Gfilter)
+ genefilter(tmp, ffun)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>genefilter</em> version 1.66.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

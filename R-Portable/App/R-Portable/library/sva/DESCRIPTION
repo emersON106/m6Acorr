@@ -1,0 +1,47 @@
+Package: sva
+Title: Surrogate Variable Analysis
+Version: 3.32.1
+Author: Jeffrey T. Leek <jtleek@gmail.com>, W. Evan Johnson <wej@bu.edu>,
+    Hilary S. Parker <hiparker@jhsph.edu>, Elana J. Fertig <ejfertig@jhmi.edu>,
+    Andrew E. Jaffe <ajaffe@jhsph.edu>, John D. Storey <jstorey@princeton.edu>,
+    Yuqing Zhang <zhangyuqing.pkusms@gmail.com>,
+    Leonardo Collado Torres <lcolladotor@gmail.com>
+Description: The sva package contains functions for removing batch
+    effects and other unwanted variation in high-throughput
+    experiment. Specifically, the sva package contains functions
+    for the identifying and building surrogate variables for
+    high-dimensional data sets. Surrogate variables are covariates
+    constructed directly from high-dimensional data (like gene
+    expression/RNA sequencing/methylation/brain imaging data) that
+    can be used in subsequent analyses to adjust for unknown,
+    unmodeled, or latent sources of noise. The sva package can be
+    used to remove artifacts in three ways: (1) identifying and
+    estimating surrogate variables for unknown sources of variation
+    in high-throughput experiments (Leek and Storey 2007 PLoS
+    Genetics,2008 PNAS), (2) directly removing known batch
+    effects using ComBat (Johnson et al. 2007 Biostatistics) and (3) removing
+    batch effects with known control probes (Leek 2014 biorXiv).
+    Removing batch effects and using surrogate variables in
+    differential expression analysis have been shown to reduce
+    dependence, stabilize error rate estimates, and improve
+    reproducibility, see (Leek and Storey 2007 PLoS Genetics, 2008
+    PNAS or Leek et al. 2011 Nat. Reviews Genetics).
+Maintainer: Jeffrey T. Leek <jtleek@gmail.com>, John D. Storey
+ <jstorey@princeton.edu>, W. Evan Johnson <wej@bu.edu>
+Depends: R (>= 3.2), mgcv, genefilter, BiocParallel
+Imports: matrixStats, stats, graphics, utils, limma,
+Suggests: pamr, bladderbatch, BiocStyle, zebrafishRNASeq, testthat
+License: Artistic-2.0
+biocViews: ImmunoOncology, Microarray, StatisticalMethod,
+        Preprocessing, MultipleComparison, Sequencing, RNASeq,
+        BatchEffect, Normalization
+RoxygenNote: 6.0.1
+git_url: https://git.bioconductor.org/packages/sva
+git_branch: RELEASE_3_9
+git_last_commit: 1b82867
+git_last_commit_date: 2019-05-22
+Date/Publication: 2019-05-22
+NeedsCompilation: yes
+Packaged: 2019-05-23 01:56:41 UTC; biocbuild
+Built: R 3.6.0; i386-w64-mingw32; 2019-05-23 14:24:25 UTC; windows
+Archs: i386, x64

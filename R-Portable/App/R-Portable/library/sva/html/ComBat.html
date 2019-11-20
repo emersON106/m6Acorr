@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Adjust for batch effects using an empirical Bayes framework</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ComBat {sva}"><tr><td>ComBat {sva}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Adjust for batch effects using an empirical Bayes framework</h2>
+
+<h3>Description</h3>
+
+<p>ComBat allows users to adjust for batch effects in datasets where the batch covariate is known, using methodology
+described in Johnson et al. 2007. It uses either parametric or non-parametric empirical Bayes frameworks for adjusting data for
+batch effects.  Users are returned an expression matrix that has been corrected for batch effects. The input
+data are assumed to be cleaned and normalized before batch effect removal.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ComBat(dat, batch, mod = NULL, par.prior = TRUE, prior.plots = FALSE,
+  mean.only = FALSE, ref.batch = NULL, BPPARAM = bpparam("SerialParam"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dat</code></td>
+<td>
+<p>Genomic measure matrix (dimensions probe x sample) - for example, expression matrix</p>
+</td></tr>
+<tr valign="top"><td><code>batch</code></td>
+<td>
+<p>Batch covariate (only one batch allowed)</p>
+</td></tr>
+<tr valign="top"><td><code>mod</code></td>
+<td>
+<p>Model matrix for outcome of interest and other covariates besides batch</p>
+</td></tr>
+<tr valign="top"><td><code>par.prior</code></td>
+<td>
+<p>(Optional) TRUE indicates parametric adjustments will be used, FALSE indicates non-parametric adjustments will be used</p>
+</td></tr>
+<tr valign="top"><td><code>prior.plots</code></td>
+<td>
+<p>(Optional) TRUE give prior plots with black as a kernel estimate of the empirical batch effect density and red as the parametric</p>
+</td></tr>
+<tr valign="top"><td><code>mean.only</code></td>
+<td>
+<p>(Optional) FALSE If TRUE ComBat only corrects the mean of the batch effect (no scale adjustment)</p>
+</td></tr>
+<tr valign="top"><td><code>ref.batch</code></td>
+<td>
+<p>(Optional) NULL If given, will use the selected batch as a reference for batch adjustment.</p>
+</td></tr>
+<tr valign="top"><td><code>BPPARAM</code></td>
+<td>
+<p>(Optional) BiocParallelParam for parallel operation</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>data A probe x sample genomic measure matrix, adjusted for batch effects.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(bladderbatch)
+data(bladderdata)
+dat &lt;- bladderEset[1:50,]
+
+pheno = pData(dat)
+edata = exprs(dat)
+batch = pheno$batch
+mod = model.matrix(~as.factor(cancer), data=pheno)
+
+# parametric adjustment
+combat_edata1 = ComBat(dat=edata, batch=batch, mod=NULL, par.prior=TRUE, prior.plots=FALSE)
+
+# non-parametric adjustment, mean-only version
+combat_edata2 = ComBat(dat=edata, batch=batch, mod=NULL, par.prior=FALSE, mean.only=TRUE)
+
+# reference-batch version, with covariates
+combat_edata3 = ComBat(dat=edata, batch=batch, mod=mod, par.prior=TRUE, ref.batch=3)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sva</em> version 3.32.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

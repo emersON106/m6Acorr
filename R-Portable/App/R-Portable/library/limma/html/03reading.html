@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Topic: Reading Microarray Data from Files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for 03.ReadingData {limma}"><tr><td>03.ReadingData {limma}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Topic: Reading Microarray Data from Files</h2>
+
+<h3>Description</h3>
+
+<p>This help page gives an overview of LIMMA functions used to read data from files.
+</p>
+
+
+<h3>Reading Target Information</h3>
+
+<p>The function <code><a href="readTargets.html">readTargets</a></code> is designed to help with organizing information about which RNA sample is hybridized to each channel on each array and which files store information for each array.
+</p>
+
+
+<h3>Reading Intensity Data</h3>
+
+<p>The first step in a microarray data analysis is to read into R the intensity data for each array provided by an image analysis program.
+This is done using the function <code><a href="read.maimages.html">read.maimages</a></code>.
+</p>
+<p><code><a href="read.maimages.html">read.maimages</a></code> optionally constructs quality weights for each spot using quality functions listed in <a href="qualwt.html">QualityWeights</a>.
+</p>
+<p>If the data is two-color, then <code>read.maimages</code> produces an <code>RGList</code> object.
+If the data is one-color (single channel) then an <code>EListRaw</code> object is produced.
+In either case, <code>read.maimages</code> stores only the information required from each image analysis output file.
+<code><a href="read.maimages.html">read.maimages</a></code> uses utility functions <code><a href="removeext.html">removeExt</a></code>, <code><a href="read.maimages.html">read.imagene</a></code> and <code><a href="read.columns.html">read.columns</a></code>.
+There are also a series of utility functions which read the header information from image output files including <code><a href="readGPRHeader.html">readGPRHeader</a></code>, <code><a href="readImaGeneHeader.html">readImaGeneHeader</a></code> and <code><a href="readGPRHeader.html">readGenericHeader</a></code>.
+</p>
+<p><code><a href="read.ilmn.html">read.ilmn</a></code> reads probe or gene summary profile files from Illumina BeadChips,
+and produces an <code>ElistRaw</code> object.
+</p>
+<p><code><a href="read.idat.html">read.idat</a></code> reads Illumina files in IDAT format, and produces an <code>EListRaw</code> object.
+<code><a href="detectionPValue.html">detectionPValues</a></code> can be used to add detection p-values.
+</p>
+<p>The function <a href="asmalist.html">as.MAList</a> can be used to convert a <code>marrayNorm</code> object to an <code>MAList</code> object if the data was read and normalized using the marray and marrayNorm packages.
+</p>
+
+
+<h3>Reading the Gene List</h3>
+
+<p>Most image analysis software programs provide gene IDs as part of the intensity output files, for example GenePix, Imagene and the Stanford Microarray Database do this.
+In other cases the probe ID and annotation information may be in a separate file.
+The most common format for the probe annotation file is the GenePix Array List (GAL) file format.
+The function <code><a href="readgal.html">readGAL</a></code> reads information from a GAL file and produces a data frame with standard column names.
+</p>
+<p>The function <code><a href="getlayout.html">getLayout</a></code> extracts from the GAL-file data frame the print layout information for a spotted array.
+The functions <code><a href="gridspotrc.html">gridr</a></code>, <code><a href="gridspotrc.html">gridc</a></code>, <code><a href="gridspotrc.html">spotr</a></code> and <code><a href="gridspotrc.html">spotc</a></code> use the extracted layout to compute grid positions and spot positions within each grid for each spot.
+The function <code><a href="printorder.html">printorder</a></code> calculates the printorder, plate number and plate row and column position for each spot given information about the printing process.
+The utility function <code><a href="getSpacing.html">getSpacing</a></code> converts character strings specifying spacings of duplicate spots to numeric values.
+</p>
+<p>The Australian Genome Research Facility in Australia often produces GAL files with composite probe IDs or names consisting of multiple strings separated by a delimiter.
+These can be separated into name and annotation information using <code><a href="strsplit2.html">strsplit2</a></code>.
+</p>
+<p>If each probe is printed more than once of the arrays in a regular pattern, then <code><a href="uniquegenelist.html">uniquegenelist</a></code> will remove duplicate names from the gal-file or gene list.
+</p>
+
+
+<h3>Identifying Control Spots</h3>
+
+<p>The functions <code><a href="readSpotTypes.html">readSpotTypes</a></code> and <code><a href="controlStatus.html">controlStatus</a></code> assist with separating control spots from ordinary genes in the analysis and data exploration.
+</p>
+
+
+<h3>Manipulating Data Objects</h3>
+
+<p><code><a href="cbind.html">cbind</a></code>, <code><a href="cbind.html">rbind</a></code>, <code><a href="merge.html">merge</a></code> allow different <code>RGList</code> or <code>MAList</code> objects to be combined.
+<code>cbind</code> combines data from different arrays assuming the layout of the arrays to be the same.
+<code>merge</code> can combine data even when the order of the probes on the arrays has changed.
+<code>merge</code> uses utility function <code><a href="makeunique.html">makeUnique</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Gordon Smyth</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="01Introduction.html">01.Introduction</a>,
+<a href="02classes.html">02.Classes</a>,
+<a href="03reading.html">03.ReadingData</a>,
+<a href="04Background.html">04.Background</a>,
+<a href="05Normalization.html">05.Normalization</a>,
+<a href="06linearmodels.html">06.LinearModels</a>,
+<a href="07SingleChannel.html">07.SingleChannel</a>,
+<a href="08Tests.html">08.Tests</a>,
+<a href="09Diagnostics.html">09.Diagnostics</a>,
+<a href="10GeneSetTests.html">10.GeneSetTests</a>,
+<a href="11RNAseq.html">11.RNAseq</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>limma</em> version 3.40.6 <a href="00Index.html">Index</a>]</div>
+</body></html>
